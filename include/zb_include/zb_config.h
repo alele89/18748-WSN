@@ -291,7 +291,56 @@ If defined, platform is some 8051 clone
 #define ZB_8051_TIMER
 
 #elif ZB_PLATFORM_FIREFLY3
-// TODO
+/**
+   nano-RK is little endian 
+ */
+#define ZB_LITTLE_ENDIAN
+
+#ifndef ZBFIREFLY3
+/**
+ * TODO gr12: replace ZB8051 with ZBFIREFLY3 and 
+ * add appropriate code for firefly platform
+*/
+#define ZBFIREFLY3
+#endif
+
+/* Transport types:
+   - ZB_TRANSPORT_8051_DATA_UART, if specified zigbee data is sent over uart transport
+   - ZB_TRANSPORT_8051_DATA_SPI, if specified zigbee data is sent over spi transport
+   - ZB_TRANSPORT_8051_UART is used for zigbee data, trace or dump
+   - ZB_TRANSPORT_8051 is used to choose general transport type for MAC, trace and dump
+*/
+
+
+#if defined ZB_SNIFFER && defined ZB_SNIFFER_SERIAL_TRACE
+/* TODO gr12: ZB_TRANSPORT_8051_UART is replaced to FIREFLY3. make changes in code too 
+ * This flag is probably used for traffic dump and analysis
+ * */
+#define ZB_TRANSPORT_FIREFLY3_UART
+#endif
+
+/* TODO gr12: data uart and spi and stuff is used only for ns. we may not need these */ 
+#if defined(ZB_TRANSPORT_8051_DATA_UART) || defined(ZB_TRACE_LEVEL) || defined(ZB_TRAFFIC_DUMP_ON)
+/**
+   If defined, use UART for either data or trace
+ */
+/* TODO gr12: We might need to change to firefly3 uart */
+#define ZB_TRANSPORT_8051_UART
+#endif
+
+/**
+   If defined, implemented some transport at FIREFLY3 (originally 8051)
+ */
+#define ZB_TRANSPORT_FIREFLY3 /* MAC transport type */
+
+#if defined(ZB_TRANSPORT_8051_DATA_UART) && defined(ZB_TRANSPORT_8051_DATA_SPI)
+#error Only one transport for ZB data could be specified!
+#endif
+
+/**
+   If defined, use hw FIREFLY3 (originally 8051) timer
+ */
+#define ZB_FIREFLY3_TIMER
 #endif
 
 /**

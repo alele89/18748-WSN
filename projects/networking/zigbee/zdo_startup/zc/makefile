@@ -30,8 +30,10 @@ SRC += $(ROOT_DIR)/src/net/bmac/$(RADIO)/bmac.c
 # For example:
 EXTRAINCDIRS =
 #EXTRAINCDIRS += $(ROOT_DIR)/src/net/bmac
-EXTRAINCDIRS += $(ROOT_DIR)/include/zb_include
+#EXTRAINCDIRS += $(ROOT_DIR)/include/zb_include
 
+# This is where the ZBOSS sources and include directories are added
+include $(ROOT_DIR)/include/platform/$(PLATFORM)/zb_common.mk
 
 #  This is where the final compile and download happens
 include $(ROOT_DIR)/include/platform/$(PLATFORM)/common.mk
