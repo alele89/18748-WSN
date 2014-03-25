@@ -91,11 +91,6 @@ Some additional run-time checks.
 #endif
 
 /**
-   If defined, security is compiled
- */
-#define ZB_SECURITY
-
-/**
    If defined, switch on traffic dump
  */
 #define ZB_TRAFFIC_DUMP_ON
@@ -295,6 +290,8 @@ If defined, platform is some 8051 clone
  */
 #define ZB_8051_TIMER
 
+#elif ZB_PLATFORM_FIREFLY3
+// TODO
 #endif
 
 /**
@@ -689,70 +686,6 @@ If defined, platform is some 8051 clone
  NWK radius to be used when sending APS command
 */
 #define ZB_APS_COMMAND_RADIUS 5
-
-
-#ifdef ZB_SECURITY
-
-/* security section */
-
-/**
- SECUR: if defined, implement Standard security
-*/
-#define ZB_STANDARD_SECURITY
-
-/**
- SECUR: If defined, generate random keys at Trust Center at start of pre-configured jey is not set.
-*/
-#define ZB_TC_GENERATES_KEYS
-/**
- SECUR: If defined, trust Center is at ZC (currently - always)
-*/
-#define ZB_TC_AT_ZC
-
-/**
- SECUR: CCM key size. Hard-coded
-*/
-#define ZB_CCM_KEY_SIZE 16
-
-/* NLS5 - All devices shall maintain at least 2 NWK keys with the frame
-   counters consistent with the security mode of the network (Standard or High).*/
-#define ZB_SECUR_N_SECUR_MATERIAL 3
-
-
-/* parameters for security level 5 - the only security level supported */
-/**
- SECUR: security level. Now fixed to be 5
-*/
-#define ZB_SECURITY_LEVEL 5
-
-/**
- SECUR: CCM L parameter. Fixed to 2 for security level 5
-*/
-#define ZB_CCM_L 2
-
-/**
- SECUR: CCM nonce length. Now fixed.
-*/
-#define ZB_CCM_NONCE_LEN 13
-
-/**
- SECUR: CCM M parameter. Fixed to 4 for security level 5
-*/
-#define ZB_CCM_M 4
-
-/**
- Value of nwk packets counter which triggered nwk key switch
-*/
-#define ZB_SECUR_NWK_COUNTER_LIMIT (((zb_uint32_t)~0) - 128)
-
-//#define ZB_DEFAULT_SECURE_ALL_FRAMES 0
-/**
- Default value for nib.secure_all_frames
-*/
-#define ZB_DEFAULT_SECURE_ALL_FRAMES 1
-
-
-#endif  /* ZB_SECURITY */
 
 /**
    Maximum number of ZCL clusters
