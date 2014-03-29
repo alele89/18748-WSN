@@ -1,3 +1,15 @@
+ZB_PLATFORM_DEFINES=  -DZB_PLATFORM_8051_SIM -DC8051F120 -DZB_NS_BUILD -DZB_ED_ROLE -DZB_LIMITED_FEATURES  -DZB_LIMITED_FEATURES2
+
+#
+# Configure trace by changing ZB_TRACE_MASK (one bit per layer)
+# and ZB_TRACE_LEVEL (messages with layer > ZB_TRACE_LEVEL are unvisible).
+# Do not define ZB_TRACE_LEVEL to switch off trace.
+#
+ZB_TRACE_DEFINES = -DZB_TRACE_LEVEL=1 -DZB_TRACE_MASK=-1
+#TRACE_DEFINES =
+
+ZB_DEFINES = $(ZB_PLATFORM_DEFINES) $(ZB_TRACE_DEFINES)
+
 EXTRAINCDIRS += $(ROOT_DIR)/include/zb_include
 EXTRAINCDIRS += $(ROOT_DIR)/src/net/zb_aps
 EXTRAINCDIRS += $(ROOT_DIR)/src/net/zb_common

@@ -49,7 +49,7 @@ PURPOSE: Global context definition
 #ifndef ZB_G_CONTEXT_H
 #define ZB_G_CONTEXT_H 1
 
-#include "zb_osif.h"
+//#include "zb_osif.h"
 
 /*! \cond internals_doc */
 /*! \addtogroup ZB_BASE */

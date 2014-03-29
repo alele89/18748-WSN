@@ -56,7 +56,7 @@ PURPOSE: Common include file for ZigBee
 
 #include "zb_g_context.h"
 
-#include "zb_osif.h"
+//#include "zb_osif.h"
 #include "zb_trace.h"
 
 /*! \addtogroup init_api */

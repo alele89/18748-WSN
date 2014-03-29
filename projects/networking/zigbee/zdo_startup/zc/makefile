@@ -23,7 +23,7 @@ SRC = $(TARGET).c
 
 # Add extra source files. 
 # For example:
-SRC += $(ROOT_DIR)/src/net/bmac/$(RADIO)/bmac.c
+#SRC += $(ROOT_DIR)/src/net/bmac/$(RADIO)/bmac.c
 
 
 # Add extra includes files. 

@@ -252,7 +252,7 @@ MSG_ASSEMBLING = Assembling:
 MSG_CLEANING = Cleaning project:
 
 
-TARGET_PLATFORM  = -DCC2420DB
+TARGET_PLATFORM  = -DCC2420DB $(ZB_DEFINES)
 
 # Define all object files.
 OBJ = $(SRC:.c=.o) $(ASRC:.S=.o) 

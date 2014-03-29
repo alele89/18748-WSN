@@ -49,7 +49,7 @@ PURPOSE: Zigbee scheduler: cooperative multitasking.
 #ifndef ZB_SCHEDULER_H
 #define ZB_SCHEDULER_H 1
 
-#include "zb_osif.h"
+//#include "zb_osif.h"
 #include "zb_list_macros.h"
 
 /*! \addtogroup sched */
