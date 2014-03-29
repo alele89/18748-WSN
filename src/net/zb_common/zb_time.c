@@ -50,6 +50,10 @@ PURPOSE: time functions implementation for 8051 for the Common bank
 #include "zb_common.h"
 #include "zb_osif.h"
 #include "zb_time.h"
+#include <nrk.h>
+#include <hal.h>
+#include <nrk_error.h>
+#include <include.h>
 
 /*! \addtogroup ZB_BASE */
 /*! @{ */
@@ -98,6 +102,16 @@ void zb_timer_stop_async()
 #ifdef ZB_NS_BUILD
   TRACE_MSG(TRACE_MAC3, "stop async timer, started = 0", (FMT__0));
 #endif
+}
+
+zb_time_t zb_timer_get()
+{
+    nrk_time_t nrk_time;
+    nrk_time_get(&nrk_time);
+    uint32_t ms = nrk_time.secs * 1000;
+    ms += (uint32_t)((uint32_t)nrk_time.nano_secs / (uint32_t)1000000);
+    ZB_TIMER_CTX().timer = (zb_time_t)ZB_MILLISECONDS_TO_BEACON_INTERVAL(ms);
+    return ZB_TIMER_CTX().timer;
 }
 
 /*! @} */

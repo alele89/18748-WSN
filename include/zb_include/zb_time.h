@@ -83,8 +83,10 @@ typedef zb_uint16_t zb_time_t;
 
 /**
    Get current timer value (beacon intervals)
+   The zb
  */
-#define ZB_TIMER_GET() (ZB_TIMER_CTX().timer)
+#define ZB_TIMER_GET() zb_timer_get()
+//#define ZB_TIMER_GET() (ZB_TIMER_CTX().timer)
 
 /**
    Time subtraction: subtract 'b' from 'a'
@@ -198,7 +200,7 @@ zb_timer_t;
 
 #ifdef ZB_8051_TIMER
 /* 8051, timer interrupts */
-#include "zb_8051_time.h"
+//#include "zb_8051_time.h"
 #endif
 
 /*! @} */
