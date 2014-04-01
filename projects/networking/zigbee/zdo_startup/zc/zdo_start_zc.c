@@ -1,57 +1,73 @@
 /***************************************************************************
-*                      ZBOSS ZigBee Pro 2007 stack                         *
-*                                                                          *
-*          Copyright (c) 2012 DSR Corporation Denver CO, USA.              *
-*                       http://www.dsr-wireless.com                        *
-*                                                                          *
-*                            All rights reserved.                          *
-*          Copyright (c) 2011 ClarIDy Solutions, Inc., Taipei, Taiwan.     *
-*                       http://www.claridy.com/                            *
-*                                                                          *
-*          Copyright (c) 2011 Uniband Electronic Corporation (UBEC),       *
-*                             Hsinchu, Taiwan.                             *
-*                       http://www.ubec.com.tw/                            *
-*                                                                          *
-*          Copyright (c) 2011 DSR Corporation Denver CO, USA.              *
-*                       http://www.dsr-wireless.com                        *
-*                                                                          *
-*                            All rights reserved.                          *
-*                                                                          *
-*                                                                          *
-* ZigBee Pro 2007 stack, also known as ZBOSS (R) ZB stack is available     *
-* under either the terms of the Commercial License or the GNU General      *
-* Public License version 2.0.  As a recipient of ZigBee Pro 2007 stack, you*
-* may choose which license to receive this code under (except as noted in  *
-* per-module LICENSE files).                                               *
-*                                                                          *
-* ZBOSS is a registered trademark of DSR Corporation AKA Data Storage      *
-* Research LLC.                                                            *
-*                                                                          *
-* GNU General Public License Usage                                         *
-* This file may be used under the terms of the GNU General Public License  *
-* version 2.0 as published by the Free Software Foundation and appearing   *
-* in the file LICENSE.GPL included in the packaging of this file.  Please  *
-* review the following information to ensure the GNU General Public        *
-* License version 2.0 requirements will be met:                            *
-* http://www.gnu.org/licenses/old-licenses/gpl-2.0.html.                   *
-*                                                                          *
-* Commercial Usage                                                         *
-* Licensees holding valid ClarIDy/UBEC/DSR Commercial licenses may use     *
-* this file in accordance with the ClarIDy/UBEC/DSR Commercial License     *
-* Agreement provided with the Software or, alternatively, in accordance    *
-* with the terms contained in a written agreement between you and          *
-* ClarIDy/UBEC/DSR.                                                        *
-*                                                                          *
-****************************************************************************
+ *                      ZBOSS ZigBee Pro 2007 stack                         *
+ *                                                                          *
+ *          Copyright (c) 2012 DSR Corporation Denver CO, USA.              *
+ *                       http://www.dsr-wireless.com                        *
+ *                                                                          *
+ *                            All rights reserved.                          *
+ *          Copyright (c) 2011 ClarIDy Solutions, Inc., Taipei, Taiwan.     *
+ *                       http://www.claridy.com/                            *
+ *                                                                          *
+ *          Copyright (c) 2011 Uniband Electronic Corporation (UBEC),       *
+ *                             Hsinchu, Taiwan.                             *
+ *                       http://www.ubec.com.tw/                            *
+ *                                                                          *
+ *          Copyright (c) 2011 DSR Corporation Denver CO, USA.              *
+ *                       http://www.dsr-wireless.com                        *
+ *                                                                          *
+ *                            All rights reserved.                          *
+ *                                                                          *
+ *                                                                          *
+ * ZigBee Pro 2007 stack, also known as ZBOSS (R) ZB stack is available     *
+ * under either the terms of the Commercial License or the GNU General      *
+ * Public License version 2.0.  As a recipient of ZigBee Pro 2007 stack, you*
+ * may choose which license to receive this code under (except as noted in  *
+ * per-module LICENSE files).                                               *
+ *                                                                          *
+ * ZBOSS is a registered trademark of DSR Corporation AKA Data Storage      *
+ * Research LLC.                                                            *
+ *                                                                          *
+ * GNU General Public License Usage                                         *
+ * This file may be used under the terms of the GNU General Public License  *
+ * version 2.0 as published by the Free Software Foundation and appearing   *
+ * in the file LICENSE.GPL included in the packaging of this file.  Please  *
+ * review the following information to ensure the GNU General Public        *
+ * License version 2.0 requirements will be met:                            *
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html.                   *
+ *                                                                          *
+ * Commercial Usage                                                         *
+ * Licensees holding valid ClarIDy/UBEC/DSR Commercial licenses may use     *
+ * this file in accordance with the ClarIDy/UBEC/DSR Commercial License     *
+ * Agreement provided with the Software or, alternatively, in accordance    *
+ * with the terms contained in a written agreement between you and          *
+ * ClarIDy/UBEC/DSR.                                                        *
+ *                                                                          *
+ ****************************************************************************
 PURPOSE: Test for ZC application written using ZDO.
 */
+/* NanoRK includes */
+#include <nrk.h>
+#include <include.h>
+#include <ulib.h>
+#include <stdio.h>
+#include <avr/sleep.h>
+#include <hal.h>
+#include <bmac.h>
+#include <nrk_error.h>
 
+/* ZBOSS includes */
 #include "zb_common.h"
 #include "zb_scheduler.h"
 #include "zb_bufpool.h"
 #include "zb_nwk.h"
 #include "zb_aps.h"
 #include "zb_zdo.h"
+
+NRK_STK Stack1[NRK_APP_STACKSIZE];
+nrk_task_type TaskOne;
+void zc_task(void);
+
+void nrk_create_taskset();
 
 #define ZB_TEST_DUMMY_DATA_SIZE 10
 
@@ -65,71 +81,103 @@ zb_ieee_addr_t g_zc_addr = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa};
 #endif
 
 /*
-  The test is: ZC starts PAN, ZR joins to it by association and send APS data packet, when ZC
-  received packet, it sends packet to ZR, when ZR received packet, it sends
-  packet to ZC etc.
- */
+   The test is: ZC starts PAN, ZR joins to it by association and send APS data packet, when ZC
+   received packet, it sends packet to ZR, when ZR received packet, it sends
+   packet to ZC etc.
+   */
 
 static void zc_send_data(zb_buf_t *buf, zb_uint16_t addr);
 
 void data_indication(zb_uint8_t param) ZB_CALLBACK;
 
-MAIN()
+int main ()
 {
-  ARGV_UNUSED;
+    uint16_t div;
+    nrk_setup_ports ();
+    nrk_setup_uart (UART_BAUDRATE_115K2);
+    setup_uart0(UART_BAUDRATE_115K2);
+    nrk_init ();
 
-#if !(defined KEIL || defined SDCC || defined ZB_IAR)
-  if ( argc < 3 )
-  {
-    printf("%s <read pipe path> <write pipe path>\n", argv[0]);
+    nrk_led_clr (0);
+    nrk_led_clr (1);
+    nrk_led_clr (2);
+    nrk_led_clr (3);
+
+    nrk_time_set (0, 0);
+
+    bmac_task_config ();
+
+    nrk_create_taskset ();
+    nrk_start ();
+
     return 0;
-  }
-#endif
+}
 
+void nrk_create_taskset()
+{
+	nrk_task_set_entry_function( &TaskOne, zc_task);
+	nrk_task_set_stk( &TaskOne, Stack1, NRK_APP_STACKSIZE);
+	TaskOne.prio = 1;
+	TaskOne.FirstActivation = TRUE;
+	TaskOne.Type = BASIC_TASK;
+	TaskOne.SchType = PREEMPTIVE;
+	TaskOne.period.secs = 1;
+	TaskOne.period.nano_secs = 0;//0*NANOS_PER_MS;
+	TaskOne.cpu_reserve.secs = 0;
+	TaskOne.cpu_reserve.nano_secs = 0;//0*NANOS_PER_MS;
+	TaskOne.offset.secs = 0;
+	TaskOne.offset.nano_secs= 0;
 
-  /* Init device, load IB values from nvram or set it to default */
-#ifndef ZB8051
-  ZB_INIT("zdo_zc", argv[1], argv[2]);
-#else
-  ZB_INIT("zdo_zc", "1", "1");
-#endif
+	nrk_activate_task (&zc_task);
+}
+
+void zc_task()
+{
+    /* 
+     * Init device, load IB values from nvram or set it to default 
+     * Resets g_zb and g_izb.
+     * Initializes TRACE, sched, buffers, mac, nwk, aps, zdo
+     * */
+    zb_init();
+
 #ifdef ZB_SECURITY
-  ZG->nwk.nib.security_level = 0;
+    ZG->nwk.nib.security_level = 0;
 #endif
-  ZB_IEEE_ADDR_COPY(ZB_PIB_EXTENDED_ADDRESS(), &g_zc_addr);
-  MAC_PIB().mac_pan_id = 0x1aaa;
 
-  /* let's always be coordinator */
-  ZB_AIB().aps_designated_coordinator = 1;
+    ZB_IEEE_ADDR_COPY(ZB_PIB_EXTENDED_ADDRESS(), &g_zc_addr);
+    MAC_PIB().mac_pan_id = 0x1aaa;
 
-  if (zdo_dev_start() != RET_OK)
-  {
-    TRACE_MSG(TRACE_ERROR, "zdo_dev_start failed", (FMT__0));
-  }
-  else
-  {
-    zdo_main_loop();
-  }
+    /* let's always be coordinator */
+    ZB_AIB().aps_designated_coordinator = 1;
 
-  TRACE_DEINIT();
+    if (zdo_dev_start() != RET_OK)
+    {
+        TRACE_MSG(TRACE_ERROR, "zdo_dev_start failed", (FMT__0));
+    }
+    else
+    {
+        zdo_main_loop();
+    }
 
-  MAIN_RETURN(0);
+    TRACE_DEINIT();
+
+    MAIN_RETURN(0);
 }
 
 void zb_zdo_startup_complete(zb_uint8_t param) ZB_CALLBACK
 {
-  zb_buf_t *buf = ZB_BUF_FROM_REF(param);
-  TRACE_MSG(TRACE_APS3, ">>zb_zdo_startup_complete status %d", (FMT__D, (int)buf->u.hdr.status));
-  if (buf->u.hdr.status == 0)
-  {
-    TRACE_MSG(TRACE_APS1, "Device STARTED OK", (FMT__0));
-    zb_af_set_data_indication(data_indication);
-  }
-  else
-  {
-    TRACE_MSG(TRACE_ERROR, "Device start FAILED status %d", (FMT__D, (int)buf->u.hdr.status));
-  }
-  zb_free_buf(buf);
+    zb_buf_t *buf = ZB_BUF_FROM_REF(param);
+    TRACE_MSG(TRACE_APS3, ">>zb_zdo_startup_complete status %d", (FMT__D, (int)buf->u.hdr.status));
+    if (buf->u.hdr.status == 0)
+    {
+        TRACE_MSG(TRACE_APS1, "Device STARTED OK", (FMT__0));
+        zb_af_set_data_indication(data_indication);
+    }
+    else
+    {
+        TRACE_MSG(TRACE_ERROR, "Device start FAILED status %d", (FMT__D, (int)buf->u.hdr.status));
+    }
+    zb_free_buf(buf);
 }
 
 
@@ -140,18 +188,18 @@ void zb_zdo_startup_complete(zb_uint8_t param) ZB_CALLBACK
 
 void data_indication(zb_uint8_t param) ZB_CALLBACK
 {
-  zb_uint8_t *ptr;
-  zb_buf_t *asdu = (zb_buf_t *)ZB_BUF_FROM_REF(param);
-  zb_apsde_data_indication_t *ind = ZB_GET_BUF_PARAM(asdu, zb_apsde_data_indication_t);
+    zb_uint8_t *ptr;
+    zb_buf_t *asdu = (zb_buf_t *)ZB_BUF_FROM_REF(param);
+    zb_apsde_data_indication_t *ind = ZB_GET_BUF_PARAM(asdu, zb_apsde_data_indication_t);
 
-  /* Remove APS header from the packet */
-  ZB_APS_HDR_CUT_P(asdu, ptr);
+    /* Remove APS header from the packet */
+    ZB_APS_HDR_CUT_P(asdu, ptr);
 
-  TRACE_MSG(TRACE_APS3, "apsde_data_indication: packet %p len %d handle 0x%x", (FMT__P_D_D,
-                         asdu, (int)ZB_BUF_LEN(asdu), asdu->u.hdr.status));
+    TRACE_MSG(TRACE_APS3, "apsde_data_indication: packet %p len %d handle 0x%x", (FMT__P_D_D,
+                asdu, (int)ZB_BUF_LEN(asdu), asdu->u.hdr.status));
 
-  /* send packet back to ZR */
-  zc_send_data(asdu, ind->src_addr);
+    /* send packet back to ZR */
+    zc_send_data(asdu, ind->src_addr);
 }
 
 static void zc_send_data(zb_buf_t *buf, zb_uint16_t addr)
@@ -172,10 +220,10 @@ static void zc_send_data(zb_buf_t *buf, zb_uint16_t addr)
     buf->u.hdr.handle = 0x11;
     for (i = 0 ; i < ZB_TEST_DUMMY_DATA_SIZE ; i++)
     {
-      ptr[i] = i + '0';
+        ptr[i] = i + '0';
     }
     TRACE_MSG(TRACE_APS3, "Sending apsde_data.request", (FMT__0));
     ZB_SCHEDULE_CALLBACK(zb_apsde_data_request, ZB_REF_FROM_BUF(buf));
- }
+}
 
 /*! @} */
