@@ -58,8 +58,19 @@ PURPOSE: Mac layer API
 #include "zb_cc25xx.h"
 #endif
 
+/* NanoRK specific includes */
+#include <include.h>
+#include <basic_rf.h>
+#include <nrk.h>
 
+/* globals from NanoRK */
+extern RF_RX_INFO zb_rfRxInfo;
+extern RF_TX_INFO zb_rfTxInfo;
 
+/* definitions for zb_nw_task */
+#define ZB_TASK_PRIORITY 20
+#define ZB_MIN_CHECK_RATE_MS 20
+#define ZB_DEFAULT_CHECK_RATE_MS 100
 
 /*! \cond internals_doc */
 /**

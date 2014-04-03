@@ -52,7 +52,6 @@ PURPOSE: Test for ZC application written using ZDO.
 #include <stdio.h>
 #include <avr/sleep.h>
 #include <hal.h>
-#include <bmac.h>
 #include <nrk_error.h>
 
 /* ZBOSS includes */
@@ -105,7 +104,7 @@ int main ()
 
     nrk_time_set (0, 0);
 
-    bmac_task_config ();
+    zb_task_config ();
 
     nrk_create_taskset ();
     nrk_start ();
@@ -121,6 +120,7 @@ void nrk_create_taskset()
 	TaskOne.FirstActivation = TRUE;
 	TaskOne.Type = BASIC_TASK;
 	TaskOne.SchType = PREEMPTIVE;
+    // wsn gr12 TODO: check the period. may need to change.
 	TaskOne.period.secs = 1;
 	TaskOne.period.nano_secs = 0;//0*NANOS_PER_MS;
 	TaskOne.cpu_reserve.secs = 0;
