@@ -187,6 +187,7 @@ void rf_set_cca_thresh(int8_t t);
 //			Successful transmission (acknowledgment received)
 //-------------------------------------------------------------------------------------------------------
 
+uint8_t zb_rf_tx_packet(RF_TX_INFO *pRTI);
 uint8_t rf_tx_packet(RF_TX_INFO *pRTI);
 uint8_t rf_tx_packet_repeat(RF_TX_INFO *pRTI, uint16_t ms);
 int8_t rf_cca_check();

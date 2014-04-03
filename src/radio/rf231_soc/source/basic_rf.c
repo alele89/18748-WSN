@@ -402,6 +402,131 @@ uint8_t rf_tx_packet(RF_TX_INFO *pRTI){
 	return rf_tx_packet_repeat(pRTI, 0);
 }
 
+uint8_t zb_rf_tx_packet(RF_TX_INFO *pRTI)
+{
+	/*
+	#ifdef RADIO_PRIORITY_CEILING
+	nrk_sem_pend(radio_sem);
+	#endif
+
+	#ifdef RADIO_PRIORITY_CEILING
+	nrk_sem_post(radio_sem);
+	#endif
+	//return success;
+	*/
+
+	uint8_t trx_status, trx_error, *data_start, *frame_start = &TRXFBST;
+	uint16_t i;
+    uint16_t ms = 0;
+
+	if(!rf_ready) 
+		return NRK_ERROR;
+	
+	ieee_mac_frame_header_t *machead = frame_start + 1;
+	ieee_mac_fcf_t fcf;
+
+	/* TODO: Setting FCF bits is probably slow. Optimize later. */
+	fcf.frame_type = 1;
+	fcf.sec_en = 0;
+	fcf.frame_pending = 0;
+	fcf.ack_request = pRTI->ackRequest;
+	fcf.intra_pan = 1;
+	fcf.res = 0;
+	fcf.dest_addr_mode = 2;
+	fcf.frame_version = 0;
+	fcf.src_addr_mode = 2;
+	
+	/* Build the rest of the MAC header */
+	rfSettings.txSeqNumber++;
+	machead->fcf = fcf;
+	if (use_glossy) {
+		machead->seq_num = 0xFF;
+		machead->src_addr = 0xAAAA;
+		machead->dest_addr = 0xFFFF;
+		machead->dest_pan_id = (PAN_ID_1 << 8) | PAN_ID_0;
+	} else {
+		machead->seq_num = rfSettings.txSeqNumber;
+		machead->src_addr = (SHORT_ADDR_1 << 8) | SHORT_ADDR_0;
+		machead->dest_addr = pRTI->destAddr;
+		machead->dest_pan_id = (PAN_ID_1 << 8) | PAN_ID_0;
+	}
+	//machead->src_pan_id = (PAN_ID_1 << 8) | PAN_ID_0;
+	
+	/* Copy data payload into packet */
+	data_start = frame_start + sizeof(ieee_mac_frame_header_t) + 1;
+	memcpy(data_start, pRTI->pPayload, pRTI->length);
+	/* Set the size of the packet */
+	*frame_start = sizeof(ieee_mac_frame_header_t) + pRTI->length + 2;
+	
+	vprintf("packet length: %d bytes\r\n", *frame_start);
+
+	/* Wait for radio to be in a ready state */
+	do{
+		trx_status = (TRX_STATUS & 0x1F);
+	}while((trx_status == BUSY_TX) || (trx_status == BUSY_RX)
+			|| (trx_status == BUSY_RX_AACK) || (trx_status == BUSY_TX_ARET)
+			|| (trx_status == STATE_TRANSITION_IN_PROGRESS));
+	
+	/* Return error if radio not in a tx-ready state */
+	if((trx_status != TRX_OFF) && (trx_status != RX_ON) 
+			&& (trx_status != RX_AACK_ON) && (trx_status != PLL_ON)){
+		return NRK_ERROR;
+	}
+
+	rf_cmd(RX_AACK_ON);
+
+	/* Perform CCA if requested */
+	if(pRTI->cca){
+		PHY_CC_CCA |= (1 << CCA_REQUEST);
+		while(!(TRX_STATUS & (1 << CCA_DONE)))
+			continue;
+		if(!(TRX_STATUS & (1 << CCA_STATUS)))
+			return NRK_ERROR;
+	}
+
+	rf_cmd(PLL_ON);
+	if(pRTI->ackRequest)
+    {
+        pRTI->ackRequest = 0;
+		//rf_cmd(TX_ARET_ON);
+    }
+	
+	if(ms != 0){
+		nrk_time_get(&curr_t);
+		target_t.secs = curr_t.secs;
+		target_t.nano_secs = curr_t.nano_secs + (ms * NANOS_PER_MS);
+		nrk_time_compact_nanos(&target_t);
+	}
+	
+	do{
+#ifdef RADIO_CC2591
+		rf_cc2591_tx_on();
+#endif
+
+		tx_done = 0;
+		/* Send the packet. 0x2 is equivalent to TX_START */
+		rf_cmd(0x2);
+
+		/* Return an error if no ACK received */
+		for(i=0; (i<65000) && !tx_done; i++)
+			continue;
+		if(ms == 0)
+			break;
+		nrk_time_get(&curr_t);
+	}while(nrk_time_sub(&dummy_t, target_t, curr_t) != NRK_ERROR);
+
+	trx_error = ((pRTI->ackRequest && 
+			(((TRX_STATE >> TRAC_STATUS0) & 0x7) != 0))
+			|| (i == 65000)) ? NRK_ERROR : NRK_OK;
+	rf_cmd(trx_status);
+
+#ifdef RADIO_CC2591
+	if (trx_error == NRK_ERROR) rf_cc2591_rx_on();
+#endif
+
+	return trx_error;
+}
+
 uint8_t rf_tx_packet_repeat(RF_TX_INFO *pRTI, uint16_t ms)
 {
 	/*
