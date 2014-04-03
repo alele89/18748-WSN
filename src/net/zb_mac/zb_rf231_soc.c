@@ -43,7 +43,7 @@
 * ClarIDy/UBEC/DSR.                                                        *
 *                                                                          *
 ****************************************************************************
-PURPOSE: ubec uz2400 specific
+PURPOSE: to port ZBOSS v1 onto Firefly3. 
 */
 #ifdef ZB_CC25XX
 #include "zb_common.h"
