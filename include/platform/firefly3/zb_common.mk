@@ -41,17 +41,17 @@ SRC += $(ROOT_DIR)/src/net/zb_common/zb_random.c
 SRC += $(ROOT_DIR)/src/net/zb_mac/mac.c
 SRC += $(ROOT_DIR)/src/net/zb_mac/mac_cr_coordinator.c
 SRC += $(ROOT_DIR)/src/net/zb_mac/mac_fcs.c
-SRC += $(ROOT_DIR)/src/net/zb_mac/zb_uz2400.c
+#SRC += $(ROOT_DIR)/src/net/zb_mac/zb_uz2400.c
 #SRC += $(ROOT_DIR)/src/net/zb_mac/zb_uz2410.c
 SRC += $(ROOT_DIR)/src/net/zb_mac/mac_scan.c
 SRC += $(ROOT_DIR)/src/net/zb_mac/mac_cr_associate.c
 SRC += $(ROOT_DIR)/src/net/zb_mac/mac_associate.c
 SRC += $(ROOT_DIR)/src/net/zb_mac/mac_data.c
-SRC += $(ROOT_DIR)/src/net/zb_mac/zb_ns3.c
+#SRC += $(ROOT_DIR)/src/net/zb_mac/zb_ns3.c
 SRC += $(ROOT_DIR)/src/net/zb_mac/mac_cr_data.c
 SRC += $(ROOT_DIR)/src/net/zb_mac/mac_common.c
 SRC += $(ROOT_DIR)/src/net/zb_mac/mac_routines.c
-SRC += $(ROOT_DIR)/src/net/zb_mac/zb_uz2x_common.c
+#SRC += $(ROOT_DIR)/src/net/zb_mac/zb_uz2x_common.c
 
 # nwk sources
 SRC += $(ROOT_DIR)/src/net/zb_nwk/nwk_main.c
