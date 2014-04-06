@@ -49,8 +49,6 @@
 #ifndef ZB_ERRORS_H
 #define ZB_ERRORS_H
 
-#include "inter_demo.h"
-
 /*! \cond internals_doc */
 /**
    \addtogroup ZB_BASE

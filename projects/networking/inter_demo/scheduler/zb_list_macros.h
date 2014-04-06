@@ -48,7 +48,6 @@ PURPOSE: Very simple lists operations (macroses).
 #ifndef LIST_H
 #define LIST_H 1
 
-#include "inter_demo.h"
 /*! \cond internals_doc */
 /**
    @addtogroup ZB_BASE

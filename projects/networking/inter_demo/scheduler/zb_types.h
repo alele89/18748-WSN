@@ -217,20 +217,6 @@ typedef void               zb_void_t;
 /**
   Max value constants per type
  */
-#ifdef ZB_32BIT_WORD
-
-#define ZB_SHORT_MIN       ZB_INT32_MIN
-#define ZB_SHORT_MAX       ZB_INT32_MAX
-#define ZB_USHORT_MAX      ZB_UINT32_MAX
-
-#define ZB_INT_MIN       ZB_INT32_MIN
-#define ZB_INT_MAX       ZB_INT32_MAX
-#define ZB_UINT_MAX      ZB_UINT32_MAX
-
-#define ZB_INT_MASK      0x7fffffff
-
-#elif defined ZB_8BIT_WORD
-
 #define ZB_SHORT_MIN       ZB_INT8_MIN
 #define ZB_SHORT_MAX       ZB_INT8_MAX
 #define ZB_USHORT_MAX      ZB_UINT8_MAX
@@ -241,9 +227,7 @@ typedef void               zb_void_t;
 
 #define ZB_INT_MASK      0x7fff
 
-#else
-#error Portme
-#endif
+
 
 /**
    8-bytes address (xpanid or long device address) base type

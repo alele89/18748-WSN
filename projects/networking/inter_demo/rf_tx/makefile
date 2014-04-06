@@ -27,6 +27,7 @@ SRC = $(TARGET).c
 # SRC += $(ROOT_DIR)/src/platform/$(PLATFORM_TYPE)/source/my_src2.c 
 SRC += $(ROOT_DIR)/projects/networking/inter_demo/scheduler/zb_scheduler.c
 SRC += $(ROOT_DIR)/projects/networking/inter_demo/scheduler/zb_scheduler_init.c
+SRC += $(ROOT_DIR)/projects/networking/inter_demo/scheduler/zb_time.c
 
 # Add extra includes files. 
 # For example:

@@ -43,34 +43,77 @@
 * ClarIDy/UBEC/DSR.                                                        *
 *                                                                          *
 ****************************************************************************
-PURPOSE: Zigbee scheduler: init
+PURPOSE: time functions implementation for 8051 for the Common bank
 */
+
+
+//#include "zb_common.h"
+//#include "zb_osif.h"
+#include "zb_time.h"
+#include "zb_scheduler.h"
+#include <nrk.h>
+#include <hal.h>
+#include <nrk_error.h>
+#include <include.h>
 
 /*! \addtogroup ZB_BASE */
 /*! @{ */
 
-//#include "zb_common.h"
+//#include "zb_bank_common.h"
 
-//#include "zb_bank_6.h"
-
-#include "zb_scheduler.h"
-
-void zb_sched_init() /* __reentrant for sdcc, to save DSEG space */
+void zb_timer_start(zb_time_t timeout)
 {
-  zb_uint8_t i;
+  zb_time_t t_cur = ZB_TIMER_GET();
+  zb_time_t t = ZB_TIME_ADD(t_cur, timeout);
 
-  for (i = 0 ; i < ZB_SCHEDULER_Q_SIZE ; ++i)
+  //ZB_DISABLE_ALL_INTER();
+  if (!ZB_TIMER_CTX().started
+#ifdef ZB8051
+      || ZB_TIME_GE(t, ZB_TIMER_CTX().timer_stop)
+#else
+      || !ZB_TIME_GE(t, ZB_TIMER_CTX().timer_stop)
+      || !ZB_TIME_GE(ZB_TIMER_CTX().timer_stop, t_cur)
+#endif
+    )
   {
-    ZB_STK_PUSH(sched.tm_freelist, next, &sched.tm_buffer[i]);
+    ZB_TIMER_CTX().timer_stop = t;
+    ZB_TIMER_CTX().started = 1;
   }
-
-  for (i = 0; i < ZB_BUF_Q_SIZE ; ++i)
+  //ZB_ENABLE_ALL_INTER();
+#if 0
+  if (!ZB_CHECK_TIMER_IS_ON())
   {
-    ZB_STK_PUSH(sched.buf_freelist, next, &sched.delayed_buf[i]);
+    /* timer is stopped - start it */
+    ZB_START_HW_TIMER();
   }
-
+#endif
+#if 0
+#ifdef ZB8051
+  TRACE_MSG(TRACE_OSIF3, "tmo %d, stop at %d; t 0x%x hi 0x%x lo 0x%x freq %d",
+            (FMT__D_D_D_D_D_D, (int)timeout, (int)ZB_TIMER_CTX().timer_stop, (zb_uint16_t)ZB_8051_TIMER_VALUE, (zb_uint16_t)ZB_TIMER_HI_BYTE, (zb_uint16_t)ZB_TIMER_LOW_BYTE, (int)ZB_SHORT_XTAL_FREQ));
+#else
+  TRACE_MSG(TRACE_OSIF3, "tmo %d, stop at %d", (FMT__D_D, (int)timeout, (int)ZB_TIMER_CTX().timer_stop));
+#endif
+#endif
 }
 
 
+void zb_timer_stop_async()
+{
+  ZB_TIMER_CTX().started = 0;
+#ifdef ZB_NS_BUILD
+  TRACE_MSG(TRACE_MAC3, "stop async timer, started = 0", (FMT__0));
+#endif
+}
+
+zb_time_t zb_timer_get()
+{
+    nrk_time_t nrk_time;
+    nrk_time_get(&nrk_time);
+    uint32_t ms = nrk_time.secs * 1000;
+    ms += (uint32_t)((uint32_t)nrk_time.nano_secs / (uint32_t)1000000);
+    ZB_TIMER_CTX().timer = (zb_time_t)ZB_MILLISECONDS_TO_BEACON_INTERVAL(ms);
+    return ZB_TIMER_CTX().timer;
+}
 
 /*! @} */

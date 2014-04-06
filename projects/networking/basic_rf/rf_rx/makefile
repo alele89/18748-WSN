@@ -6,7 +6,7 @@ PLATFORM = firefly3
 TARGET = main
 
 # Set the Port that you programmer is connected to 
-PROGRAMMING_PORT = /dev/ttyUSB3
+PROGRAMMING_PORT = /dev/ttyUSB0
 # programmer connected to serial device
 
 # Set this such that the nano-RK directory is the base path

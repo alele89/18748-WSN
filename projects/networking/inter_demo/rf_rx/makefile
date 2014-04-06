@@ -1,6 +1,5 @@
-# Platform name  cc2420DK, firefly, micaZ, firefly2, firefly2_2
+# Platform name  cc2420DK, firefly, micaZ, firefly2, firefly2_2, stk600_128rfa1
 PLATFORM = firefly3
-
 
 # Target file name (without extension).
 TARGET = main
@@ -10,7 +9,7 @@ PROGRAMMING_PORT = /dev/ttyUSB0
 # programmer connected to serial device
 
 # Set this such that the nano-RK directory is the base path
-ROOT_DIR = ../../../../
+ROOT_DIR = ../../../..
 
 # Set platform specific defines 
 # The following will be defined based on the PLATFORM variable:
@@ -26,11 +25,14 @@ SRC = $(TARGET).c
 # For example:
 # SRC += $(ROOT_DIR)/src/platform/$(PLATFORM_TYPE)/source/my_src1.c 
 # SRC += $(ROOT_DIR)/src/platform/$(PLATFORM_TYPE)/source/my_src2.c 
+SRC += $(ROOT_DIR)/projects/networking/inter_demo/scheduler/zb_scheduler.c
+SRC += $(ROOT_DIR)/projects/networking/inter_demo/scheduler/zb_scheduler_init.c
+SRC += $(ROOT_DIR)/projects/networking/inter_demo/scheduler/zb_time.c
 
 # Add extra includes files. 
 # For example:
 # EXTRAINCDIRS += $(ROOT_DIR)/src/platform/include
-EXTRAINCDIRS =
+EXTRAINCDIRS = $(ROOT_DIR)/projects/networking/inter_demo/scheduler
 
 
 #  This is where the final compile and download happens

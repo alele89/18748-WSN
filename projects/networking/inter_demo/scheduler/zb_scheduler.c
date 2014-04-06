@@ -50,6 +50,7 @@ PURPOSE: Zigbee scheduler.
 /*! @{ */
 
 //#include "zb_common.h"
+#include "zb_scheduler.h"
 #include "zb_list_macros.h"
 
 //#include "zb_bank_common.h"
@@ -78,6 +79,9 @@ PURPOSE: Zigbee scheduler.
    platform-dependent time type ('raw' time) and milliseconds.
 */
 
+zb_sched_globals_t sched;
+zb_timer_t time;
+
 #ifdef SDCC
 static void sdcc_callf(zb_callback_t funcp, zb_uint8_t param)
 {
@@ -93,26 +97,25 @@ void zb_sched_loop_iteration() /* ZB_KEIL_REENTRANT */
     zb_time_t t = 0;
     did_something = 0;
 
-    /* checking interrupt and processing all mac related routines */
-    CHECK_INT_N_TIMER(); 
     zb_interdemo_main_loop();
 
     /* First execute regular (immediate) callbacks */
     {
       zb_cb_q_ent_t *ent;
+        did_something = 1;
       while ((ent = ZB_RING_BUFFER_PEEK(&sched.cb_q)) != NULL)
       {
-        TRACE_MSG(TRACE_COMMON3, "cb_q written %hd, read_i %hd, write_i %hd", (FMT__H_H_H, sched.cb_q.written, sched.cb_q.read_i,sched.cb_q.write_i ));
-        did_something = 1;
+        //TRACE_MSG(TRACE_COMMON3, "cb_q written %hd, read_i %hd, write_i %hd", (FMT__H_H_H, sched.cb_q.written, sched.cb_q.read_i,sched.cb_q.write_i ));
+        /*
         if ((ZB_GET_TRANS_INT())&&ZB_IN_BUF_AVAILABLE())
         {
           break;
-        }
-        TRACE_MSG(TRACE_COMMON2, "%p calling cb %p param %hd in_b %hd len %hd",
-                  (FMT__P_P_H_H, ent, ent->func, ent->param,
-                   ent->param ? ZB_BUF_FROM_REF(ent->param)->u.hdr.is_in_buf: (zb_uint8_t)-1,
-                   ent->param ? ZB_BUF_FROM_REF(ent->param)->u.hdr.len : -1
-                    ));
+        }*/
+        //TRACE_MSG(TRACE_COMMON2, "%p calling cb %p param %hd in_b %hd len %hd",
+                  //(FMT__P_P_H_H, ent, ent->func, ent->param,
+                   //ent->param ? ZB_BUF_FROM_REF(ent->param)->u.hdr.is_in_buf: (zb_uint8_t)-1,
+                   //ent->param ? ZB_BUF_FROM_REF(ent->param)->u.hdr.len : -1
+                    //));
 
 #ifndef SDCC
         (*ent->func)(ent->param);
@@ -136,13 +139,15 @@ void zb_sched_loop_iteration() /* ZB_KEIL_REENTRANT */
              && ZB_TIME_GE(t, ent->run_time))
       {
         did_something = 1;
+/*
         if ((ZB_GET_TRANS_INT())&&ZB_IN_BUF_AVAILABLE())
         {
           break;
         }
+*/
         ZB_LIST_CUT_HEAD(sched.tm_queue, next, ent);
         /* call the callback */
-        TRACE_MSG(TRACE_COMMON2, "%p calling alarm cb %p param %hd", (FMT__P_P_H, ent, ent->func, ent->param));
+        //TRACE_MSG(TRACE_COMMON2, "%p calling alarm cb %p param %hd", (FMT__P_P_H, ent, ent->func, ent->param));
 #ifndef SDCC
         ent->func(ent->param);
 #else
@@ -203,13 +208,13 @@ zb_ret_t zb_schedule_tx_cb(zb_callback_t func, zb_uint8_t param)
     ent->func = func;
     ent->param = param;
     ZB_RING_BUFFER_FLUSH_PUT(&sched.mac_tx_q);
-    TRACE_MSG(TRACE_COMMON2, "%p scheduled mac cb %p param %hd (in_b %hd)",
-              (FMT__P_P_H_H, ent, ent->func, ent->param, (!param ? (zb_uint8_t)-1 : ZB_BUF_FROM_REF(param)->u.hdr.is_in_buf)));
-    ZB_ASSERT(param <= ZB_IOBUF_POOL_SIZE);
+    //TRACE_MSG(TRACE_COMMON2, "%p scheduled mac cb %p param %hd (in_b %hd)",
+              //(FMT__P_P_H_H, ent, ent->func, ent->param, (!param ? (zb_uint8_t)-1 : ZB_BUF_FROM_REF(param)->u.hdr.is_in_buf)));
+    //ZB_ASSERT(param <= ZB_IOBUF_POOL_SIZE);
   }
   else
   {
-    TRACE_MSG(TRACE_ERROR, "MAC callbacks rb overflow! param %hd", (FMT__H, param));
+    //TRACE_MSG(TRACE_ERROR, "MAC callbacks rb overflow! param %hd", (FMT__H, param));
     ret = RET_OVERFLOW;
   }
   return ret;
@@ -250,13 +255,13 @@ zb_ret_t zb_schedule_callback(zb_callback_t func, zb_uint8_t param)
     ent->func = func;
     ent->param = param;
     ZB_RING_BUFFER_FLUSH_PUT(&sched.cb_q);
-    TRACE_MSG(TRACE_COMMON2, "%p scheduled cb %p param %hd (in_b %hd)",
-              (FMT__P_P_H_H, ent, ent->func, ent->param, (!param ? (zb_uint8_t)-1 : ZB_BUF_FROM_REF(param)->u.hdr.is_in_buf)));
-    ZB_ASSERT(param <= ZB_IOBUF_POOL_SIZE);
+    //TRACE_MSG(TRACE_COMMON2, "%p scheduled cb %p param %hd (in_b %hd)",
+              //(FMT__P_P_H_H, ent, ent->func, ent->param, (!param ? (zb_uint8_t)-1 : ZB_BUF_FROM_REF(param)->u.hdr.is_in_buf)));
+    //ZB_ASSERT(param <= ZB_IOBUF_POOL_SIZE);
   }
   else
   {
-    TRACE_MSG(TRACE_ERROR, "Callbacks rb overflow! param %hd", (FMT__H, param));
+    //TRACE_MSG(TRACE_ERROR, "Callbacks rb overflow! param %hd", (FMT__H, param));
     ret = RET_OVERFLOW;
   }
   return ret;
@@ -280,7 +285,7 @@ zb_ret_t zb_schedule_alarm(zb_callback_t func, zb_uint8_t param, zb_time_t run_a
 
   /* allocate entry - get from the freelist */
   ZB_STK_POP(sched.tm_freelist, next, nent);
-  TRACE_MSG(TRACE_INFO3, "tm_freelist, get nent %p", (FMT__P, (void*)nent));
+  //TRACE_MSG(TRACE_INFO3, "tm_freelist, get nent %p", (FMT__P, (void*)nent));
   if (nent !=0)
   {
     nent->func = func;
@@ -289,9 +294,9 @@ zb_ret_t zb_schedule_alarm(zb_callback_t func, zb_uint8_t param, zb_time_t run_a
     t = ZB_TIMER_GET();
     nent->run_time = ZB_TIME_ADD(t, run_after);
 
-    TRACE_MSG(TRACE_COMMON2, "%p scheduled alarm %p, run_after %d, at %d, param %hd", (FMT__P_P_D_D_H,
-                                                                                       nent, nent->func, (int)run_after,
-                                                                                       (int)nent->run_time, nent->param));
+    //TRACE_MSG(TRACE_COMMON2, "%p scheduled alarm %p, run_after %d, at %d, param %hd", (FMT__P_P_D_D_H,
+                                                                                       //nent, nent->func, (int)run_after,
+                                                                                       //(int)nent->run_time, nent->param));
 
     if ((sched.tm_queue==0)             /* queue is empty */
         || ZB_TIME_GE(
@@ -346,7 +351,7 @@ zb_ret_t zb_schedule_alarm(zb_callback_t func, zb_uint8_t param, zb_time_t run_a
      */
     ent = ZB_LIST_GET_HEAD(sched.tm_queue, next);
     t = ZB_TIMER_GET();
-    TRACE_MSG(TRACE_COMMON3, "cur t %d, head t %d", (FMT__D_D, t, ent->run_time));
+   // TRACE_MSG(TRACE_COMMON3, "cur t %d, head t %d", (FMT__D_D, t, ent->run_time));
     if (ent->run_time != t
         && ZB_TIME_GE(ent->run_time, t))
     {
@@ -373,11 +378,11 @@ zb_ret_t zb_schedule_alarm_cancel(zb_callback_t func, zb_uint8_t param) /* __ree
     next = ZB_LIST_NEXT(ent, next);
     if (ent->func == func && (param == ZB_ALARM_ANY_PARAM || param == ZB_ALARM_ALL_CB || param == ent->param))
     {
-      TRACE_MSG(TRACE_COMMON3, "%p alarm cancel func %p, param %hd", (FMT__P_P_H, ent, ent->func, ent->param));
+      //TRACE_MSG(TRACE_COMMON3, "%p alarm cancel func %p, param %hd", (FMT__P_P_H, ent, ent->func, ent->param));
       /* remove from scheduled alarms, add to free list */
       ZB_LIST_REMOVE(sched.tm_queue, next, ent);
       ZB_STK_PUSH(sched.tm_freelist, next, ent);
-      TRACE_MSG(TRACE_INFO3, "tm_queue -> tm_freelist, ent %p", (FMT__P, (void*)ent));
+      //TRACE_MSG(TRACE_INFO3, "tm_queue -> tm_freelist, ent %p", (FMT__P, (void*)ent));
       ret = RET_OK;
       if (param != ZB_ALARM_ALL_CB)
       {

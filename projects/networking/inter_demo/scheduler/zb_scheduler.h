@@ -50,8 +50,12 @@ PURPOSE: Zigbee scheduler: cooperative multitasking.
 #define ZB_SCHEDULER_H 1
 
 //#include "zb_osif.h"
+#include "zb_types.h"
+#include "zb_errors.h"
 #include "zb_list_macros.h"
-#include "inter_demo.h"
+#include "zb_time.h"
+//#include "zb_time.h"
+#include "zb_ringbuffer.h"
 /*! \addtogroup sched */
 /*! @{ */
 
@@ -91,8 +95,13 @@ In Linux it means either mutex lock or nothing (depending on i/o implementation)
 
  */
 
-//#include "zb_time.h"
-#include "zb_ringbuffer.h"
+
+#define ZB_SCHEDULER_Q_SIZE 16
+#define ZB_BUF_Q_SIZE 16
+#define ZB_MAC_QUEUE_SIZE 4
+#define ZB_IOBUF_POOL_SIZE 16
+
+#define NULL 0
 
 /**
    Callback function typedef.
@@ -104,8 +113,8 @@ In Linux it means either mutex lock or nothing (depending on i/o implementation)
    @return none.
  */
 typedef void (ZB_CODE * zb_callback_t)(zb_uint8_t param);
-
-
+void zb_interdemo_main_loop();
+void zb_init(void);
 
 /**
    Immediate pending callbacks queue entry
@@ -169,6 +178,10 @@ typedef struct zb_sched_globals_s
   ZB_SL_LIST_DEFINE(zb_buf_q_ent_t  *, outbuf_queue);
   ZB_STK_DEFINE(zb_buf_q_ent_t  *, buf_freelist);
 } zb_sched_globals_t;
+
+extern zb_sched_globals_t sched;
+extern zb_timer_t time;
+#define ZB_TIMER_CTX() time
 
 /**
    Initialize scheduler subsystem.
