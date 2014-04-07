@@ -94,8 +94,10 @@ int main ()
     uint16_t div;
     nrk_setup_ports ();
     nrk_setup_uart (UART_BAUDRATE_115K2);
-    setup_uart0(UART_BAUDRATE_115K2);
+
     nrk_init ();
+
+    nrk_register_drivers();
 
     nrk_led_clr (0);
     nrk_led_clr (1);
@@ -105,6 +107,7 @@ int main ()
     nrk_time_set (0, 0);
 
     zb_task_config ();
+    zb_init();
 
     nrk_create_taskset ();
     nrk_start ();

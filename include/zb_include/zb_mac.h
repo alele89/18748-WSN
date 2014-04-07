@@ -67,11 +67,6 @@ PURPOSE: Mac layer API
 extern RF_RX_INFO zb_rfRxInfo;
 extern RF_TX_INFO zb_rfTxInfo;
 
-/* definitions for zb_nw_task */
-#define ZB_TASK_PRIORITY 20
-#define ZB_MIN_CHECK_RATE_MS 20
-#define ZB_DEFAULT_CHECK_RATE_MS 100
-
 /*! \cond internals_doc */
 /**
    @addtogroup ZB_MAC

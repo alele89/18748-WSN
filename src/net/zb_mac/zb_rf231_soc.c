@@ -59,15 +59,73 @@ PURPOSE: to port ZBOSS v1 onto Firefly3.
 #include "zb_secur.h"
 #endif /* ZB_SNIFFER */
 
+/* NanoRK includes */
+#include <include.h>
+#include <basic_rf.h>
+#include <nrk.h>
+#include <ulib.h>
+#include <stdlib.h>
+#include <avr/sleep.h>
+#include <avr/wdt.h>
+#include <avr/eeprom.h>
+#include <stdio.h>
+#include <avr/interrupt.h>
+#include <nrk.h>
+#include <nrk_events.h>
+#include <nrk_timer.h>
+#include <nrk_error.h>
+#include <nrk_reserve.h>
+#include <nrk_cfg.h>
+
+/* definitions for zb_nw_task */
 #ifndef ZB_STACKSIZE
 #define ZB_STACKSIZE 128
 #endif
+//TODO wsn gr12 need to check the period 
+#define ZB_DEFAULT_CHECK_RATE_MS  100
+#define ZB_TASK_PRIORITY 20
+#define ZB_MIN_CHECK_RATE_MS 20
+#define ZB_DEFAULT_CHECK_RATE_MS 100
 
 static nrk_task_type zb_task;
 static NRK_STK zb_task_stack[zb_STACKSIZE];
 
+static uint8_t tx_data_ready;
+static uint8_t rx_buf_empty;
+static uint8_t zb_running;
+static uint8_t pkt_got_ack; // wsn gr12 needed??
+static uint8_t g_chan;
+static uint8_t is_enabled;
+static nrk_time_t dummy_t;
+static nrk_time_t _zb_check_period;
+
 RF_RX_INFO zb_rfRxInfo;
 RF_TX_INFO zb_rfTxInfo;
+
+uint8_t rx_buf[RF_MAX_PAYLOAD_SIZE];
+
+int8_t zb_init()
+{
+    tx_data_ready = 0;
+    // Set the one main rx buffer
+    bmac_rfRxInfo.pPayload = rx_buf;
+    bmac_rfRxInfo.max_length = RF_MAX_PAYLOAD_SIZE;
+
+    // Setup the cc2420 chip
+    rf_power_up ();
+    rf_init (&zb_rfRxInfo, ZB_MAC_START_CHANNEL_NUMBER, 0xFFFF, 0x00000);
+    g_chan = ZB_MAC_START_CHANNEL_NUMBER;
+    rx_buf_empty = 1;
+
+    rf_set_cca_thresh (0x0);
+    zb_running = 1;
+    is_enabled = 1;
+ 
+    _zb_check_period.secs = 0;
+    _zb_check_period.nano_secs = ZB_DEFAULT_CHECK_RATE_MS * NANOS_PER_MS;
+
+    return NRK_OK;
+}
 
 void zb_task_config ()
 {
@@ -87,8 +145,6 @@ void zb_task_config ()
   printf ("zb activate\r\n");
 #endif
 
-  /* TODO: wsn gr12 should we call this here? */
-  rf_set_rx(&zb_rfRxInfo, ZB_MAC_START_CHANNEL_NUMBER);
   nrk_activate_task (&zb_task);
 }
 
@@ -116,6 +172,15 @@ int8_t _zb_rx ()
     return 0;
   }
 
+  /*
+   * wsn gr12 TODO FIXME Do we really need rx_buf_task 
+   * This is a flag used in bmac where the user buffer is
+   * set to the rfRxInfo.pPayload structure and buf is 
+   * initially set to be free. Here it is set not to be
+   * free as a packet has been filled in
+   * Check src/net/bmac/rf231_soc/bmac.c:bmac_rx_pkt_set_buffer
+   * Ans: We may not need it and add to RX queue of ZB instead 
+   */ 
   rx_buf_empty = 0;
 #ifdef DEBUG
   printf ("ZB: SNR= %d [", zb_rfRxInfo.rssi);
@@ -129,96 +194,73 @@ int8_t _zb_rx ()
 
 void zb_nw_task ()
 {
-/*
- * Zigbee feature for pending data polling
- * TODO: need to figure this out for nanork
-  if (ZB_MAC_GET_INDIRECT_DATA_REQUEST())
-  {
-    if (ZB_CHECK_PENDING())
-    {
-      ZB_MAC_SET_PENDING_DATA();
-    } else
-    {
-      ZB_MAC_CLEAR_PENDING_DATA();
-    }
-  }
-*/
+    /*
+     * Zigbee feature for pending data polling
+     * TODO: need to figure this out for nanork
+     if (ZB_MAC_GET_INDIRECT_DATA_REQUEST())
+     {
+     if (ZB_CHECK_PENDING())
+     {
+     ZB_MAC_SET_PENDING_DATA();
+     } else
+     {
+     ZB_MAC_CLEAR_PENDING_DATA();
+     }
+     }
+     */
+    int8_t v, i;
+    int8_t e;
+    uint8_t backoff;
+    nrk_sig_mask_t event;
 
-#if 0
-  int8_t v, i;
-  int8_t e;
-  uint8_t backoff;
-  nrk_sig_mask_t event;
-
-  while (zb_started () == 0)
-    nrk_wait_until_next_period ();
-
-//register the signal after zb_init has been called
-  v = nrk_signal_register (zb_enable_signal);
-  if (v == NRK_ERROR)
-    nrk_kprintf (PSTR ("Failed to register signal\r\n"));
-  backoff = 0;
-  while (1) {
+    while (1) {
 #ifdef NRK_SW_WDT
 #ifdef BMAC_SW_WDT_ID
-    nrk_sw_wdt_update (BMAC_SW_WDT_ID);
+        nrk_sw_wdt_update (BMAC_SW_WDT_ID);
 #endif
 #endif
-    rf_power_up ();
-    if (is_enabled) {
-      v = 1;
+        rf_power_up ();
+        v = 1;
 
-#ifdef BMAC_MOD_CCA
-      if (rx_buf_empty == 1)
-      {
-	 if (_zb_rx () == 1) e = nrk_event_signal (zb_rx_pkt_signal);
-      }
-      else
-      e = nrk_event_signal (zb_rx_pkt_signal);
-#else
-      if (rx_buf_empty == 1)
-        v = _zb_channel_check ();
-      // If the buffer is full, signal the receiving task again.
-      else
-        e = nrk_event_signal (zb_rx_pkt_signal);
-      // zb_channel check turns on radio, don't turn off if
-      // data is coming.
+        if (rx_buf_empty == 1)
+            v = _zb_channel_check ();
+        // If the buffer is full, signal the receiving task again.
+        else
+            //e = nrk_event_signal (zb_rx_pkt_signal);
+            //TODO wsn gr12
+            //ZB_PUT_RX_QUEUE(rx_buf);
+        // zb_channel check turns on radio, don't turn off if
+        // data is coming.
 
-      if (v == 0) {
-        if (_zb_rx () == 1) {
-          e = nrk_event_signal (zb_rx_pkt_signal);
-          //if(e==NRK_ERROR) {
-          //      nrk_kprintf( PSTR("zb rx pkt signal failed\r\n"));
-          //      printf( "errno: %u \r\n",nrk_errno_get() );
-          //}
+        if (v == 0) {
+            if (_zb_rx () == 1) {
+                //TODO wsn gr12
+                //ZB_PUT_RX_QUEUE(rx_buf);
+#if 0                
+                //e = nrk_event_signal (zb_rx_pkt_signal);
+                //if(e==NRK_ERROR) {
+                //      nrk_kprintf( PSTR("zb rx pkt signal failed\r\n"));
+                //      printf( "errno: %u \r\n",nrk_errno_get() );
+                //}
+#endif                
+            }
+            //else nrk_kprintf( PSTR("Pkt failed, buf could be corrupt\r\n" ));
+
         }
-        //else nrk_kprintf( PSTR("Pkt failed, buf could be corrupt\r\n" ));
 
-      }
+//TODO wsn gr12
+//should we check and transmit data here itself or do we 
+        //if (tx_data_ready == 1) {
+          //  _zb_tx ();
+        //}
+        rf_rx_off ();
+        rf_power_down ();
 
-#endif
-      if (tx_data_ready == 1) {
-        _zb_tx ();
-      }
-      rf_rx_off ();
-      rf_power_down ();
-
-      //do {
-      nrk_wait (_zb_check_period);
-      //      if(rx_buf_empty!=1)  nrk_event_signal (zb_rx_pkt_signal);
-      //} while(rx_buf_empty!=1);
+        //do {
+        nrk_wait (_zb_check_period);
+        //      if(rx_buf_empty!=1)  nrk_event_signal (zb_rx_pkt_signal);
+        //} while(rx_buf_empty!=1);
     }
-    else {
-      event = 0;
-      do {
-        v = nrk_signal_register (zb_enable_signal);
-        event = nrk_event_wait (SIG (zb_enable_signal));
-      }
-      while ((event & SIG (zb_enable_signal)) == 0);
-    }
-    //nrk_wait_until_next_period();
-  }
-#endif
 }
 
 void zb_ubec_check_int_status()
@@ -233,7 +275,8 @@ void zb_transceiver_set_channel(zb_uint8_t channel_number)
   MAC_CTX().current_channel = channel_number;
 #endif
   rf_power_up ();
-  rf_init (&zb_rfRxInfo, channel_number, 0xFFFF, 0x00000);
+  g_chan = channel_number;
+  rf_set_rx(&zb_rfRxInfo, channel_number);
 }
 
 #ifndef ZB_SNIFFER
@@ -308,6 +351,7 @@ void zb_mac_short_read_reg(zb_uint8_t short_addr) ZB_SDCC_REENTRANT
 
 void zb_transceiver_update_long_mac()
 {
+/* ZB implementation wsn gr12
   EXT_ADDR0 = ZB_PIB_EXTENDED_ADDRESS()[0];
   EXT_ADDR1 = ZB_PIB_EXTENDED_ADDRESS()[1];
   EXT_ADDR2 = ZB_PIB_EXTENDED_ADDRESS()[2];
@@ -316,16 +360,33 @@ void zb_transceiver_update_long_mac()
   EXT_ADDR5 = ZB_PIB_EXTENDED_ADDRESS()[5];
   EXT_ADDR6 = ZB_PIB_EXTENDED_ADDRESS()[6];
   EXT_ADDR7 = ZB_PIB_EXTENDED_ADDRESS()[7];
+*/
+/* Reference Atmega128RFA1 datasheet , needs verification*/
+  IEEE_ADDR_0 = ZB_PIB_EXTENDED_ADDRESS()[0];
+  IEEE_ADDR_1 = ZB_PIB_EXTENDED_ADDRESS()[1];
+  IEEE_ADDR_2 = ZB_PIB_EXTENDED_ADDRESS()[2];
+  IEEE_ADDR_3 = ZB_PIB_EXTENDED_ADDRESS()[3];
+  IEEE_ADDR_4 = ZB_PIB_EXTENDED_ADDRESS()[4];
+  IEEE_ADDR_5 = ZB_PIB_EXTENDED_ADDRESS()[5];
+  IEEE_ADDR_6 = ZB_PIB_EXTENDED_ADDRESS()[6];
+  IEEE_ADDR_7 = ZB_PIB_EXTENDED_ADDRESS()[7];
 }
 
 void zb_set_pan_id(zb_uint16_t pan_id)
 {
+/* ZB implementation wsn gr12
    PAN_ID0 = (pan_id &0xFF);
    PAN_ID1 = ((pan_id>>8)&0xFF);
+*/
+/* Reference Atmega128RFA1 datasheet , needs verification*/
+   PAN_ID_0 = (pan_id & 0xFF);
+   PAN_ID_1 = ((pan_id>>8) & 0xFF);
 }
 
 void zb_transceiver_get_rssi(zb_uint8_t *rssi_value)
 {
+#if 0
+/* ZB implementation wsn gr12 */
    zb_uint16_t tmp = 1000; /* not sure how long should we wait here */
    FRMCTRL0 =  0x0C;
    ISFLUSHRX(); /* flush rx fifo */
@@ -358,6 +419,8 @@ void zb_transceiver_get_rssi(zb_uint8_t *rssi_value)
    ISFLUSHRX();
 
    FRMCTRL0 =  (0x20 | 0x40);
+#endif
+   *rssi_value = zb_rfRxInfo.rssi;
 }
 
 zb_ret_t zb_transceiver_send_fifo_packet(zb_uint8_t header_length, zb_uint16_t fifo_addr,
