@@ -243,6 +243,7 @@ typedef struct {
 
 #define rf_polling_rx_packet rf_rx_packet_nonblock
 int8_t rf_rx_packet_nonblock();
+int8_t zb_rf_rx_packet_nonblock();
 
 /* NOT IMPLEMENTED
 uint8_t rf_rx_check_sfd();

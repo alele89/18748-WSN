@@ -291,6 +291,7 @@ If defined, platform is some 8051 clone
 #define ZB_8051_TIMER
 
 #elif ZB_PLATFORM_FIREFLY3
+#define ZB_USE_RX_QUEUE
 /**
    nano-RK is little endian 
  */

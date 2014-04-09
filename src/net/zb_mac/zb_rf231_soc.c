@@ -102,14 +102,14 @@ static nrk_time_t _zb_check_period;
 RF_RX_INFO zb_rfRxInfo;
 RF_TX_INFO zb_rfTxInfo;
 
-uint8_t rx_buf[RF_MAX_PAYLOAD_SIZE];
+uint8_t rx_buf[RF_IO_BUF_SIZE];
 
 int8_t zb_init()
 {
     tx_data_ready = 0;
     // Set the one main rx buffer
-    bmac_rfRxInfo.pPayload = rx_buf;
-    bmac_rfRxInfo.max_length = RF_MAX_PAYLOAD_SIZE;
+    zb_rfRxInfo.pPayload = rx_buf;
+    zb_rfRxInfo.max_length = RF_IO_BUF_SIZE;
 
     // Setup the cc2420 chip
     rf_power_up ();
@@ -163,7 +163,7 @@ int8_t _zb_rx ()
   dummy_t.nano_secs = 5 * NANOS_PER_MS;
   nrk_wait (dummy_t);
 
-  n = rf_rx_packet_nonblock ();
+  n = zb_rf_rx_packet_nonblock ();
 
   if (n != NRK_OK) {
     if (rx_failure_cnt < 65535)
@@ -226,16 +226,18 @@ void zb_nw_task ()
             v = _zb_channel_check ();
         // If the buffer is full, signal the receiving task again.
         else
+        {
             //e = nrk_event_signal (zb_rx_pkt_signal);
             //TODO wsn gr12
-            //ZB_PUT_RX_QUEUE(rx_buf);
+            ZB_PUT_RX_QUEUE();
+        }
         // zb_channel check turns on radio, don't turn off if
         // data is coming.
 
         if (v == 0) {
             if (_zb_rx () == 1) {
                 //TODO wsn gr12
-                //ZB_PUT_RX_QUEUE(rx_buf);
+                ZB_PUT_RX_QUEUE();
 #if 0                
                 //e = nrk_event_signal (zb_rx_pkt_signal);
                 //if(e==NRK_ERROR) {
@@ -280,47 +282,6 @@ void zb_transceiver_set_channel(zb_uint8_t channel_number)
 }
 
 #ifndef ZB_SNIFFER
-
-void zb_uz2400_fifo_read(zb_uint8_t tx_fifo, zb_buf_t *buf, zb_uint8_t len) ZB_SDCC_REENTRANT
-{
-/*
-  RXFIFO address
-  |   bit[11]    |       bit [10:1]      |        bit[0]    |
-  | Long Addr = 1| address 0x300 - 0x38f | read/write = 0/1 |
-*/
-  TRACE_MSG(TRACE_MAC2, ">> zb_uz2400_fifo_read", (FMT__0));
-
-  ZB_MAC_START_IO();
-#ifdef ZB_TRAFFIC_DUMP_ON
-  {
-    zb_uint16_t *data_ptr = NULL;
-
-    ZB_BUF_INITIAL_ALLOC(MAC_CTX().operation_buf, sizeof(zb_uint16_t), data_ptr);
-    ZB_ASSERT(data_ptr);
-
-    /* Produce same traffic dump as 2400 */
-    ZB_HTOBE16_VAL(data_ptr, ((tx_fifo ? ZB_NORMAL_TX_FIFO : ZB_RX_FIFO) << 5) | 0x8000 );
-  }
-  ZB_DUMP_OUTGOING_DATA(ZG->mac.mac_ctx.operation_buf);
-#endif
-
-  /* actual i/o */
-  {
-    zb_uint8_t ZB_XDATA *xptr;
-
-    xptr = (zb_uint8_t ZB_XDATA *)(tx_fifo ? ZB_NORMAL_FIFO_ADDR : ZB_NORMAL_RXFIFO_ADDR);
-    if (len == 0)
-    {
-      len =  *(xptr) + ZB_MAC_PACKET_LENGTH_SIZE + ZB_MAC_EXTRA_DATA_SIZE;
-    }
-    ZB_MEMCPY(ZB_BUF_BEGIN(buf), xptr, len);
-    buf->u.hdr.len = len;
-  }
-
-  ZB_MAC_STOP_IO();
-
-  TRACE_MSG(TRACE_MAC2, "<< zb_uz2400_fifo_read %i", (FMT__0));
-}
 
 void zb_uz_short_reg_write_2b(zb_uint8_t reg, zb_uint16_t v)
 {

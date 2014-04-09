@@ -185,17 +185,8 @@ void zb_mac_recv_data(zb_uint8_t param)
    */
 
   MAC_CTX().recv_buf = ZB_BUF_FROM_REF(param);
-#ifdef ZB_USE_RX_QUEUE
   ZB_GET_RX_QUEUE();
-  DUMP_RESERVED_REGS();
-#else
-  ZB_TRANS_RECV_PACKET(MAC_CTX().recv_buf);
-#endif
-#ifdef ZB_NS_BUILD
-  zb_mac_parse_recv_data(ZB_REF_FROM_BUF(MAC_CTX().recv_buf));
-#else
   ZB_SCHEDULE_CALLBACK(zb_mac_parse_recv_data, ZB_REF_FROM_BUF(MAC_CTX().recv_buf));
-#endif /* ZB_NS_BUILD */
   MAC_CTX().recv_buf = NULL;
   TRACE_MSG(TRACE_MAC1, "<<zb_mac_recv_data", (FMT__D));
 }
@@ -367,8 +358,6 @@ void zb_mac_parse_recv_data(zb_uint8_t param) ZB_CALLBACK
 
   ZB_ASSERT(buf);
   ZB_DUMP_INCOMING_DATA(buf);
-  /* ZB_MAC_STOP_IO(); moved to interrupt handlers */
-  ZB_TRANS_CUT_SPECIFIC_HEADER(buf);
 
   cmd_ptr = ZB_BUF_BEGIN(buf);
 #ifdef ZB_MAC_TESTING_MODE

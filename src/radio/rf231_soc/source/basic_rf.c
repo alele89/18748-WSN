@@ -615,6 +615,51 @@ int8_t rf_rx_packet_nonblock()
 	return NRK_OK;
 }
 
+int8_t zb_rf_rx_packet_nonblock()
+{
+	uint8_t *frame_start = &TRXFBST;
+
+	if(!rf_ready)
+		return NRK_ERROR;
+
+	if(!rx_ready)
+		return 0;
+	else if((TST_RX_LENGTH - 2) > rfSettings.pRxInfo->max_length)
+		return NRK_ERROR;
+
+	ieee_mac_frame_header_t *machead = frame_start;
+
+	rfSettings.pRxInfo->seqNumber = machead->seq_num;
+	rfSettings.pRxInfo->srcAddr = machead->src_addr;
+	rfSettings.pRxInfo->length = TST_RX_LENGTH - 2; //- sizeof(ieee_mac_frame_header_t) ;
+
+	if((rfSettings.pRxInfo->length > rfSettings.pRxInfo->max_length)
+			|| (rfSettings.pRxInfo->length < 0)){
+		rx_ready = 0;
+		TRX_CTRL_2 &= ~(1 << RX_SAFE_MODE);
+		TRX_CTRL_2 |= (1 << RX_SAFE_MODE);
+		return NRK_ERROR;
+	}
+
+	memcpy(rfSettings.pRxInfo->pPayload, frame_start, 
+			rfSettings.pRxInfo->length);
+	
+	/* I am assuming that ackRequest is supposed to
+	 * be set, not read, by rf_basic */
+	rfSettings.pRxInfo->ackRequest = machead->fcf.ack_request;
+	//rfSettings.pRxInfo->rssi = *(frame_start + TST_RX_LENGTH);
+	rfSettings.pRxInfo->rssi = PHY_ED_LEVEL;
+	rfSettings.pRxInfo->actualRssi = PHY_RSSI >> 3;
+	rfSettings.pRxInfo->energyDetectionLevel = PHY_ED_LEVEL;
+	rfSettings.pRxInfo->linkQualityIndication = *(frame_start + TST_RX_LENGTH);
+
+	/* Reset frame buffer protection */
+	rx_ready = 0;
+	TRX_CTRL_2 &= ~(1 << RX_SAFE_MODE);
+	TRX_CTRL_2 |= (1 << RX_SAFE_MODE);
+
+	return NRK_OK;
+}
 
 SIGNAL(TRX24_RX_END_vect)
 {	
