@@ -228,16 +228,8 @@ static zb_bool_t can_accept_frame(zb_mac_mhr_t mhr)
 
 void zb_mac_main_loop()
 {
-  if (ZB_GET_TRANS_INT())
-  {
-    TRACE_MSG(TRACE_COMMON2, "Interrupt occured, processing...", (FMT__0 ));
-    ZB_CHECK_INT_STATUS();
-  }
-
-#ifdef ZB_CC25XX
   if (ZB_MAC_GET_ACK_OK())
   {
-#endif
     /* check for cb waiting for tx finished, it's also indicats that tx in progress */
     if (MAC_CTX().tx_wait_cb)
     {
@@ -269,7 +261,6 @@ void zb_mac_main_loop()
         ZB_RING_BUFFER_FLUSH_GET(&ZG->sched.mac_tx_q);
       }
     }
-#ifdef ZB_CC25XX
   }
   else
   {
@@ -296,28 +287,15 @@ void zb_mac_main_loop()
       }
     }
   }
-#endif
-#ifdef ZB_USE_RX_QUEUE
+
   if (((!ZB_RING_BUFFER_IS_EMPTY(&MAC_CTX().mac_rx_queue))||MAC_CTX().recv_buf_full))
-#else
-    /* change it to flag?? */
-#ifdef ZB_NS_BUILD
-    if (ZG->sched.mac_receive_pending)
-#else
-    if (ZB_UBEC_GET_RX_DATA_STATUS())
-#endif
-#endif
     {
       zb_buf_t *buf = zb_get_in_buf();
       if (buf)
       {
         /* We could call it directly */
         /* ZB_SCHEDULE_MAC_CB(zb_mac_recv_data, ZB_REF_FROM_BUF(buf));*/
-#ifndef ZB_NS_BUILD
         ZB_UBEC_CLEAR_RX_DATA_STATUS();
-#else
-        ZG->sched.mac_receive_pending = 0;
-#endif
         zb_mac_recv_data(ZB_REF_FROM_BUF(buf));
         MAC_CTX().rx_need_buf = 0;
       }
@@ -326,19 +304,6 @@ void zb_mac_main_loop()
         MAC_CTX().rx_need_buf = 1;
       }
     }
-
-/* high priority mac layer queue. Could be used to manage callbacks priority. Currently unused. */
-#if 0
-  { /* checking mac callback queue */
-    zb_mac_cb_ent_t *mac_cb_ent;
-    while ((mac_cb_ent = ZB_RING_BUFFER_PEEK(&ZG->sched.mac_cb_q)) != NULL)
-    {
-      TRACE_MSG(TRACE_COMMON2, "Mac loop", (FMT__0 ));
-      (*mac_cb_ent->func)(mac_cb_ent->param);
-      ZB_RING_BUFFER_FLUSH_GET(&ZG->sched.mac_cb_q);
-    }
-  }
-#endif
 }
 
 

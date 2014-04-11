@@ -45,19 +45,15 @@
 ****************************************************************************
 PURPOSE: to port ZBOSS v1 onto Firefly3. 
 */
-#ifdef ZB_CC25XX
 #include "zb_common.h"
-#include "zb_cc25xx.h"
-#include "ioCC2530.h"
+#include "zb_rf231_soc.h"
 
-#ifndef ZB_SNIFFER
 #include "zb_scheduler.h"
 #include "zb_nwk.h"
 #include "zb_mac.h"
 #include "mac_internal.h"
 #include "zb_mac_transport.h"
 #include "zb_secur.h"
-#endif /* ZB_SNIFFER */
 
 /* NanoRK includes */
 #include <include.h>
@@ -103,6 +99,7 @@ RF_RX_INFO zb_rfRxInfo;
 RF_TX_INFO zb_rfTxInfo;
 
 uint8_t rx_buf[RF_IO_BUF_SIZE];
+uint8_t tx_buf[RF_IO_BUF_SIZE];
 
 int8_t zb_init()
 {
@@ -123,6 +120,8 @@ int8_t zb_init()
  
     _zb_check_period.secs = 0;
     _zb_check_period.nano_secs = ZB_DEFAULT_CHECK_RATE_MS * NANOS_PER_MS;
+
+    rf_auto_ack_disable();
 
     return NRK_OK;
 }
@@ -210,44 +209,22 @@ void zb_nw_task ()
      */
     int8_t v, i;
     int8_t e;
-    uint8_t backoff;
-    nrk_sig_mask_t event;
 
     while (1) {
-#ifdef NRK_SW_WDT
-#ifdef BMAC_SW_WDT_ID
-        nrk_sw_wdt_update (BMAC_SW_WDT_ID);
-#endif
-#endif
         rf_power_up ();
         v = 1;
 
         if (rx_buf_empty == 1)
             v = _zb_channel_check ();
-        // If the buffer is full, signal the receiving task again.
         else
-        {
-            //e = nrk_event_signal (zb_rx_pkt_signal);
-            //TODO wsn gr12
             ZB_PUT_RX_QUEUE();
-        }
         // zb_channel check turns on radio, don't turn off if
         // data is coming.
 
         if (v == 0) {
             if (_zb_rx () == 1) {
-                //TODO wsn gr12
                 ZB_PUT_RX_QUEUE();
-#if 0                
-                //e = nrk_event_signal (zb_rx_pkt_signal);
-                //if(e==NRK_ERROR) {
-                //      nrk_kprintf( PSTR("zb rx pkt signal failed\r\n"));
-                //      printf( "errno: %u \r\n",nrk_errno_get() );
-                //}
-#endif                
             }
-            //else nrk_kprintf( PSTR("Pkt failed, buf could be corrupt\r\n" ));
-
         }
 
 //TODO wsn gr12
@@ -258,30 +235,18 @@ void zb_nw_task ()
         rf_rx_off ();
         rf_power_down ();
 
-        //do {
         nrk_wait (_zb_check_period);
-        //      if(rx_buf_empty!=1)  nrk_event_signal (zb_rx_pkt_signal);
-        //} while(rx_buf_empty!=1);
     }
-}
-
-void zb_ubec_check_int_status()
-{
-  ZB_CLEAR_TRANS_INT();
 }
 
 void zb_transceiver_set_channel(zb_uint8_t channel_number)
 {
   /* 5 is a frequency step */
-#ifndef ZB_SNIFFER
   MAC_CTX().current_channel = channel_number;
-#endif
   rf_power_up ();
   g_chan = channel_number;
   rf_set_rx(&zb_rfRxInfo, channel_number);
 }
-
-#ifndef ZB_SNIFFER
 
 void zb_uz_short_reg_write_2b(zb_uint8_t reg, zb_uint16_t v)
 {
@@ -312,17 +277,7 @@ void zb_mac_short_read_reg(zb_uint8_t short_addr) ZB_SDCC_REENTRANT
 
 void zb_transceiver_update_long_mac()
 {
-/* ZB implementation wsn gr12
-  EXT_ADDR0 = ZB_PIB_EXTENDED_ADDRESS()[0];
-  EXT_ADDR1 = ZB_PIB_EXTENDED_ADDRESS()[1];
-  EXT_ADDR2 = ZB_PIB_EXTENDED_ADDRESS()[2];
-  EXT_ADDR3 = ZB_PIB_EXTENDED_ADDRESS()[3];
-  EXT_ADDR4 = ZB_PIB_EXTENDED_ADDRESS()[4];
-  EXT_ADDR5 = ZB_PIB_EXTENDED_ADDRESS()[5];
-  EXT_ADDR6 = ZB_PIB_EXTENDED_ADDRESS()[6];
-  EXT_ADDR7 = ZB_PIB_EXTENDED_ADDRESS()[7];
-*/
-/* Reference Atmega128RFA1 datasheet , needs verification*/
+/* TODO wsn gr 12: Reference Atmega128RFA1 datasheet , needs verification*/
   IEEE_ADDR_0 = ZB_PIB_EXTENDED_ADDRESS()[0];
   IEEE_ADDR_1 = ZB_PIB_EXTENDED_ADDRESS()[1];
   IEEE_ADDR_2 = ZB_PIB_EXTENDED_ADDRESS()[2];
@@ -335,104 +290,47 @@ void zb_transceiver_update_long_mac()
 
 void zb_set_pan_id(zb_uint16_t pan_id)
 {
-/* ZB implementation wsn gr12
-   PAN_ID0 = (pan_id &0xFF);
-   PAN_ID1 = ((pan_id>>8)&0xFF);
-*/
-/* Reference Atmega128RFA1 datasheet , needs verification*/
+/* TODO wsn g12: Reference Atmega128RFA1 datasheet , needs verification*/
    PAN_ID_0 = (pan_id & 0xFF);
    PAN_ID_1 = ((pan_id>>8) & 0xFF);
 }
 
 void zb_transceiver_get_rssi(zb_uint8_t *rssi_value)
 {
-#if 0
-/* ZB implementation wsn gr12 */
-   zb_uint16_t tmp = 1000; /* not sure how long should we wait here */
-   FRMCTRL0 =  0x0C;
-   ISFLUSHRX(); /* flush rx fifo */
-   RFST = 0xE3; /* ISRXON */\
-   while (!RSSISTAT);
-   FRMCTRL0 |= 0x10; /* energy scan enabled */
-   while(tmp--)
-    {
-        asm("NOP");
-        asm("NOP");
-        asm("NOP");
-        asm("NOP");
-        asm("NOP");
-        asm("NOP");
-        asm("NOP");
-        asm("NOP");
-        asm("NOP");
-        asm("NOP");
-        asm("NOP");
-        asm("NOP");
-        asm("NOP");
-        asm("NOP");
-        asm("NOP");
-        asm("NOP");
-        asm("NOP");
-    }
-   *rssi_value = RSSI;
-   /* restore */
-   RFST = 0xEF;
-   ISFLUSHRX();
-
-   FRMCTRL0 =  (0x20 | 0x40);
-#endif
    *rssi_value = zb_rfRxInfo.rssi;
 }
 
-zb_ret_t zb_transceiver_send_fifo_packet(zb_uint8_t header_length, zb_uint16_t fifo_addr,
-                                         zb_buf_t *buf, zb_uint8_t need_tx) ZB_SDCC_REENTRANT
+zb_ret_t zb_transceiver_send_fifo_packet(zb_uint8_t header_length, 
+                                         zb_buf_t *buf, zb_uint8_t need_tx) 
 {
   zb_uint8_t *fc = ZB_BUF_BEGIN(buf);
+  zb_uint8_t frame_len = ZB_BUF_LEN(buf);
 
   TRACE_MSG(TRACE_MAC1, ">> zb_transceiver_send_fifo_packet, %d, addr %x, buf %p, state %hd", (FMT__D_D_P,
-                                                                                               (zb_uint16_t)header_length, fifo_addr, buf));
-
-  ZB_ASSERT(fifo_addr == ZB_NORMAL_TX_FIFO);
-
-/* ds-2400 4.3.1. Transmit Packet in Normal FIFO */
-
-  {
-    zb_ubec_fifo_header_t *ubec_fifo_header;
-    ZB_BUF_ALLOC_LEFT(buf, sizeof(zb_ubec_fifo_header_t), ubec_fifo_header);
-    ZB_ASSERT(ubec_fifo_header);
-    /* ZB_CC2530_FIFO_TAIL is crc + rssi */
-    ubec_fifo_header->frame_length = ZB_BUF_LEN(buf) - sizeof(zb_ubec_fifo_header_t) + ZB_CC2530_FIFO_TAIL;
-#ifdef ZB_TRAFFIC_DUMP_ON
-    zb_uint8_t *header_len_tmp = ZB_GET_BUF_PARAM(buf, zb_uint8_t);
-    *header_len_tmp = header_length;
-#endif    
-  }
-
-  ZB_UBEC_CLEAR_NORMAL_FIFO_TX_STATUS();
-  ZB_CLEAR_TX_STATUS();
-
-  zb_uz2400_fifo_write(fifo_addr, buf);
-
+                        (zb_uint16_t)header_length, fifo_addr, buf));
   /* TODO: if acknowledgement is required for normal fifo, set ackreq
    * bit (SREG0x1B[2]) */
-  if (need_tx)
-  {
-    /* we need to determine if our frame broadcast or not */
+  /* we need to determine if our frame broadcast or not */
 
-    /* Don't want to parse entire mhr here. All we need is frame control and
-     * destination address. Destination address has fixed position in mhr.
-     * Fields layout is fc (2b), seq number (1b), dest panid (2b), dest address (2b).
-     */
-    zb_uint8_t need_ack = (!((ZB_FCF_GET_FRAME_TYPE(fc) == MAC_FRAME_BEACON
-                              || (ZB_FCF_GET_DST_ADDRESSING_MODE(fc) == ZB_ADDR_16BIT_DEV_OR_BROADCAST
-                                  && fc[5] == 0xff && fc[6] == 0xff)))
-                           && ZB_FCF_GET_ACK_REQUEST_BIT(fc));
+  /* Don't want to parse entire mhr here. All we need is frame control and
+   * destination address. Destination address has fixed position in mhr.
+   * Fields layout is fc (2b), seq number (1b), dest panid (2b), dest address (2b).
+   */
+  zb_uint8_t need_ack = (!((ZB_FCF_GET_FRAME_TYPE(fc) == MAC_FRAME_BEACON
+                            || (ZB_FCF_GET_DST_ADDRESSING_MODE(fc) == ZB_ADDR_16BIT_DEV_OR_BROADCAST
+                                && fc[5] == 0xff && fc[6] == 0xff)))
+                         && ZB_FCF_GET_ACK_REQUEST_BIT(fc));
+
+
+  if(zb_rf_tx_packet(buf, frame_len) != NRK_OK)
+      TRACE_MSG(TRACE_MAC1, "--- RF_TX ERROR ---", (FMT__0));
 
     /* The same bit is used to start normal and beacon fifio.
        If not joined yet (pac_pan_id is not set), do not request acks.
     */
     TRACE_MSG(TRACE_MAC2, "Need ACK: %hd", (FMT__H, need_ack));
-    ZB_START_NORMAL_FIFO_TX(ZB_MAC_PIB_MAX_FRAME_RETRIES, need_ack);
+    //TODO wsn gr12 We transmit using rf_tx_packet. we need not have this
+    //ZB_START_NORMAL_FIFO_TX(ZB_MAC_PIB_MAX_FRAME_RETRIES, need_ack);
     if (need_ack)
     {
       ZB_MAC_START_ACK_WAITING();
@@ -441,66 +339,6 @@ zb_ret_t zb_transceiver_send_fifo_packet(zb_uint8_t header_length, zb_uint16_t f
     {
       ZB_MAC_SET_ACK_OK();
     }
-  }
   TRACE_MSG(TRACE_MAC1, "<< zb_transceiver_send_fifo_packet", (FMT__0));
   return RET_OK;
 }
-
-void zb_uz2400_fifo_write(zb_uint16_t long_addr, zb_buf_t *buf) ZB_SDCC_REENTRANT
-{
-  TRACE_MSG(TRACE_MAC2, ">> zb_uz2400_fifo_write", (FMT__0));
-  ZVUNUSED(long_addr);
-
-  ZB_MAC_START_IO();
-
-
-  /* prepare transceiver */
-  /* disable rx interrupt */
-  RFIRQM0 &= ~(1<<6);
-  /* disable general RF interrupts */
-  IEN2 &= ~(0x01);
-  ISFLUSHTX();
-  ISTXON();
-  RFIRQF1 = ~0x02; /* tx done interrupt cleared */
-  {
-    zb_uint8_t i;
-    for (i = 0;i<ZB_BUF_LEN(buf);i++)
-    {
-      RFD = *(zb_uint8_t *)(ZB_BUF_BEGIN(buf)+i);
-    }
-  }
-  IEN2 |= 0x01; /* enable rf general interrupt back */
-  RFIRQM1 |= 0x03;
-  RFIRQM0 |= (1<<6);
-  ISFLUSHRX(); /* flush rx */
-  RFST = 0xE3; /* rx on    */
-
-
-
-#ifdef ZB_TRAFFIC_DUMP_ON
-  {
-    zb_uint16_t *data_ptr = NULL;
-
-    ZB_BUF_ALLOC_LEFT(buf, sizeof(zb_uint16_t)+sizeof(zb_uint8_t), data_ptr);
-    ZB_ASSERT( data_ptr );
-    /* change for TI? */
-    ZB_HTOBE16_VAL(data_ptr, (long_addr << 5) | 0x8010);
-    /* wireshark plugin compatibility */
-    *(zb_uint8_t *)((zb_uint8_t *)data_ptr+sizeof(zb_uint16_t)) = *(zb_uint8_t *)(ZB_GET_BUF_PARAM(buf, zb_uint8_t));
-    *(zb_uint8_t *)((zb_uint8_t *)data_ptr+sizeof(zb_uint16_t)+sizeof(zb_uint8_t))-=ZB_CC2530_FIFO_TAIL;
-  }
-  ZB_DUMP_OUTGOING_DATA(buf);
-
-  /* remove headers */
-  ZB_BUF_CUT_LEFT2((buf), sizeof(zb_ubec_fifo_header_t)+sizeof(zb_uint16_t)+sizeof(zb_uint8_t)/*header length, for wireshark compatibility*/);
-#else
-  ZB_BUF_CUT_LEFT2((buf), sizeof(zb_ubec_fifo_header_t));
-#endif
-  ZB_MAC_STOP_IO();
-  TRACE_MSG( TRACE_MAC2, "<< zb_uz2400_fifo_write", (FMT__0));
-}
-
-#endif /* ZB_SNIFFER */
-
-
-#endif

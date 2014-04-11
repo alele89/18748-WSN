@@ -66,9 +66,6 @@ PURPOSE: rf231_soc specific code
 
 #define ZB_TRANS_SEND_COMMAND(header_length, buf)          \
   zb_transceiver_send_fifo_packet((header_length), (buf), 1)
-#define ZB_TRANS_FILL_FIFO(header_length, buf)          \
-  zb_transceiver_send_fifo_packet((header_length), (buf), 0)
-
 
 /**
    Receive packet from the transiver

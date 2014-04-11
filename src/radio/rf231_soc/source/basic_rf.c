@@ -523,6 +523,87 @@ uint8_t rf_tx_packet_repeat(RF_TX_INFO *pRTI, uint16_t ms)
 	return trx_error;
 }
 
+uint8_t zb_rf_tx_packet(zb_buf_t *buf, uint8_t frame_len)
+{
+	uint8_t trx_status, trx_error, *frame_start = &TRXFBST;
+	uint16_t i;
+    uint16_t ms = 0;
+    /* Disable auto ack for ZBOSS zigbee transmit using rf_auto_ack_disable */
+    uint8_t need_ack = 0;
+
+	if(!rf_ready) 
+		return NRK_ERROR;
+	
+	/* Copy data payload into packet */
+	memcpy(frame_start+1, buf, buf_len);
+	/* Set the size of the packet */
+	*frame_start = frame_len + 2;
+	
+	vprintf("packet length: %d bytes\r\n", *frame_start);
+
+	/* Wait for radio to be in a ready state */
+	do{
+		trx_status = (TRX_STATUS & 0x1F);
+	}while((trx_status == BUSY_TX) || (trx_status == BUSY_RX)
+			|| (trx_status == BUSY_RX_AACK) || (trx_status == BUSY_TX_ARET)
+			|| (trx_status == STATE_TRANSITION_IN_PROGRESS));
+	
+	/* Return error if radio not in a tx-ready state */
+	if((trx_status != TRX_OFF) && (trx_status != RX_ON) 
+			&& (trx_status != RX_AACK_ON) && (trx_status != PLL_ON)){
+		return NRK_ERROR;
+	}
+
+	rf_cmd(RX_AACK_ON);
+
+	/* Perform CCA if requested */
+	if(pRTI->cca){
+		PHY_CC_CCA |= (1 << CCA_REQUEST);
+		while(!(TRX_STATUS & (1 << CCA_DONE)))
+			continue;
+		if(!(TRX_STATUS & (1 << CCA_STATUS)))
+			return NRK_ERROR;
+	}
+
+	rf_cmd(PLL_ON);
+	if(need_ack)
+		rf_cmd(TX_ARET_ON);
+	
+	if(ms != 0){
+		nrk_time_get(&curr_t);
+		target_t.secs = curr_t.secs;
+		target_t.nano_secs = curr_t.nano_secs + (ms * NANOS_PER_MS);
+		nrk_time_compact_nanos(&target_t);
+	}
+	
+	do{
+#ifdef RADIO_CC2591
+		rf_cc2591_tx_on();
+#endif
+
+		tx_done = 0;
+		/* Send the packet. 0x2 is equivalent to TX_START */
+		rf_cmd(0x2);
+
+		/* Return an error if no ACK received */
+		for(i=0; (i<65000) && !tx_done; i++)
+			continue;
+		if(ms == 0)
+			break;
+		nrk_time_get(&curr_t);
+	}while(nrk_time_sub(&dummy_t, target_t, curr_t) != NRK_ERROR);
+
+	trx_error = ((need_ack && 
+			(((TRX_STATE >> TRAC_STATUS0) & 0x7) != 0))
+			|| (i == 65000)) ? NRK_ERROR : NRK_OK;
+	rf_cmd(trx_status);
+
+#ifdef RADIO_CC2591
+	if (trx_error == NRK_ERROR) rf_cc2591_rx_on();
+#endif
+
+	return trx_error;
+}
 
 /* Returns 1 if the channel is clear
  * Returns 0 if the channel is being used
