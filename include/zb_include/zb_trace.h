@@ -150,7 +150,7 @@ Define readable constants like
 #define TRACE_INIT(name)
 #define TRACE_DEINIT()
 
-void zb_trace_msg_8051(zb_char_t ZB_IAR_CODE *file_name, zb_int_t line_number, zb_uint8_t args_size, ...) ZB_SDCC_REENTRANT;
+void zb_trace_msg_8051(zb_char_t ZB_IAR_CODE *file_name, zb_int_t line_number, zb_uint8_t args_size, ...) ;
 #define _T1(s, l, args) if ((zb_int_t)ZB_TRACE_LEVEL>=(zb_int_t)l && ((s) & ZB_TRACE_MASK)) zb_trace_msg_8051 args
 #define TRACE_MSG(lm, fmt, args) _T1(lm, args)
 

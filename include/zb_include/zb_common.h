@@ -85,10 +85,10 @@ PURPOSE: Common include file for ZigBee
  */
 
 #ifdef ZB_INIT_HAS_ARGS
-void zb_init(zb_char_t *trace_comment, zb_char_t *rx_pipe, zb_char_t *tx_pipe) ZB_CALLBACK;
+void zb_init(zb_char_t *trace_comment, zb_char_t *rx_pipe, zb_char_t *tx_pipe) ;
 #define ZB_INIT(a,b,c) zb_init((zb_char_t *)a, (zb_char_t *)b, (zb_char_t *)c)
 #else
-void zb_init()ZB_CALLBACK;
+void zb_init();
 #define ZB_INIT(a,b,c) zb_init()
 #endif
 
@@ -103,7 +103,7 @@ void zb_handle_parms_before_start();
 /**
    Load Informational Bases from NVRAM or file
  */
-void zb_ib_load() ZB_CALLBACK;
+void zb_ib_load() ;
 
 
 /**
@@ -112,13 +112,13 @@ void zb_ib_load() ZB_CALLBACK;
    @param rx_pipe - rx pipe name (for Unix) or node number (for ns build
                             in 8051 simulator)
  */
-void zb_ib_set_defaults(zb_char_t *rx_pipe) ZB_CALLBACK;
+void zb_ib_set_defaults(zb_char_t *rx_pipe) ;
 
 
 /**
    Save Informational Bases to NVRAM or other persistent storage
  */
-void zb_ib_save() ZB_CALLBACK;
+void zb_ib_save() ;
 
 
 /*! @} */

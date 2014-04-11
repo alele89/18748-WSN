@@ -194,7 +194,7 @@ struct zb_zcl_cluster_s
   zb_uint16_t cluster_id; /*!< Cluster ID */
   zb_zcl_attr_t *attr_list; /*!< Cluster attribute list */
 
-  zb_void_t (*handle)(zb_uint16_t, zb_uint8_t, zb_uint16_t, zb_uint8_t, zb_zcl_cluster_t *) ZB_SDCC_REENTRANT; /*!< Function to handle frames addressed to that cluster */
+  zb_void_t (*handle)(zb_uint16_t, zb_uint8_t, zb_uint16_t, zb_uint8_t, zb_zcl_cluster_t *) ; /*!< Function to handle frames addressed to that cluster */
   zb_void_t (*action)(zb_uint16_t, zb_uint8_t, zb_uint16_t, zb_uint8_t, zb_zcl_cluster_t *); /*!< Cluster action handler */
 };
 

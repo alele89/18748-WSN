@@ -111,7 +111,7 @@ extern ZB_SDCC_XDATA zb_intr_globals_t g_izb;
 #include "zb_af_globals.h"
 #include "zb_zdo_globals.h"
 #include "zb_zcl_globals.h"
-#include "zb_ubec24xx.h" /* TODO: configure this include depending
+#include "zb_rf231_soc.h" /* TODO: configure this include depending
                           * on transceiver */
 #else
 #include "zb_ringbuffer.h"

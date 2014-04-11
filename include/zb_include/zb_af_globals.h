@@ -323,7 +323,7 @@ ZB_DECLARE_SIMPLE_DESC(7,8); /* ZDO descriptor type */
   Set node descriptor for FFD
   @param device_type - FFD device type ZB_COORDINATOR or ZB_ROUTER
 */
-void zb_set_ffd_node_descriptor(zb_logical_type_t device_type) ZB_SDCC_REENTRANT;
+void zb_set_ffd_node_descriptor(zb_logical_type_t device_type) ;
 
 /**
   Set node descriptor for end device
@@ -331,7 +331,7 @@ void zb_set_ffd_node_descriptor(zb_logical_type_t device_type) ZB_SDCC_REENTRANT
   @param rx_on_when_idle - receiver on when idle sub-field
   @param alloc_addr - allocate address sub-field
 */
-void zb_set_ed_node_descriptor(zb_int8_t power_src, zb_int8_t rx_on_when_idle, zb_int8_t alloc_addr) ZB_SDCC_REENTRANT;
+void zb_set_ed_node_descriptor(zb_int8_t power_src, zb_int8_t rx_on_when_idle, zb_int8_t alloc_addr) ;
 
 /**
   Set node power descriptor
@@ -341,7 +341,7 @@ void zb_set_ed_node_descriptor(zb_int8_t power_src, zb_int8_t rx_on_when_idle, z
   @param current_power_source_level - current power source level
 */
 void zb_set_node_power_descriptor(zb_current_power_mode_t current_power_mode, zb_uint8_t available_power_sources,
-                                  zb_uint8_t current_power_source, zb_power_source_level_t current_power_source_level) ZB_SDCC_REENTRANT;
+                                  zb_uint8_t current_power_source, zb_power_source_level_t current_power_source_level) ;
 
 /**
   Set simple descriptor parameters
@@ -356,7 +356,7 @@ void zb_set_node_power_descriptor(zb_current_power_mode_t current_power_mode, zb
 void zb_set_simple_descriptor(zb_af_simple_desc_1_1_t *simple_desc,
                               zb_uint8_t  endpoint, zb_uint16_t app_profile_id,
                               zb_uint16_t app_device_id, zb_bitfield_t app_device_version,
-                              zb_uint8_t app_input_cluster_count, zb_uint8_t app_output_cluster_count) ZB_SDCC_REENTRANT;
+                              zb_uint8_t app_input_cluster_count, zb_uint8_t app_output_cluster_count) ;
 
 /**
   Set input cluster item
@@ -364,7 +364,7 @@ void zb_set_simple_descriptor(zb_af_simple_desc_1_1_t *simple_desc,
   @param cluster_number - cluster item number
   @param cluster_id - cluster id
 */
-void zb_set_input_cluster_id(zb_af_simple_desc_1_1_t *simple_desc, zb_uint8_t cluster_number, zb_uint16_t cluster_id) ZB_SDCC_REENTRANT;
+void zb_set_input_cluster_id(zb_af_simple_desc_1_1_t *simple_desc, zb_uint8_t cluster_number, zb_uint16_t cluster_id) ;
 
 /**
   Set output cluster item
@@ -372,25 +372,25 @@ void zb_set_input_cluster_id(zb_af_simple_desc_1_1_t *simple_desc, zb_uint8_t cl
   @param cluster_number - cluster item number
   @param cluster_id - cluster id
 */
-void zb_set_output_cluster_id(zb_af_simple_desc_1_1_t *simple_desc, zb_uint8_t cluster_number, zb_uint16_t cluster_id) ZB_SDCC_REENTRANT;
+void zb_set_output_cluster_id(zb_af_simple_desc_1_1_t *simple_desc, zb_uint8_t cluster_number, zb_uint16_t cluster_id) ;
 
 /**
   Set default descriptors values for FFD.
   @param device_type - device type ZB_COORDINATOR or ZB_ROUTER
  */
-void zb_set_default_ffd_descriptor_values(zb_logical_type_t device_type) ZB_SDCC_REENTRANT;
+void zb_set_default_ffd_descriptor_values(zb_logical_type_t device_type) ;
 
 /**
   Set default descriptors values for end device.
  */
-void zb_set_default_ed_descriptor_values() ZB_SDCC_REENTRANT;
+void zb_set_default_ed_descriptor_values() ;
 
 /**
   Adds simple descriptor.
   @param simple_desc - pointer to simple descriptor to add
   @return RET_OK, RET_OVERFLOW
  */
-zb_ret_t zb_add_simple_descriptor(zb_af_simple_desc_1_1_t *simple_desc) ZB_SDCC_REENTRANT;
+zb_ret_t zb_add_simple_descriptor(zb_af_simple_desc_1_1_t *simple_desc) ;
 
 
 /*! @} */

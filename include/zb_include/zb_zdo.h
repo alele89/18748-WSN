@@ -169,7 +169,7 @@ zb_zdp_status_t;
   }
 @endcode
  */
-zb_ret_t zdo_dev_start() ZB_SDCC_REENTRANT;
+zb_ret_t zdo_dev_start() ;
 
 /**
    Application main loop.
@@ -205,7 +205,7 @@ void zdo_main_loop();
 
 @b Example:
 @code
-void zb_zdo_startup_complete(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_startup_complete(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   TRACE_MSG(TRACE_APS3, ">>zb_zdo_startup_complete status %hd", (FMT__D, buf->u.hdr.status));
@@ -222,7 +222,7 @@ void zb_zdo_startup_complete(zb_uint8_t param) ZB_CALLBACK
 }
 @endcode
  */
-void zb_zdo_startup_complete(zb_uint8_t param) ZB_CALLBACK;
+void zb_zdo_startup_complete(zb_uint8_t param) ;
 
 
 /*! @} */
@@ -244,7 +244,7 @@ void zb_zdo_startup_complete(zb_uint8_t param) ZB_CALLBACK;
    @b Example:
 @code
 
-void zb_zdo_startup_complete(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_startup_complete(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   TRACE_MSG(TRACE_APS3, ">>zb_zdo_startup_complete status %hd", (FMT__D, buf->u.hdr.status));
@@ -260,7 +260,7 @@ void zb_zdo_startup_complete(zb_uint8_t param) ZB_CALLBACK
   zb_free_buf(buf);
 }
 
-void data_indication(zb_uint8_t param) ZB_CALLBACK
+void data_indication(zb_uint8_t param) 
 {
   zb_ushort_t i;
   zb_uint8_t *ptr;
@@ -363,7 +363,7 @@ zb_zdo_nwk_addr_resp_head_t;
   zb_zdo_nwk_addr_req(param, zb_get_peer_short_addr_cb);
 }
 
-void zb_get_peer_short_addr_cb(zb_uint8_t param) ZB_CALLBACK
+void zb_get_peer_short_addr_cb(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_zdo_nwk_addr_resp_head_t *resp;
@@ -386,7 +386,7 @@ void zb_get_peer_short_addr_cb(zb_uint8_t param) ZB_CALLBACK
 }
 @endcode
 */
-void zb_zdo_nwk_addr_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT;
+void zb_zdo_nwk_addr_req(zb_uint8_t param, zb_callback_t cb) ;
 
 
 /**
@@ -429,7 +429,7 @@ typedef struct zb_zdo_ieee_addr_req_s
   zb_zdo_ieee_addr_req(ZB_REF_FROM_BUF(buf), ieee_addr_callback);
 }
 
-void ieee_addr_callback(zb_uint8_t param) ZB_CALLBACK
+void ieee_addr_callback(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_zdo_nwk_addr_resp_head_t *resp;
@@ -537,7 +537,7 @@ zb_zdo_power_desc_resp_t;
 }
 
 
-void node_desc_callback(zb_uint8_t param) ZB_CALLBACK
+void node_desc_callback(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_uint8_t *zdp_cmd = ZB_BUF_BEGIN(buf);
@@ -608,7 +608,7 @@ typedef struct zb_zdo_power_desc_req_s
 }
 
 
-void node_power_desc_callback(zb_uint8_t param) ZB_CALLBACK
+void node_power_desc_callback(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_uint8_t *zdp_cmd = ZB_BUF_BEGIN(buf);
@@ -679,7 +679,7 @@ typedef struct zb_zdo_simple_desc_req_s
 }
 
 
-void simple_desc_callback(zb_uint8_t param) ZB_CALLBACK
+void simple_desc_callback(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_uint8_t *zdp_cmd = ZB_BUF_BEGIN(buf);
@@ -761,7 +761,7 @@ zb_zdo_ep_resp_t;
   req->nwk_addr = 0; //coord addr
   zb_zdo_active_ep_req(ZB_REF_FROM_BUF(buf), active_ep_callback);
 
-void active_ep_callback(zb_uint8_t param) ZB_CALLBACK
+void active_ep_callback(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_uint8_t *zdp_cmd = ZB_BUF_BEGIN(buf);
@@ -896,7 +896,7 @@ zb_zdo_match_desc_resp_t;
   zb_zdo_match_desc_req(param, match_desc_callback);
 }
 
-void match_desc_callback(zb_uint8_t param) ZB_CALLBACK
+void match_desc_callback(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_uint8_t *zdp_cmd = ZB_BUF_BEGIN(buf);
@@ -922,7 +922,7 @@ void match_desc_callback(zb_uint8_t param) ZB_CALLBACK
 }
 @endcode
 */
-void zb_zdo_match_desc_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT;
+void zb_zdo_match_desc_req(zb_uint8_t param, zb_callback_t cb) ;
 
 
 /**
@@ -990,7 +990,7 @@ void get_nwk_manager_cb(zb_uint8_t param)
 
 @endcode
  */
-void zb_zdo_system_server_discovery_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT;
+void zb_zdo_system_server_discovery_req(zb_uint8_t param, zb_callback_t cb) ;
 
 
 /*! @} */
@@ -1213,7 +1213,7 @@ zb_zdo_neighbor_table_record_t;
 }
 
 
-void get_lqi_cb(zb_uint8_t param) ZB_CALLBACK
+void get_lqi_cb(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_uint8_t *zdp_cmd = ZB_BUF_BEGIN(buf);
@@ -1243,7 +1243,7 @@ void get_lqi_cb(zb_uint8_t param) ZB_CALLBACK
 
 @endcode
 */
-void zb_zdo_mgmt_lqi_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT;
+void zb_zdo_mgmt_lqi_req(zb_uint8_t param, zb_callback_t cb) ;
 
 
 /**
@@ -1414,7 +1414,7 @@ void zb_zdo_bind_req(zb_uint8_t param, zb_callback_t cb);
 }
 
 
-void unbind_device1_cb(zb_uint8_t param) ZB_CALLBACK
+void unbind_device1_cb(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_zdo_bind_resp_t *bind_resp = (zb_zdo_bind_resp_t*)ZB_BUF_BEGIN(buf);
@@ -1514,7 +1514,7 @@ void leave_callback(zb_uint8_t param)
 }
 @endcode
 */
-void zdo_mgmt_leave_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT;
+void zdo_mgmt_leave_req(zb_uint8_t param, zb_callback_t cb) ;
 
 
 
@@ -1614,7 +1614,7 @@ zb_zdo_mgmt_permit_joining_req_param_t;
   zb_zdo_add_group_req(param, group_add_conf1);
 }
 
-void group_add_conf1(zb_uint8_t param) ZB_CALLBACK
+void group_add_conf1(zb_uint8_t param) 
 {
   zb_apsme_add_group_conf_t *conf = ZB_GET_BUF_PARAM(ZB_BUF_FROM_REF(param), zb_apsme_add_group_conf_t);
   conf->status = status;
@@ -1658,7 +1658,7 @@ typedef struct zb_zdo_device_annce_s
    @param param - index of buffer with primitive parameters. Parameters must be
    put into buffer as data (allocated).
 */
-void zb_zdo_device_annce(zb_uint8_t param) ZB_SDCC_REENTRANT;
+void zb_zdo_device_annce(zb_uint8_t param) ;
 
 
 /**
@@ -1672,35 +1672,35 @@ void zdo_send_device_annce(zb_uint8_t param);
 
    @param param - index of buffer to fill with primitive parameters.
 */
-void zdo_send_desc_resp(zb_uint8_t param) ZB_SDCC_REENTRANT;
+void zdo_send_desc_resp(zb_uint8_t param) ;
 
 /**
    Simple_desc_resp primitive.
 
    @param param - index of buffer to fill with primitive parameters.
 */
-void zdo_send_simple_desc_resp(zb_uint8_t param) ZB_SDCC_REENTRANT;
+void zdo_send_simple_desc_resp(zb_uint8_t param) ;
 
 /**
    Copies node descriptor, taking into accaunt endian
    @param dst_desc - destinition descriptor
    @param dst_desc - source descriptor
 */
-void zb_copy_node_desc(zb_af_node_desc_t *dst_desc, zb_af_node_desc_t *src_desc) ZB_SDCC_REENTRANT;
+void zb_copy_node_desc(zb_af_node_desc_t *dst_desc, zb_af_node_desc_t *src_desc) ;
 
 /**
    Copies node power descriptor, taking into accaunt endian
    @param dst_desc - destinition descriptor
    @param dst_desc - source descriptor
 */
-void zb_copy_power_desc(zb_af_node_power_desc_t *dst_desc, zb_af_node_power_desc_t *src_desc) ZB_SDCC_REENTRANT;
+void zb_copy_power_desc(zb_af_node_power_desc_t *dst_desc, zb_af_node_power_desc_t *src_desc) ;
 
 /**
    Copies simple descriptor, taking into accaunt endian
    @param dst_desc - destinition descriptor
    @param dst_desc - source descriptor
 */
-void zb_copy_simple_desc(zb_af_simple_desc_1_1_t* dst_desc, zb_af_simple_desc_1_1_t*src_desc) ZB_SDCC_REENTRANT;
+void zb_copy_simple_desc(zb_af_simple_desc_1_1_t* dst_desc, zb_af_simple_desc_1_1_t*src_desc) ;
 
 /**
    NWK_addr_req  primitive.
@@ -1708,7 +1708,7 @@ void zb_copy_simple_desc(zb_af_simple_desc_1_1_t* dst_desc, zb_af_simple_desc_1_
    @param param - index of buffer to fill with primitive parameters.
    @param fc - APS FC of the response
 */
-void zdo_device_nwk_addr_res(zb_uint8_t param, zb_uint8_t fc) ZB_SDCC_REENTRANT;
+void zdo_device_nwk_addr_res(zb_uint8_t param, zb_uint8_t fc) ;
 #define ZB_ZDO_SINGLE_DEV_RESPONSE  0x00
 #define ZB_ZDO_EXTENDED_RESPONSE    0x01
 
@@ -1718,19 +1718,19 @@ void zdo_device_nwk_addr_res(zb_uint8_t param, zb_uint8_t fc) ZB_SDCC_REENTRANT;
    @param param - index of buffer to fill with primitive parameters.
    @param fc - APS FC of the response
 */
-void zdo_device_ieee_addr_res(zb_uint8_t param, zb_uint8_t fc) ZB_SDCC_REENTRANT;
+void zdo_device_ieee_addr_res(zb_uint8_t param, zb_uint8_t fc) ;
 
 /**
    Starts energy scan. Fuction is used as argument of ZB_GET_IN_BUF_DELAYED() macro
    @param param - index of buffer
 */
-void zb_start_ed_scan(zb_uint8_t param) ZB_CALLBACK;
+void zb_start_ed_scan(zb_uint8_t param) ;
 
 /**
    Sends update notify command
    @param param - index of buffer
 */
-void zb_zdo_nwk_upd_notify(zb_uint8_t param) ZB_CALLBACK;
+void zb_zdo_nwk_upd_notify(zb_uint8_t param) ;
 
 /**
    Active_EP_res primitive.
@@ -1753,7 +1753,7 @@ void zdo_match_desc_res(zb_uint8_t param);
 
    @param param - buffer.
 */
-void zb_zdo_poll_parent(zb_uint8_t param) ZB_CALLBACK;
+void zb_zdo_poll_parent(zb_uint8_t param) ;
 
 
 /**
@@ -1773,31 +1773,31 @@ void zb_zdo_reschedule_poll_parent(zb_uint16_t timeout);
    Performs channel interference reporting and resolution
    @param param - unused
 */
-void zb_zdo_check_fails(zb_uint8_t param) ZB_CALLBACK;
+void zb_zdo_check_fails(zb_uint8_t param) ;
 
 /**
    Timer callback to set limit for channel check action
    @param param - unused
  */
-void zb_zdo_channel_check_timer_cb(zb_uint8_t param) ZB_CALLBACK;
+void zb_zdo_channel_check_timer_cb(zb_uint8_t param) ;
 
 /**
    Callback to get ED scan result during channel check
    @param param - index of buffer with scan results
  */
-void zb_zdo_channel_check_scan_result(zb_uint8_t param) ZB_CALLBACK;
+void zb_zdo_channel_check_scan_result(zb_uint8_t param) ;
 
 /**
    Callback to finish channel check action, is called on
    Mgmt_NWK_Update_notify acknowledgement
    @param param - index of buffer with results
 */
-void zb_zdo_channel_check_finish_cb(zb_uint8_t param) ZB_CALLBACK;
+void zb_zdo_channel_check_finish_cb(zb_uint8_t param) ;
 
 /**
    initiate rejoin tothe same PAN
  */
-zb_ret_t zdo_initiate_rejoin(zb_buf_t *buf) ZB_SDCC_REENTRANT;
+zb_ret_t zdo_initiate_rejoin(zb_buf_t *buf) ;
 
 
 /**
@@ -1805,20 +1805,20 @@ zb_ret_t zdo_initiate_rejoin(zb_buf_t *buf) ZB_SDCC_REENTRANT;
 
    @param param - index of buffer with request
  */
-void zb_zdo_mgmt_nwk_update_handler(zb_uint8_t param) ZB_SDCC_REENTRANT;
+void zb_zdo_mgmt_nwk_update_handler(zb_uint8_t param) ;
 
 
 /**
    Performs channel change procedure, channel manager side
    @param param - index of buffer with mgmt_nwk_update_notify response
  */
-void zdo_change_channel(zb_uint8_t param) ZB_SDCC_REENTRANT;
+void zdo_change_channel(zb_uint8_t param) ;
 
 
 /**
    Update device information, when both address are known.
  */
-zb_neighbor_tbl_ent_t *zdo_device_info_upd(zb_buf_t *buf, zb_ieee_addr_t ieee_addr, zb_uint16_t addr) ZB_SDCC_REENTRANT;
+zb_neighbor_tbl_ent_t *zdo_device_info_upd(zb_buf_t *buf, zb_ieee_addr_t ieee_addr, zb_uint16_t addr) ;
 
 /**
    Bind/Unbind response primitive
@@ -1826,13 +1826,13 @@ zb_neighbor_tbl_ent_t *zdo_device_info_upd(zb_buf_t *buf, zb_ieee_addr_t ieee_ad
    @param param - index of buffer with request
    @param bind - true for bind, false for unbind
  */
-void zb_zdo_bind_unbind_res(zb_uint8_t param, zb_bool_t bind) ZB_SDCC_REENTRANT;
+void zb_zdo_bind_unbind_res(zb_uint8_t param, zb_bool_t bind) ;
 
 /**
    Sends 2.4.4.3.2 Mgmt_Lqi_rsp
    @param param - index of buffer with Lqi request
  */
-void zdo_lqi_resp(zb_uint8_t param) ZB_SDCC_REENTRANT;
+void zdo_lqi_resp(zb_uint8_t param) ;
 
 
 /**
@@ -1863,20 +1863,20 @@ void zdo_system_server_discovery_res(zb_uint8_t param);
    @param param - index of buffer with request
    @param cp    - user's function to call when got response from the remote.
  */
-void zb_end_device_bind_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT;
+void zb_end_device_bind_req(zb_uint8_t param, zb_callback_t cb) ;
 
 /**
    Sends 2.4.4.2.1 End_Device_Bind_rsp command
    @param param - index of buffer to use for i/o
    @param status - End_Device_Bind_req command status
 */
-void zb_zdo_end_device_bind_resp(zb_uint8_t param, zb_zdp_status_t status) ZB_SDCC_REENTRANT;
+void zb_zdo_end_device_bind_resp(zb_uint8_t param, zb_zdp_status_t status) ;
 
 /**
    Handle end_device_bind_req command
    @param param - index of buffer with request
  */
-void zb_zdo_end_device_bind_handler(zb_uint8_t param) ZB_SDCC_REENTRANT;
+void zb_zdo_end_device_bind_handler(zb_uint8_t param) ;
 
 /**
    Sends nlme reset command
@@ -1890,7 +1890,7 @@ void zb_zdo_end_device_bind_handler(zb_uint8_t param) ZB_SDCC_REENTRANT;
    settings prior to the call.
    @param cb - callback to be called after reset confirm
  */
-void zb_zdo_reset(zb_uint8_t param, zb_uint8_t warm_start, zb_callback_t cb) ZB_SDCC_REENTRANT;
+void zb_zdo_reset(zb_uint8_t param, zb_uint8_t warm_start, zb_callback_t cb) ;
 
 
 /**
@@ -1898,7 +1898,7 @@ void zb_zdo_reset(zb_uint8_t param, zb_uint8_t warm_start, zb_callback_t cb) ZB_
 
    @param param - buffer with request
  */
-void zdo_mgmt_leave_srv(zb_uint8_t param) ZB_SDCC_REENTRANT;
+void zdo_mgmt_leave_srv(zb_uint8_t param) ;
 
 /**
    Try to send mgmt_leave_rsp if somebody waiting for it.
@@ -1914,7 +1914,7 @@ void zdo_mgmt_leave_srv(zb_uint8_t param) ZB_SDCC_REENTRANT;
 
    @return TRUE if resp sent, FALSE otherwhise
  */
-zb_bool_t zdo_try_send_mgmt_leave_rsp(zb_uint8_t param, zb_uint8_t status, zb_uint8_t will_leave) ZB_SDCC_REENTRANT;
+zb_bool_t zdo_try_send_mgmt_leave_rsp(zb_uint8_t param, zb_uint8_t status, zb_uint8_t will_leave) ;
 
 /**
    Try to complete LEAVE after mgmt_leave_rsp send confirm
@@ -1933,20 +1933,20 @@ zb_bool_t zdo_try_mgmt_leave_complete(zb_uint8_t param);
 
    @return nothing
  */
-void zb_zdo_mgmt_permit_joining_handle(zb_uint8_t param) ZB_CALLBACK;
+void zb_zdo_mgmt_permit_joining_handle(zb_uint8_t param) ;
 
 /**
    sends 2.4.3.3.7 Mgmt_Permit_Joining_req
    @param param - index of buffer with request
    @param cp    - user's function to call when got response from the remote.
  */
-void zb_zdo_mgmt_permit_joining_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT;
+void zb_zdo_mgmt_permit_joining_req(zb_uint8_t param, zb_callback_t cb) ;
 
 /*! @} */
 /*! \endcond */
 
 
-void zb_zdo_mgmt_nwk_update_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT;
+void zb_zdo_mgmt_nwk_update_req(zb_uint8_t param, zb_callback_t cb) ;
 
 #ifndef ZB_LITTLE_ENDIAN
 #define ZB_LETOH16_XOR(val) \

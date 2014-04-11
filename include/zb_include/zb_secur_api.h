@@ -72,7 +72,7 @@ void zb_secur_setup_preconfigured_key(zb_uint8_t *key, zb_uint8_t i);
    @param param - buffer with single parameter - short broadcast address. Valid
           values are 0xffff, 0xfffd
  */
-void zb_secur_send_nwk_key_update_br(zb_uint8_t param) ZB_CALLBACK;
+void zb_secur_send_nwk_key_update_br(zb_uint8_t param) ;
 
 
 
@@ -91,7 +91,7 @@ void zb_secur_send_nwk_key_update_br(zb_uint8_t param) ZB_CALLBACK;
    @param param - packet buffer with single parameter - broadcast address. If 0,
           send unicast.
  */
-void zb_secur_send_nwk_key_switch(zb_uint8_t param) ZB_CALLBACK;
+void zb_secur_send_nwk_key_switch(zb_uint8_t param) ;
 
 /**
    Clear preconfigures key (key number 0)

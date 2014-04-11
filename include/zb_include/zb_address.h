@@ -91,7 +91,7 @@ typedef zb_ushort_t zb_address_ieee_ref_t;
 /**
    Calculate none zero bits in 8-bit digit
 */
-zb_uint8_t magic_bitcount8(zb_uint8_t b) ZB_CALLBACK;
+zb_uint8_t magic_bitcount8(zb_uint8_t b) ;
 
 #define ZB_CALC_NONE_ZERO_BITS_IN_BIT_VECTOR(vector, size, result)  \
 do                                                                  \
@@ -134,7 +134,7 @@ while (0)
   && (one).device_id[3] == (two).device_id[3]             \
   && (one).device_id[4] == (two).device_id[4] )
 */
-zb_bool_t zb_address_compressed_cmp(zb_ieee_addr_compressed_t *one, zb_ieee_addr_compressed_t *two) ZB_CALLBACK;
+zb_bool_t zb_address_compressed_cmp(zb_ieee_addr_compressed_t *one, zb_ieee_addr_compressed_t *two) ;
 #define ZB_ADDRESS_COMPRESSED_CMP(one, two) zb_address_compressed_cmp(&one, &two)
 
 #define ZB_ADDRESS_COMPRESSED_COPY(dest, src)                       \
@@ -152,7 +152,7 @@ zb_bool_t zb_address_compressed_cmp(zb_ieee_addr_compressed_t *one, zb_ieee_addr
 
    @return RET_OK - when success, error code otherwise.
  */
-zb_ret_t zb_address_set_pan_id(zb_uint16_t short_pan_id, zb_ext_pan_id_t pan_id, zb_address_pan_id_ref_t *ref) ZB_CALLBACK;
+zb_ret_t zb_address_set_pan_id(zb_uint16_t short_pan_id, zb_ext_pan_id_t pan_id, zb_address_pan_id_ref_t *ref) ;
 
 
 /**
@@ -163,7 +163,7 @@ zb_ret_t zb_address_set_pan_id(zb_uint16_t short_pan_id, zb_ext_pan_id_t pan_id,
 
    @return RET_OK - when success, error code otherwise.
  */
-void zb_address_get_pan_id(zb_address_pan_id_ref_t pan_id_ref, zb_ext_pan_id_t pan_id) ZB_CALLBACK;
+void zb_address_get_pan_id(zb_address_pan_id_ref_t pan_id_ref, zb_ext_pan_id_t pan_id) ;
 
 /**
    Get pan id reference by extended pan id.
@@ -173,7 +173,7 @@ void zb_address_get_pan_id(zb_address_pan_id_ref_t pan_id_ref, zb_ext_pan_id_t p
 
    @return RET_OK - when success, error code otherwise.
  */
-zb_ret_t zb_address_get_pan_id_ref(zb_ext_pan_id_t pan_id, zb_address_pan_id_ref_t *ref) ZB_CALLBACK;
+zb_ret_t zb_address_get_pan_id_ref(zb_ext_pan_id_t pan_id, zb_address_pan_id_ref_t *ref) ;
 
 /**
    Get short pan id by reference.
@@ -183,7 +183,7 @@ zb_ret_t zb_address_get_pan_id_ref(zb_ext_pan_id_t pan_id, zb_address_pan_id_ref
 
    @return RET_OK - when success, error code otherwise.
  */
-void zb_address_get_short_pan_id(zb_address_pan_id_ref_t pan_id_ref, zb_uint16_t *pan_id_p) ZB_CALLBACK;
+void zb_address_get_short_pan_id(zb_address_pan_id_ref_t pan_id_ref, zb_uint16_t *pan_id_p) ;
 
 
 /**
@@ -194,7 +194,7 @@ void zb_address_get_short_pan_id(zb_address_pan_id_ref_t pan_id_ref, zb_uint16_t
 
    @return ZB_TRUE if addresses are equal, ZB_FALSE otherwhise
  */
-zb_bool_t zb_address_cmp_pan_id_by_ref(zb_address_pan_id_ref_t pan_id_ref, zb_ext_pan_id_t pan_id) ZB_CALLBACK;
+zb_bool_t zb_address_cmp_pan_id_by_ref(zb_address_pan_id_ref_t pan_id_ref, zb_ext_pan_id_t pan_id) ;
 
 /**
    Update long/short address pair, create if not exist, optionally lock.
@@ -211,7 +211,7 @@ zb_bool_t zb_address_cmp_pan_id_by_ref(zb_address_pan_id_ref_t pan_id_ref, zb_ex
 
    @return RET_OK or error code
  */
-zb_ret_t zb_address_update(zb_ieee_addr_t ieee_address, zb_uint16_t short_address, zb_bool_t lock, zb_address_ieee_ref_t *ref_p) ZB_CALLBACK;
+zb_ret_t zb_address_update(zb_ieee_addr_t ieee_address, zb_uint16_t short_address, zb_bool_t lock, zb_address_ieee_ref_t *ref_p) ;
 
 
 /**
@@ -223,7 +223,7 @@ zb_ret_t zb_address_update(zb_ieee_addr_t ieee_address, zb_uint16_t short_addres
    @param short_address_p - (out) short address
    @param ref - address reference
  */
-void zb_address_by_ref(zb_ieee_addr_t ieee_address, zb_uint16_t *short_address_p, zb_address_ieee_ref_t ref) ZB_CALLBACK;
+void zb_address_by_ref(zb_ieee_addr_t ieee_address, zb_uint16_t *short_address_p, zb_address_ieee_ref_t ref) ;
 
 /**
    Get ieee address by address ref
@@ -232,7 +232,7 @@ void zb_address_by_ref(zb_ieee_addr_t ieee_address, zb_uint16_t *short_address_p
    @param ieee_address  - (out) long address
    @param ref - address reference
  */
-void zb_address_ieee_by_ref(zb_ieee_addr_t ieee_address, zb_address_ieee_ref_t ref) ZB_CALLBACK;
+void zb_address_ieee_by_ref(zb_ieee_addr_t ieee_address, zb_address_ieee_ref_t ref) ;
 
 
 /**
@@ -242,7 +242,7 @@ void zb_address_ieee_by_ref(zb_ieee_addr_t ieee_address, zb_address_ieee_ref_t r
    @param short_address_p  - (out) short address
    @param ref - address reference
  */
-void zb_address_short_by_ref(zb_uint16_t *short_address_p, zb_address_ieee_ref_t ref) ZB_CALLBACK;
+void zb_address_short_by_ref(zb_uint16_t *short_address_p, zb_address_ieee_ref_t ref) ;
 
 /**
    Get address ref by long address, optionaly create if not exist, optionally lock.
@@ -257,7 +257,7 @@ void zb_address_short_by_ref(zb_uint16_t *short_address_p, zb_address_ieee_ref_t
 
    @return RET_OK or error code
  */
-zb_ret_t zb_address_by_ieee(zb_ieee_addr_t ieee, zb_bool_t create, zb_bool_t lock, zb_address_ieee_ref_t *ref_p) ZB_CALLBACK;
+zb_ret_t zb_address_by_ieee(zb_ieee_addr_t ieee, zb_bool_t create, zb_bool_t lock, zb_address_ieee_ref_t *ref_p) ;
 
 
 /**
@@ -267,7 +267,7 @@ zb_ret_t zb_address_by_ieee(zb_ieee_addr_t ieee, zb_bool_t create, zb_bool_t loc
 
    @return short address if ok, -1 otherwhise.
  */
-zb_uint16_t zb_address_short_by_ieee(zb_ieee_addr_t ieee_address) ZB_CALLBACK;
+zb_uint16_t zb_address_short_by_ieee(zb_ieee_addr_t ieee_address) ;
 
 
 /**
@@ -278,7 +278,7 @@ zb_uint16_t zb_address_short_by_ieee(zb_ieee_addr_t ieee_address) ZB_CALLBACK;
 
    @return RET_OK or RET_NOT_FOUND
  */
-zb_ret_t zb_address_ieee_by_short(zb_uint16_t short_addr, zb_ieee_addr_t ieee_address) ZB_CALLBACK;
+zb_ret_t zb_address_ieee_by_short(zb_uint16_t short_addr, zb_ieee_addr_t ieee_address) ;
 
 
 
@@ -295,7 +295,7 @@ zb_ret_t zb_address_ieee_by_short(zb_uint16_t short_addr, zb_ieee_addr_t ieee_ad
 
    @return RET_OK or error code
  */
-zb_ret_t zb_address_by_short(zb_uint16_t short_address, zb_bool_t create, zb_bool_t lock, zb_address_ieee_ref_t *ref_p) ZB_CALLBACK;
+zb_ret_t zb_address_by_short(zb_uint16_t short_address, zb_bool_t create, zb_bool_t lock, zb_address_ieee_ref_t *ref_p) ;
 
 
 /**
@@ -305,7 +305,7 @@ zb_ret_t zb_address_by_short(zb_uint16_t short_address, zb_bool_t create, zb_boo
    @param ref - ieee/network address pair reference
 
  */
-void zb_address_lock(zb_address_ieee_ref_t ref) ZB_CALLBACK;
+void zb_address_lock(zb_address_ieee_ref_t ref) ;
 
 
 /**
@@ -315,14 +315,14 @@ void zb_address_lock(zb_address_ieee_ref_t ref) ZB_CALLBACK;
    @param ref - ieee/network address pair reference
 
  */
-void zb_address_unlock(zb_address_ieee_ref_t ref) ZB_CALLBACK;
+void zb_address_unlock(zb_address_ieee_ref_t ref) ;
 
 /**
    Delete address.
 
    @param ref - ieee/network address pair reference
  */
-void zb_address_delete(zb_address_ieee_ref_t ref) ZB_CALLBACK;
+void zb_address_delete(zb_address_ieee_ref_t ref) ;
 
 
 /**
@@ -330,7 +330,7 @@ void zb_address_delete(zb_address_ieee_ref_t ref) ZB_CALLBACK;
 
    Function doesn't return values
  */
-void zb_address_deinit() ZB_CALLBACK;
+void zb_address_deinit() ;
 
 
 /**
@@ -341,7 +341,7 @@ void zb_address_deinit() ZB_CALLBACK;
    @param address - uncompressed address
    @param compressed_address - (out) compressed address
  */
-void zb_ieee_addr_compress(zb_ieee_addr_t address, zb_ieee_addr_compressed_t *compressed_address) ZB_CALLBACK;
+void zb_ieee_addr_compress(zb_ieee_addr_t address, zb_ieee_addr_compressed_t *compressed_address) ;
 
 
 /**
@@ -352,7 +352,7 @@ void zb_ieee_addr_compress(zb_ieee_addr_t address, zb_ieee_addr_compressed_t *co
    @param address - (out) uncompressed address
    @param compressed_address - compressed address
  */
-void zb_ieee_addr_decompress(zb_ieee_addr_t address, zb_ieee_addr_compressed_t *compressed_address) ZB_CALLBACK;
+void zb_ieee_addr_decompress(zb_ieee_addr_t address, zb_ieee_addr_compressed_t *compressed_address) ;
 
 /*! @} */
 /*! \endcond */

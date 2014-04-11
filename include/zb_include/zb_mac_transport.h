@@ -124,12 +124,12 @@ zb_mac_transport_hdr_t;
    @return nothing.
  */
 #ifndef ZB_TRANSPORT_LINUX_SPIDEV
-void zb_mac_transport_init(zb_char_t *rpipe_path, zb_char_t *wpipe_path) ZB_SDCC_REENTRANT;
+void zb_mac_transport_init(zb_char_t *rpipe_path, zb_char_t *wpipe_path) ;
 #else
-void zb_mac_transport_init() ZB_SDCC_REENTRANT;
+void zb_mac_transport_init() ;
 #endif
 #else
-void zb_mac_transport_init() ZB_SDCC_REENTRANT;
+void zb_mac_transport_init() ;
 #endif
 
 /**
@@ -158,7 +158,7 @@ void zb_mac_transport_start_recv(zb_buf_t *buf, zb_short_t bytes_to_recv);
 
 
 #if defined ZB_TRAFFIC_DUMP_ON && !defined ZB_TRANSPORT_OWN_TRAFFIC_DUMP_ON
-void zb_mac_traffic_dump(zb_buf_t *buf, zb_bool_t is_w) ZB_SDCC_REENTRANT;
+void zb_mac_traffic_dump(zb_buf_t *buf, zb_bool_t is_w) ;
 #define ZB_DUMP_INCOMING_DATA(buf) zb_mac_traffic_dump((buf), ZB_FALSE)
 #define ZB_DUMP_OUTGOING_DATA(buf) zb_mac_traffic_dump((buf), ZB_TRUE)
 #else

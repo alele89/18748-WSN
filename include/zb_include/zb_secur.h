@@ -392,7 +392,7 @@ typedef struct zb_apsme_update_device_pkt_s
 } ZB_PACKED_STRUCT zb_apsme_update_device_pkt_t;
 
 
-void zb_apsme_transport_key_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsme_transport_key_request(zb_uint8_t param) ;
 
 
 /**
@@ -445,7 +445,7 @@ typedef struct zb_apsme_switch_key_req_s
 
    @param param - packet buffer filled bu \see zb_apsme_switch_key_req_t
  */
-void zb_apsme_switch_key_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsme_switch_key_request(zb_uint8_t param) ;
 
 
 /**
@@ -494,7 +494,7 @@ typedef struct zb_apsme_remove_device_ind_s
   zb_ieee_addr_t child_address;
 } ZB_PACKED_STRUCT zb_apsme_remove_device_ind_t;
 
-void zb_secur_apsme_remove_device(zb_uint8_t param) ZB_CALLBACK;
+void zb_secur_apsme_remove_device(zb_uint8_t param) ;
 void zb_aps_in_remove_device(zb_uint8_t param);
 
 
@@ -524,11 +524,11 @@ typedef struct zb_apsme_request_key_ind_s
   zb_ieee_addr_t partner_address;
 } ZB_PACKED_STRUCT zb_apsme_request_key_ind_t;
 
-void zb_secur_apsme_request_key(zb_uint8_t param) ZB_CALLBACK;
+void zb_secur_apsme_request_key(zb_uint8_t param) ;
 void zb_aps_in_request_key(zb_uint8_t param);
 
 
-void zb_apsme_update_device_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsme_update_device_request(zb_uint8_t param) ;
 
 /**
    Initialize Trust Center functionality
@@ -546,7 +546,7 @@ void secur_generate_keys();
    Authenticate child after join
  */
 
-void secur_authenticate_child(zb_uint8_t param) ZB_CALLBACK;
+void secur_authenticate_child(zb_uint8_t param) ;
 
 
 /**
@@ -577,7 +577,7 @@ typedef struct zb_apsme_transport_key_indication_s
 /**
    APSME-TRANSPORT-KEY.indication primitive
  */
-void zb_apsme_transport_key_indication(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsme_transport_key_indication(zb_uint8_t param) ;
 
 
 void secur_nwk_key_switch(zb_uint8_t key_number);
@@ -585,7 +585,7 @@ void secur_nwk_key_switch(zb_uint8_t key_number);
 /**
    Switch nwk key and send it via broadcast
  */
-void zb_secur_switch_nwk_key_br(zb_uint8_t param) ZB_CALLBACK;
+void zb_secur_switch_nwk_key_br(zb_uint8_t param) ;
 
 /**
    Return true if network key is empty (all zeroes).
@@ -602,13 +602,13 @@ zb_bool_t secur_nwk_key_is_empty(zb_uint8_t *key);
 zb_bool_t secur_has_preconfigured_key();
 
 
-void zb_apsme_remove_device_indication(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsme_remove_device_indication(zb_uint8_t param) ;
 
 
-void zb_apsme_request_key_indication(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsme_request_key_indication(zb_uint8_t param) ;
 
 
-void zb_apsme_switch_key_indication(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsme_switch_key_indication(zb_uint8_t param) ;
 
 /*! @} */
 /*! \endcond */

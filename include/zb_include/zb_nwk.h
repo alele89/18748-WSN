@@ -291,9 +291,9 @@ typedef struct zb_nlde_data_req_s
   }
 @endcode
  */
-void zb_nlde_data_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlde_data_request(zb_uint8_t param) ;
 
-void call_status_indication(zb_uint8_t param) ZB_CALLBACK;
+void call_status_indication(zb_uint8_t param) ;
 
 /**
    Arguments of the NLME-STATUS.request routine.
@@ -345,7 +345,7 @@ zb_nlme_send_status_t;
 
 @endcode
  */
-void zb_nlme_send_status(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_send_status(zb_uint8_t param) ;
 
 
 /*! @} */
@@ -375,7 +375,7 @@ zb_nlme_get_request_t;
    zb_nlme_get_request_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_get_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_get_request(zb_uint8_t param) ;
 
 
 /**
@@ -401,7 +401,7 @@ zb_nlme_get_confirm_t;
    zb_nlme_get_confirm_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_get_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_get_confirm(zb_uint8_t param) ;
 
 
 /**
@@ -424,7 +424,7 @@ zb_nlme_set_request_t;
    zb_nlme_set_request_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_set_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_set_request(zb_uint8_t param) ;
 
 
 
@@ -449,7 +449,7 @@ zb_nlme_set_confirm_t;
    zb_nlme_set_confirm_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_set_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_set_confirm(zb_uint8_t param) ;
 
 /*! @} */
 
@@ -484,7 +484,7 @@ void zb_nlme_set_confirm(zb_uint8_t param) ZB_CALLBACK;
                      primitive.
           * handle - The handle associated with the NSDU being confirmed.
  */
-void zb_nlde_data_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlde_data_confirm(zb_uint8_t param) ;
 
 
 /**
@@ -501,7 +501,7 @@ void zb_nlde_data_confirm(zb_uint8_t param) ZB_CALLBACK;
    Other fields got from MAC nsdu by macros
 
  */
-void zb_nlde_data_indication(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlde_data_indication(zb_uint8_t param) ;
 
 
 /**
@@ -935,7 +935,7 @@ zb_nlme_network_discovery_request_t;
    zb_nlme_network_discovery_request_t
    @return nothing
  */
-void zb_nlme_network_discovery_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_network_discovery_request(zb_uint8_t param) ;
 
 
 /**
@@ -989,7 +989,7 @@ zb_nlme_network_discovery_confirm_t;
    where it should begin in parameter.
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_network_discovery_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_network_discovery_confirm(zb_uint8_t param) ;
 
 
 /**
@@ -1018,7 +1018,7 @@ zb_nlme_network_formation_request_t;
    zb_nlme_network_formation_request_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_network_formation_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_network_formation_request(zb_uint8_t param) ;
 
 
 
@@ -1041,7 +1041,7 @@ zb_nlme_network_formation_confirm_t;
    zb_nlme_network_formation_confirm_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_network_formation_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_network_formation_confirm(zb_uint8_t param) ;
 
 
 /**
@@ -1064,7 +1064,7 @@ zb_nlme_permit_joining_request_t;
    zb_nlme_network_formation_request_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_permit_joining_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_permit_joining_request(zb_uint8_t param) ;
 
 
 /**
@@ -1086,7 +1086,7 @@ zb_nlme_permit_joining_confirm_t;
    zb_nlme_permit_joining_confirm_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_permit_joining_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_permit_joining_confirm(zb_uint8_t param) ;
 
 
 /**
@@ -1114,7 +1114,7 @@ zb_nlme_start_router_request_t;
    zb_nlme_start_router_request_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_start_router_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_start_router_request(zb_uint8_t param) ;
 
 
 /**
@@ -1136,7 +1136,7 @@ zb_nlme_start_router_confirm_t;
    zb_nlme_start_router_confirm_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_start_router_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_start_router_confirm(zb_uint8_t param) ;
 
 
 
@@ -1160,7 +1160,7 @@ zb_nlme_ed_scan_request_t;
    zb_nlme_ed_scan_request_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_ed_scan(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_ed_scan(zb_uint8_t param) ;
 
 
 /**
@@ -1202,7 +1202,7 @@ zb_nlme_rejoin_method_t;
    zb_nlme_ed_scan_confirm_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_ed_scan_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_ed_scan_confirm(zb_uint8_t param) ;
 
 /**
    Arguments of the NLME-JOIN.request routine.
@@ -1230,7 +1230,7 @@ zb_nlme_join_request_t;
    zb_nlme_join_request_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_join_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_join_request(zb_uint8_t param) ;
 
 
 /**
@@ -1258,7 +1258,7 @@ zb_nlme_join_indication_t;
    zb_nlme_join_indication_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_join_indication(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_join_indication(zb_uint8_t param) ;
 
 
 /**
@@ -1284,7 +1284,7 @@ zb_nlme_join_confirm_t;
    zb_nlme_join_confirm_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_join_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_join_confirm(zb_uint8_t param) ;
 
 
 /**
@@ -1308,7 +1308,7 @@ zb_nlme_direct_join_request_t;
    zb_nlme_direct_join_request_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_direct_join_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_direct_join_request(zb_uint8_t param) ;
 
 
 /**
@@ -1331,7 +1331,7 @@ zb_nlme_direct_join_confirm_t;
    zb_nlme_direct_join_confirm_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_direct_join_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_direct_join_confirm(zb_uint8_t param) ;
 
 
 /**
@@ -1377,7 +1377,7 @@ zb_nlme_leave_request_t;
    zb_nlme_leave_request_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_leave_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_leave_request(zb_uint8_t param) ;
 
 
 /**
@@ -1401,7 +1401,7 @@ zb_nlme_leave_indication_t;
    zb_nlme_leave_indication_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_leave_indication(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_leave_indication(zb_uint8_t param) ;
 
 
 /**
@@ -1424,10 +1424,10 @@ zb_nlme_leave_confirm_t;
    zb_nlme_leave_confirm_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_leave_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_leave_confirm(zb_uint8_t param) ;
 
 
-void zb_nwk_do_leave(zb_uint8_t param, zb_uint8_t rejoin) ZB_SDCC_REENTRANT;
+void zb_nwk_do_leave(zb_uint8_t param, zb_uint8_t rejoin) ;
 
 
 void zb_nwk_forget_device(zb_address_ieee_ref_t addr_ref);
@@ -1451,7 +1451,7 @@ zb_nlme_reset_request_t;
    zb_nlme_reset_request_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_reset_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_reset_request(zb_uint8_t param) ;
 
 
 /**
@@ -1473,7 +1473,7 @@ zb_nlme_reset_confirm_t;
    zb_nlme_reset_confirm_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_reset_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_reset_confirm(zb_uint8_t param) ;
 
 
 /**
@@ -1496,7 +1496,7 @@ zb_nlme_sync_request_t;
    zb_nlme_sync_request_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_sync_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_sync_request(zb_uint8_t param) ;
 
 
 /**
@@ -1507,7 +1507,7 @@ void zb_nlme_sync_request(zb_uint8_t param) ZB_CALLBACK;
    @param v_buf - empty
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_sync_loss_indication(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_sync_loss_indication(zb_uint8_t param) ;
 
 
 /**
@@ -1529,7 +1529,7 @@ zb_nlme_sync_confirm_t;
    zb_nlme_sync_confirm_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_sync_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_sync_confirm(zb_uint8_t param) ;
 
 
 /**
@@ -1541,7 +1541,7 @@ void zb_nlme_sync_confirm(zb_uint8_t param) ZB_CALLBACK;
    zb_nlme_status_indication_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_status_indication(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_status_indication(zb_uint8_t param) ;
 
 
 /**
@@ -1568,7 +1568,7 @@ zb_nlme_route_discovery_request_t;
    zb_nlme_route_discovery_request_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_route_discovery_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_route_discovery_request(zb_uint8_t param) ;
 
 
 /**
@@ -1590,7 +1590,7 @@ zb_nlme_route_discovery_confirm_t;
    zb_nlme_route_discovery_confirm_t
    @return RET_OK on success, error code otherwise.
  */
-void zb_nlme_route_discovery_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_route_discovery_confirm(zb_uint8_t param) ;
 
 
 /**
@@ -1601,11 +1601,11 @@ void zb_nlme_route_discovery_confirm(zb_uint8_t param) ZB_CALLBACK;
  */
 void zb_nwk_update_beacon_payload();
 
-void zb_mlme_associate_indication(zb_uint8_t param) ZB_CALLBACK;
-void zb_mlme_associate_confirm(zb_uint8_t param) ZB_CALLBACK;
-void zb_mlme_comm_status_indication(zb_uint8_t param) ZB_CALLBACK;
-void zb_mlme_orphan_indication(zb_uint8_t param) ZB_CALLBACK;
-void zb_nlme_ed_scan_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_mlme_associate_indication(zb_uint8_t param) ;
+void zb_mlme_associate_confirm(zb_uint8_t param) ;
+void zb_mlme_comm_status_indication(zb_uint8_t param) ;
+void zb_mlme_orphan_indication(zb_uint8_t param) ;
+void zb_nlme_ed_scan_request(zb_uint8_t param) ;
 
 
 /**

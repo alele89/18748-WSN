@@ -94,7 +94,7 @@ zb_ret_t zb_nwk_secure_frame(zb_buf_t *src, zb_uint_t mac_hdr_size, zb_buf_t *ds
 }
 
 
-void zb_zdo_check_fails(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_check_fails(zb_uint8_t param) 
 {
   if ( param )
   {
@@ -103,7 +103,7 @@ void zb_zdo_check_fails(zb_uint8_t param) ZB_CALLBACK
 }
 
 #ifndef USE_ZB_MLME_RESET_CONFIRM
-void zb_mlme_reset_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_reset_confirm(zb_uint8_t param) 
 {
   zb_free_buf(ZB_BUF_FROM_REF(param));
 }
@@ -111,7 +111,7 @@ void zb_mlme_reset_confirm(zb_uint8_t param) ZB_CALLBACK
 
 
 #ifndef USE_ZB_MLME_SET_CONFIRM
-void zb_mlme_set_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_set_confirm(zb_uint8_t param) 
 {
   zb_free_buf(ZB_BUF_FROM_REF(param));
 }
@@ -119,7 +119,7 @@ void zb_mlme_set_confirm(zb_uint8_t param) ZB_CALLBACK
 
 
 #ifndef USE_ZB_MLME_START_CONFIRM
-void zb_mlme_start_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_start_confirm(zb_uint8_t param) 
 {
   zb_free_buf(ZB_BUF_FROM_REF(param));
 }
@@ -127,7 +127,7 @@ void zb_mlme_start_confirm(zb_uint8_t param) ZB_CALLBACK
 
 
 #ifndef USE_ZB_MCPS_DATA_CONFIRM
-void zb_mcps_data_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_mcps_data_confirm(zb_uint8_t param) 
 {
   zb_free_buf(ZB_BUF_FROM_REF(param));
 }
@@ -135,14 +135,14 @@ void zb_mcps_data_confirm(zb_uint8_t param) ZB_CALLBACK
 
 
 #ifndef USE_ZB_MLME_BEACON_NOTIFY_INDICATION
-void zb_mlme_beacon_notify_indication(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_beacon_notify_indication(zb_uint8_t param) 
 {
   zb_free_buf(ZB_BUF_FROM_REF(param));
 }
 #endif
 
 #ifndef USE_ZB_MLME_POLL_CONFIRM
-void zb_mlme_poll_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_poll_confirm(zb_uint8_t param) 
 {
   zb_free_buf(ZB_BUF_FROM_REF(param));
 }
@@ -157,35 +157,35 @@ void zb_mlme_orphan_indication(zb_uint8_t param)
 #endif
 
 #ifndef USE_ZB_MLME_ASSOCIATE_CONFIRM
-void zb_mlme_associate_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_associate_confirm(zb_uint8_t param) 
 {
   zb_free_buf(ZB_BUF_FROM_REF(param));
 }
 #endif
 
 #ifndef USE_ZB_MLME_ASSOCIATE_INDICATION
-void zb_mlme_associate_indication(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_associate_indication(zb_uint8_t param) 
 {
   zb_free_buf(ZB_BUF_FROM_REF(param));
 }
 #endif
 
 #ifndef USE_ZB_MLME_SCAN_CONFIRM
-void zb_mlme_scan_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_scan_confirm(zb_uint8_t param) 
 {
   zb_free_buf(ZB_BUF_FROM_REF(param));
 }
 #endif
 
 #ifndef USE_ZB_MCPS_DATA_INDICATION
-void zb_mcps_data_indication(zb_uint8_t param) ZB_CALLBACK
+void zb_mcps_data_indication(zb_uint8_t param) 
 {
   zb_free_buf(ZB_BUF_FROM_REF(param));
 }
 #endif
 
 #ifndef USE_ZB_MLME_COMM_STATUS_INDICATION
-void zb_mlme_comm_status_indication(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_comm_status_indication(zb_uint8_t param) 
 {
   zb_free_buf(ZB_BUF_FROM_REF(param));
 }
@@ -193,7 +193,7 @@ void zb_mlme_comm_status_indication(zb_uint8_t param) ZB_CALLBACK
 
 
 #ifndef USE_ZB_MLME_PURGE_CONFIRM
-void zb_mlme_purge_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_purge_confirm(zb_uint8_t param) 
 {
   zb_free_buf(ZB_BUF_FROM_REF(param));
 }

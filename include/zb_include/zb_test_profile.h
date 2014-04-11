@@ -145,15 +145,15 @@ typedef struct zb_buffer_test_response_param_s
 ZB_PACKED_STRUCT
 zb_buffer_test_response_param_t;
 
-void zb_test_profile_indication(zb_uint8_t param) ZB_CALLBACK;
-void tp_send_counted_packet(zb_uint8_t param) ZB_CALLBACK;
+void zb_test_profile_indication(zb_uint8_t param) ;
+void tp_send_counted_packet(zb_uint8_t param) ;
 void tp_send_req_by_short(zb_uint16_t command_id, zb_uint8_t param,zb_uint16_t addr, zb_uint8_t src_ep, zb_uint8_t dst_ep,
-                          zb_uint8_t tx_options) ZB_SDCC_REENTRANT;
+                          zb_uint8_t tx_options) ;
 void zb_tp_transmit_counted_packets_req(zb_uint8_t param, zb_callback_t cb);
-void tp_packet_ack(zb_uint8_t param) ZB_SDCC_REENTRANT;
-void zb_tp_buffer_test_request(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT;
-void zb_tp_buffer_test_request_EP(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT;
-void zb_tp_buffer_test_request_EP_brdcast(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT;
+void tp_packet_ack(zb_uint8_t param) ;
+void zb_tp_buffer_test_request(zb_uint8_t param, zb_callback_t cb) ;
+void zb_tp_buffer_test_request_EP(zb_uint8_t param, zb_callback_t cb) ;
+void zb_tp_buffer_test_request_EP_brdcast(zb_uint8_t param, zb_callback_t cb) ;
 
 /*! @} */
 #endif /* ZB_TEST_PROFILE_H */

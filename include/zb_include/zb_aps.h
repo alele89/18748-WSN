@@ -252,7 +252,7 @@ enum zb_apsde_tx_opt_e
   }
 @endcode
  */
-void zb_apsde_data_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsde_data_request(zb_uint8_t param) ;
 
 
 /**
@@ -415,22 +415,22 @@ typedef struct zb_apsme_set_confirm_s
 /**
   APSME GET request primitive
  */
-void zb_apsme_get_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsme_get_request(zb_uint8_t param) ;
 
 /**
   APSME GET confirm primitive
  */
-void zb_apsme_get_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsme_get_confirm(zb_uint8_t param) ;
 
 /**
   APSME SET request primitive
  */
-void zb_apsme_set_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsme_set_request(zb_uint8_t param) ;
 
 /**
   APSME SET confirm primitive
  */
-void zb_apsme_set_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsme_set_confirm(zb_uint8_t param) ;
 
 
 /*! @} */
@@ -470,7 +470,7 @@ void zb_aps_init();
                      primitive.
           * handle - The handle associated with the NSDU being confirmed.
  */
-void zb_apsde_data_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsde_data_confirm(zb_uint8_t param) ;
 
 
 /**
@@ -509,39 +509,39 @@ enum zb_aps_commands_e
    Other fields got from MAC nsdu by macros
 
  */
-void zb_apsde_data_indication(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsde_data_indication(zb_uint8_t param) ;
 
 zb_uint8_t aps_find_src_ref(zb_address_ieee_ref_t src_addr_ref, zb_uint8_t src_end, zb_uint16_t cluster_id);
 
 /**
    APSME-BIND.request primitive.
  */
-void zb_apsme_bind_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsme_bind_request(zb_uint8_t param) ;
 
 /**
    APSME-BIND.confirm primitive
 */
-void zb_apsme_bind_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsme_bind_confirm(zb_uint8_t param) ;
 
 /**
    APSME-UNBIND.request primitive.
  */
-void zb_apsme_unbind_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsme_unbind_request(zb_uint8_t param) ;
 
 /**
    APSME-UNBIND.confirm primitive
 */
-void zb_apsme_unbind_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsme_unbind_confirm(zb_uint8_t param) ;
 
 /**
    Signals user that data is sent and acknowledged
  */
-void zb_apsde_data_acknowledged(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsde_data_acknowledged(zb_uint8_t param) ;
 
 /**
    APSME-UPDATE-DEVICE.indication primitive
  */
-void zb_apsme_update_device_indication(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsme_update_device_indication(zb_uint8_t param) ;
 
 
 /**
@@ -647,11 +647,11 @@ while(0)
    @param param - buffer with parameter. \see zb_apsme_add_group_req_t
 
 */
-void zb_apsme_add_group_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_apsme_add_group_request(zb_uint8_t param) ;
 
 #define ZDO_MGMT_APS_LEAVE_RESP_CLID    0x8034 /* it is from zdo for leave callback*/
 
-void zb_aps_hdr_parse(zb_buf_t *packet, zb_aps_hdr_t *aps_hdr, zb_bool_t cut_nwk_hdr) ZB_SDCC_REENTRANT;
+void zb_aps_hdr_parse(zb_buf_t *packet, zb_aps_hdr_t *aps_hdr, zb_bool_t cut_nwk_hdr) ;
 
 /*! @} */
 /*! \endcond */

@@ -55,7 +55,7 @@ PURPOSE: Some stuff specific to ns-3: simplified routines for MAC
 
 #ifdef ZB_NS_BUILD
 
-zb_ret_t zb_mac_ns_send_packet(zb_buf_t *buf, zb_bool_t release_buf) ZB_SDCC_REENTRANT;
+zb_ret_t zb_mac_ns_send_packet(zb_buf_t *buf, zb_bool_t release_buf) ;
 
 #define ZB_TRANS_SEND_COMMAND(hdr_len, buf) zb_mac_ns_send_packet(buf, 0)
 

@@ -254,20 +254,20 @@ do                                                                      \
 /**
    Neighbor table subsystem init.
  */
-void zb_nwk_neighbor_init() ZB_SDCC_REENTRANT;
+void zb_nwk_neighbor_init() ;
 
 #ifndef ZB_ED_ROLE
 /**
    Start work with extended neighbor table: cut space from the base neighbor table
  */
-void zb_nwk_exneighbor_start() ZB_SDCC_REENTRANT;
+void zb_nwk_exneighbor_start() ;
 #endif
 
 /**
    Stop work with extended neighbor table: move some entries to the base table,
    give all memory to the base
  */
-void zb_nwk_exneighbor_stop(zb_uint16_t parent_short_addr) ZB_SDCC_REENTRANT;
+void zb_nwk_exneighbor_stop(zb_uint16_t parent_short_addr) ;
 
 /**
    Get extended neighbor table entry by short address
@@ -278,7 +278,7 @@ void zb_nwk_exneighbor_stop(zb_uint16_t parent_short_addr) ZB_SDCC_REENTRANT;
 
    @return RET_OK if success, error code if error
  */
-zb_ret_t zb_nwk_exneighbor_by_short(zb_address_pan_id_ref_t panid_ref, zb_uint16_t short_addr, zb_ext_neighbor_tbl_ent_t **enbt) ZB_SDCC_REENTRANT;
+zb_ret_t zb_nwk_exneighbor_by_short(zb_address_pan_id_ref_t panid_ref, zb_uint16_t short_addr, zb_ext_neighbor_tbl_ent_t **enbt) ;
 
 /**
    Get extended neighbor table entry by long address
@@ -289,7 +289,7 @@ zb_ret_t zb_nwk_exneighbor_by_short(zb_address_pan_id_ref_t panid_ref, zb_uint16
 
    @return RET_OK if success, error code if error
  */
-zb_ret_t zb_nwk_exneighbor_by_ieee(zb_address_pan_id_ref_t panid_ref, zb_ieee_addr_t long_addr, zb_ext_neighbor_tbl_ent_t **enbt) ZB_SDCC_REENTRANT;
+zb_ret_t zb_nwk_exneighbor_by_ieee(zb_address_pan_id_ref_t panid_ref, zb_ieee_addr_t long_addr, zb_ext_neighbor_tbl_ent_t **enbt) ;
 
 
 /**
@@ -302,7 +302,7 @@ zb_ret_t zb_nwk_exneighbor_by_ieee(zb_address_pan_id_ref_t panid_ref, zb_ieee_ad
    @return RET_OK if just created RET_ALREADY_EXISTS if entry exists, error code
    if error
  */
-zb_ret_t zb_nwk_neighbor_get(zb_address_ieee_ref_t addr_ref, zb_bool_t create_if_absent, zb_neighbor_tbl_ent_t **nbt) ZB_SDCC_REENTRANT;
+zb_ret_t zb_nwk_neighbor_get(zb_address_ieee_ref_t addr_ref, zb_bool_t create_if_absent, zb_neighbor_tbl_ent_t **nbt) ;
 
 
 #define ZB_NWK_NEIGHBOR_GET_EXISTING(ieee_ref)                          \
@@ -320,7 +320,7 @@ zb_ret_t zb_nwk_neighbor_get(zb_address_ieee_ref_t addr_ref, zb_bool_t create_if
    @return RET_OK if forund, else RET_NOT_FOUND
    if error
  */
-zb_ret_t zb_nwk_neighbor_get_by_short(zb_uint16_t short_addr, zb_neighbor_tbl_ent_t **nbt) ZB_SDCC_REENTRANT;
+zb_ret_t zb_nwk_neighbor_get_by_short(zb_uint16_t short_addr, zb_neighbor_tbl_ent_t **nbt) ;
 
 /**
    Get neighbor table entry by long address, does not create if absent
@@ -359,7 +359,7 @@ void zb_nwk_neighbor_clear();
 
    @return RET_OK if success, error code if error
  */
-zb_ret_t zb_nwk_neighbor_ext_to_base_tmp(zb_ext_neighbor_tbl_ent_t *ext_ent) ZB_SDCC_REENTRANT;
+zb_ret_t zb_nwk_neighbor_ext_to_base_tmp(zb_ext_neighbor_tbl_ent_t *ext_ent) ;
 
 
 /**

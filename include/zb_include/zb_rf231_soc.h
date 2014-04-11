@@ -159,13 +159,13 @@ ZB_WRITE_SHORT_REG(ZB_SREG_ACKTMOUT, ZB_MAC_GET_BYTE_VALUE()&0x7F)
    Fill FIFO
  */
 
-void zb_rf231soc_fifo_write(zb_uint16_t long_addr, zb_buf_t *buf) ZB_SDCC_REENTRANT;
+void zb_rf231soc_fifo_write(zb_uint16_t long_addr, zb_buf_t *buf) ;
 
 
 /**
    Read from FIFO
  */
-void zb_rf231soc_fifo_read(zb_uint8_t tx_fifo, zb_buf_t *buf, zb_uint8_t len) ZB_SDCC_REENTRANT;
+void zb_rf231soc_fifo_read(zb_uint8_t tx_fifo, zb_buf_t *buf, zb_uint8_t len) ;
 
 /**
    Check that transiver is in the beacon mode
@@ -175,7 +175,7 @@ zb_bool_t zb_check_beacon_mode_on();
 
 
 zb_ret_t zb_transceiver_send_fifo_packet(zb_uint8_t header_length, 
-                                         zb_buf_t *buf, zb_uint8_t need_tx) ZB_SDCC_REENTRANT;
+                                         zb_buf_t *buf, zb_uint8_t need_tx) ;
 
 /**
    Set channel os RF231 SOC transiver
