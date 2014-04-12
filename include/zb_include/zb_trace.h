@@ -156,22 +156,6 @@ void zb_trace_msg_8051(zb_char_t ZB_IAR_CODE *file_name, zb_int_t line_number, z
 
 #else  /* !unix, !8051 , firefly3*/
 
-void zb_trace_init_firefly3(zb_char_t *name);
-void zb_trace_deinit_firefly3();
-
-
-/**
- Initialize trace subsystem
-
- @param name - trace file name component
-*/
-#define TRACE_INIT(name)   zb_trace_init_firefly3(name)
-
-/**
- Deinitialize trace subsystem
-*/
-#define TRACE_DEINIT zb_trace_deinit_firefly3
-
 /**
  Print trace message
 */

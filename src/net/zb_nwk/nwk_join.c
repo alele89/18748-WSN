@@ -59,8 +59,6 @@ PURPOSE: Network creation routine
 /*! \addtogroup ZB_NWK */
 /*! @{ */
 
-#include "zb_bank_4.h"
-
 static void nwk_join_failure_confirm(zb_uint8_t param, zb_uint8_t s) ZB_SDCC_REENTRANT
 {
   zb_buf_t ZB_SDCC_XDATA *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);

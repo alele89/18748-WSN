@@ -58,8 +58,6 @@ PURPOSE: Roitines specific to coordinator role
 /*! \addtogroup ZB_MAC */
 /*! @{ */
 
-#include "zb_bank_2.h"
-
 #ifdef ZB_ROUTER_ROLE
 
 zb_ret_t  zb_realign_pan();

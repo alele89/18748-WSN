@@ -54,8 +54,6 @@ PURPOSE: Zigbee packet buffers pool: init
 /*! \addtogroup ZB_BASE */
 /*! @{ */
 
-#include "zb_bank_6.h"
-
 #ifdef ZB_NS_BUILD
 #define ZB_DEBUG_BUFFERS
 #endif

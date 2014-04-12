@@ -56,9 +56,6 @@ PURPOSE: Roitines specific to coordinator role
 /*! \addtogroup ZB_MAC */
 /*! @{ */
 
-#include "zb_bank_2.h"
-
-
 #if defined ZB_COORDINATOR_ROLE || defined ZB_ROUTER_ROLE
 zb_ret_t zb_send_beacon_frame(zb_beacon_frame_params_t *beacon_frame_params) ZB_SDCC_REENTRANT;
 

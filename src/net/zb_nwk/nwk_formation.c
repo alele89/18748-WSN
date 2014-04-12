@@ -57,8 +57,6 @@ PURPOSE: Network creation routine
 /*! \addtogroup ZB_NWK */
 /*! @{ */
 
-#include "zb_bank_3.h"
-
 void zb_mlme_start_confirm(zb_uint8_t param) ZB_CALLBACK
 {
 #ifdef ZB_ROUTER_ROLE

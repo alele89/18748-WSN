@@ -54,8 +54,6 @@ PURPOSES: APS subsystem. Binding.
 #include "zb_address.h"
 #include "zb_zdo.h"
 
-#include "zb_bank_6.h"
-
 #ifndef ZB_LIMITED_FEATURES
 /*! \addtogroup ZB_APS */
 /*! @{ */

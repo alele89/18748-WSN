@@ -47,9 +47,6 @@ PURPOSE: debug stuff
 */
 
 #include "zb_common.h"
-#include "zb_osif.h"
-
-#include "zb_bank_common.h"
 
 /*! \addtogroup ZB_DEBUG */
 /*! @{ */

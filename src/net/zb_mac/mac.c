@@ -52,18 +52,11 @@ PURPOSE:
 #include "zb_mac.h"
 #include "mac_internal.h"
 #include "zb_mac_transport.h"
-#include "zb_ubec24xx.h"
+#include "zb_rf231_soc.h"
 #include "zb_mac_globals.h"
-#ifdef ZB_CC25XX
-#include "zb_cc25xx.h"
-#endif
 
 /*! \addtogroup ZB_MAC */
 /*! @{ */
-
-/* Both MAC and NWK placed to the bank1, so all MAC calls are not banked */
-#include "zb_bank_1.h"
-
 
 static zb_bool_t check_frame_dst_addr(zb_mac_mhr_t *mhr) ZB_SDCC_REENTRANT;
 #ifdef ZB_LIMIT_VISIBILITY

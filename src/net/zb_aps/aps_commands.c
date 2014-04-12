@@ -51,8 +51,6 @@ PURPOSE:
 #include "aps_internal.h"
 #include "zb_secur.h"
 
-#include "zb_bank_6.h"
-
 /*! \addtogroup ZB_APS */
 /*! @{ */
 

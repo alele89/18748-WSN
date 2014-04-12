@@ -57,7 +57,6 @@ PURPOSE: Permit join API
 /*! \addtogroup ZB_NWK */
 /*! @{ */
 
-#include "zb_bank_4.h"
 #if defined ZB_COORDINATOR_ROLE || defined ZB_ROUTER_ROLE
 
 void nwk_permit_timeout(zb_uint8_t param) ZB_CALLBACK;

@@ -57,7 +57,6 @@ PURPOSE: Network creation routine
 
 /*! \addtogroup ZB_NWK */
 /*! @{ */
-#include "zb_bank_5.h"
 #if defined ZB_COORDINATOR_ROLE || defined ZB_ROUTER_ROLE
 
 void zb_nlme_route_discovery_request(zb_uint8_t param) ZB_CALLBACK

@@ -55,8 +55,6 @@ PURPOSE: ZDO Bind management
 #include "zb_zdo.h"
 #include "zdo_common.h"
 
-#include "zb_bank_a.h"
-
 /*! \addtogroup ZB_ZDO */
 /*! @{ */
 /* todo: this define used only to fit in 64k */

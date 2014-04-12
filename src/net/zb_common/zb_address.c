@@ -53,8 +53,6 @@ PURPOSE: Zigbee addresses routine
 #include "zb_hash.h"
 #include "zb_address.h"
 
-#include "zb_bank_a.h"
-
 static zb_bool_t ieee_search(zb_ieee_addr_compressed_t *ieee_compressed, zb_address_ieee_ref_t *ref_p) ZB_SDCC_REENTRANT;
 
 static zb_bool_t short_search(zb_uint16_t short_addr, zb_address_ieee_ref_t *ref_p) ZB_SDCC_REENTRANT;

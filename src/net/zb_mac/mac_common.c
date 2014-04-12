@@ -53,16 +53,12 @@ PURPOSE: MAC functions to be put into common bank
 #include "zb_mac.h"
 #include "mac_internal.h"
 #include "zb_mac_transport.h"
-#include "zb_ubec24xx.h"
+#include "zb_rf231_soc.h"
 #include "zb_mac_globals.h"
 
 
 /*! \addtogroup ZB_MAC */
 /*! @{ */
-
-
-/* Both MAC and NWK placed to the bank1, so all MAC calls are not banked */
-#include "zb_bank_2.h"
 
 
 /**

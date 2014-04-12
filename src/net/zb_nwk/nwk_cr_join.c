@@ -59,9 +59,6 @@ PURPOSE: Network creation routine
 /*! \addtogroup ZB_NWK */
 /*! @{ */
 
-#include "zb_bank_6.h"
-
-
 #ifdef ZB_ROUTER_ROLE
 static zb_mac_status_t zb_nwk_accept_child(zb_ieee_addr_t device_address, zb_mac_capability_info_t capability, zb_uint8_t lqi, zb_uint16_t *address) ZB_SDCC_REENTRANT;
 

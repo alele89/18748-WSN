@@ -52,8 +52,6 @@ PURPOSE: Zigbee scheduler.
 #include "zb_common.h"
 #include "zb_list_macros.h"
 
-#include "zb_bank_common.h"
-
 /**
    \par Scheduler and timer management.
 

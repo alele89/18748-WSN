@@ -57,8 +57,6 @@ PURPOSE: APS layer
 /*! \addtogroup ZB_APS */
 /*! @{ */
 
-#include "zb_bank_7.h"
-
 /**
    APS Informational Base in-memory data structure.
 

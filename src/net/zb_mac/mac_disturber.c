@@ -55,8 +55,6 @@ PURPOSE: Disturber device implementation
 #include "zb_secur.h"
 #include "zb_zdo.h"
 
-#include "zb_bank_1.h"
-
 #ifdef MAC_CERT_TEST_HACKS
 
 /*! \addtogroup ZB_MAC */

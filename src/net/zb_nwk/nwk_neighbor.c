@@ -54,8 +54,6 @@ PURPOSE: Neighbor table
 /*! \addtogroup ZB_NWK */
 /*! @{ */
 
-#include "zb_bank_4.h"
-
 #ifndef ZB_ED_ROLE
 static void base_neighbor_cleanup();
 #endif

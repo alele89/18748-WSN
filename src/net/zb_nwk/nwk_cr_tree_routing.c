@@ -53,7 +53,6 @@ PURPOSE: Network tree routing
 #include "zb_aps.h"
 #include "nwk_internal.h"
 
-#include "zb_bank_4.h"
 #if defined ZB_NWK_TREE_ROUTING && defined ZB_ROUTER_ROLE
 
 /*! \addtogroup ZB_NWK */

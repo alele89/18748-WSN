@@ -53,7 +53,6 @@ PURPOSE: IB save/load/set defaults
 #include "zb_aps.h"
 #include "zb_secur.h"
 
-#include "zb_bank_6.h"
 #ifdef ZB_TRANSPORT_LINUX_PIPES
 #include <ctype.h>
 #endif

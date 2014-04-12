@@ -51,7 +51,6 @@ PURPOSE: Log trace
 #include <string.h>
 #include <stdarg.h>
 
-#include "zb_bank_common.h"
 /*! \addtogroup ZB_BASE */
 /*! @{ */
 

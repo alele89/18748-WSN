@@ -35,7 +35,7 @@ SRC += $(ROOT_DIR)/src/net/zb_common/zb_bufpool_init.c
 SRC += $(ROOT_DIR)/src/net/zb_common/zb_time.c
 SRC += $(ROOT_DIR)/src/net/zb_common/zb_ib.c
 SRC += $(ROOT_DIR)/src/net/zb_common/zb_random.c
-#SRC += ../../../src/net/zb_common/zb_trace.c
+SRC += $(ROOT_DIR)/src/net/zb_common/zb_trace_firefly3.c
 
 # mac sources
 SRC += $(ROOT_DIR)/src/net/zb_mac/mac.c

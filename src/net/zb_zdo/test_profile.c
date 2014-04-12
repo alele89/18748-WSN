@@ -53,7 +53,6 @@ PURPOSE: AF layer
 #include "zb_zdo.h"
 #include "zb_test_profile.h"
 
-#include "zb_bank_9.h"
 /*! \addtogroup ZB_AF */
 /*! @{ */
 

@@ -55,9 +55,6 @@ PURPOSE: Roitines specific mac data transfer for coordinator/router
 #include "zb_secur.h"
 #include "zb_zdo.h"
 
-#include "zb_bank_2.h"
-
-
 /*! \addtogroup ZB_MAC */
 /*! @{ */
 

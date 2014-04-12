@@ -52,8 +52,6 @@ PURPOSE: APS subsystem. Dups detection.
 #include "zb_scheduler.h"
 #include "zb_hash.h"
 
-#include "zb_bank_6.h"
-
 /*! \addtogroup ZB_APS */
 /*! @{ */
 

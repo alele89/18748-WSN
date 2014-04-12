@@ -58,8 +58,6 @@ PURPOSE: ZigBee stack initialization
 /*! \addtogroup ZB_BASE */
 /*! @{ */
 
-#include "zb_bank_6.h"
-
 void zb_zdo_init() ZB_CALLBACK;
 
 

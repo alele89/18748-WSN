@@ -43,30 +43,97 @@
 * ClarIDy/UBEC/DSR.                                                        *
 *                                                                          *
 ****************************************************************************
-PURPOSE: Zigbee scheduler: init
+PURPOSE: Logger implementation for Unix standalone.
 */
-
-/*! \addtogroup ZB_BASE */
-/*! @{ */
 
 #include "zb_common.h"
 
-void zb_sched_init() ZB_CALLBACK /* __reentrant for sdcc, to save DSEG space */
+
+/*! \addtogroup ZB_TRACE */
+/*! @{ */
+
+/**
+   \par Trace implementation.
+
+   Trace works thru printf call. In Linux it writes to the file using fprintf(), at 8051
+   printf() calls putchar() which writes to the serial port.
+
+ */
+
+#define ZB_LOG_VPRINTF(fmt, arg) vfprintf(stdout, fmt, arg)
+#define ZB_LOG_PRINTF(...) fprintf(stdout, __VA_ARGS__)
+
+
+/**
+  Switch trace on/off on runtime, is useful in test purposes
+*/
+static char g_trace_enabled = 1;
+void zb_set_trace_enabled(char val)
 {
-  zb_uint8_t i;
-
-  for (i = 0 ; i < ZB_SCHEDULER_Q_SIZE ; ++i)
-  {
-    ZB_STK_PUSH(ZG->sched.tm_freelist, next, &ZG->sched.tm_buffer[i]);
-  }
-
-  for (i = 0; i < ZB_BUF_Q_SIZE ; ++i)
-  {
-    ZB_STK_PUSH(ZG->sched.buf_freelist, next, &ZG->sched.delayed_buf[i]);
-  }
-
+  g_trace_enabled = val;
 }
 
+
+/**
+   Output trace message.
+
+   @param file_name - source file name
+   @param line_number - source file line
+   @param mask - layers mask of the current message. Do trace if mask&ZB_TRACE_MASK != 0
+   @param level - message trace level. Do trace if level <= ZB_TRACE_LEVEL
+   @param format - printf-like format string
+ */
+void zb_trace_msg_firefly3(zb_char_t *format, zb_char_t *file_name, zb_int_t line_number, zb_int_t args_size, ...)
+{
+  /* If ZB_TRACE_LEVEL not defined, output nothing */
+#ifdef ZB_TRACE_LEVEL
+
+  va_list   arglist;
+
+  if (!g_trace_enabled)
+  {
+    return;
+  }
+
+
+  {
+#if 0
+    time_t    t;
+    struct tm *tm;
+    zb_uint_t msec = 0;
+    struct timeval tmv;
+    gettimeofday(&tmv, NULL);
+    t = tmv.tv_sec;
+    tm = localtime(&t);
+    msec = tmv.tv_usec / 1000;
+
+    ZB_LOG_PRINTF(
+	    "%02d:%02d:%02d.%03ld %d %s:%d\t",
+	    tm->tm_hour,
+	    tm->tm_min,
+	    tm->tm_sec,
+	    (long)msec,
+      ZB_TIMER_GET(),
+      file_name, line_number
+      );
+  }
+#endif
+  ZB_LOG_PRINTF("%s:%d\t", file_name, line_number)
+  va_start(arglist, args_size);
+  ZB_LOG_VPRINTF(format, arglist);
+  va_end(arglist);
+  if (format[strlen(format) - 1] != '\n')
+  {
+    ZB_LOG_PRINTF("\n");
+  }
+#else
+  (void)file_name;
+  (void)line_number;
+  (void)level;
+  (void)mask;
+  (void)format;
+#endif
+}
 
 
 /*! @} */

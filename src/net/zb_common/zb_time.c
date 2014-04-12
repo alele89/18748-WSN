@@ -58,8 +58,6 @@ PURPOSE: time functions implementation for 8051 for the Common bank
 /*! \addtogroup ZB_BASE */
 /*! @{ */
 
-#include "zb_bank_common.h"
-
 void zb_timer_start(zb_time_t timeout)
 {
   zb_time_t t_cur = ZB_TIMER_GET();

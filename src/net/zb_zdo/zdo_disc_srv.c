@@ -56,7 +56,6 @@ Mandatory calls onnly. Other calls will be implemented in some other project sco
 #include "zb_zdo.h"
 #include "zdo_common.h"
 
-#include "zb_bank_9.h"
 /*! \addtogroup ZB_ZDO */
 /*! @{ */
 

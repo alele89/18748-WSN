@@ -56,8 +56,6 @@ PURPOSE: Network address assign
 /*! \addtogroup ZB_NWK */
 /*! @{ */
 
-#include "zb_bank_3.h"
-
 /* all routines called from nwk (bank1) - not need to be banker */
 
 #if defined ZB_NWK_DISTRIBUTED_ADDRESS_ASSIGN && defined ZB_ROUTER_ROLE

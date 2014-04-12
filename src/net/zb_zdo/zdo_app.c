@@ -55,7 +55,6 @@ PURPOSE: Typical ZDO applications: ZC, ZR, ZE
 #include "zb_secur.h"
 #include "zb_secur_api.h"
 
-#include "zb_bank_8.h"
 /*! \addtogroup ZB_ZDO */
 /*! @{ */
 #ifdef APS_RETRANSMIT_TEST

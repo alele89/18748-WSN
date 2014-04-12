@@ -56,8 +56,6 @@ PURPOSE: Network discovery routine
 /*! \addtogroup ZB_NWK */
 /*! @{ */
 
-#include "zb_bank_5.h"
-
 void zb_nlme_network_discovery_request(zb_uint8_t param) ZB_CALLBACK
 {
   zb_nlme_network_discovery_request_t *request = ZB_GET_BUF_PARAM((zb_buf_t *)ZB_BUF_FROM_REF(param), zb_nlme_network_discovery_request_t);

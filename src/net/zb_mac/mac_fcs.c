@@ -52,8 +52,6 @@ PURPOSE: routine for FCS calculation
 /*! \addtogroup ZB_MAC */
 /*! @{ */
 
-#include "zb_bank_2.h"
-
 #ifdef ZB_NS_BUILD
 /* FCS is necessary for ns build only. Real transiver calc fcs itself */
 

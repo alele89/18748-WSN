@@ -57,8 +57,6 @@ PURPOSE: Network confirm routine
 /*! \addtogroup ZB_APS */
 /*! @{ */
 
-#include "zb_bank_6.h"
-
 /* Note: all that callbacks are temporary here. It must be somewhere in */
 
 #ifndef ZB_LIMITED_FEATURES

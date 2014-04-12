@@ -52,7 +52,6 @@ PURPOSE: AF layer
 #include "zb_af_globals.h"
 #include "zb_zdo.h"
 
-#include "zb_bank_9.h"
 /*! \addtogroup ZB_AF */
 /*! @{ */
 
