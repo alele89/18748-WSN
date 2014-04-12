@@ -103,12 +103,6 @@ zb_mac_transport_hdr_t;
 #define ZB_RECV_FINISHED    2
 #define ZB_SEND_FINISHED    3
 
-#define ZB_GET_SEND_STATUS() (ZB_IOCTX().send_finished + 0)
-#define ZB_SET_SEND_STATUS(status) (ZB_IOCTX().send_finished = (status))
-
-#define ZB_GET_RECV_STATUS() (ZB_IOCTX().recv_finished + 0)
-#define ZB_SET_RECV_STATUS(status) (ZB_IOCTX().recv_finished = (status))
-
 #define ZB_GET_PENDING_BYTES_COUNT(zg) 9 /* TODO: return correct byte count */
 
 #ifndef ZB8051

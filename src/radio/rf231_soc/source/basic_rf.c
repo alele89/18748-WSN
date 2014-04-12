@@ -535,8 +535,9 @@ uint8_t zb_rf_tx_packet(zb_buf_t *buf, uint8_t frame_len)
 		return NRK_ERROR;
 	
 	/* Copy data payload into packet */
-	memcpy(frame_start+1, buf, buf_len);
+	memcpy(frame_start+1, buf, frame_len);
 	/* Set the size of the packet */
+    /* add 2 for FCS */
 	*frame_start = frame_len + 2;
 	
 	vprintf("packet length: %d bytes\r\n", *frame_start);

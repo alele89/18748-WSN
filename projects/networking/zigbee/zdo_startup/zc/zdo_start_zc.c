@@ -87,7 +87,7 @@ zb_ieee_addr_t g_zc_addr = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa};
 
 static void zc_send_data(zb_buf_t *buf, zb_uint16_t addr);
 
-void data_indication(zb_uint8_t param) ZB_CALLBACK;
+void data_indication(zb_uint8_t param) ;
 
 int main ()
 {
@@ -167,7 +167,7 @@ void zc_task()
     MAIN_RETURN(0);
 }
 
-void zb_zdo_startup_complete(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_startup_complete(zb_uint8_t param) 
 {
     zb_buf_t *buf = ZB_BUF_FROM_REF(param);
     TRACE_MSG(TRACE_APS3, ">>zb_zdo_startup_complete status %d", (FMT__D, (int)buf->u.hdr.status));
@@ -189,7 +189,7 @@ void zb_zdo_startup_complete(zb_uint8_t param) ZB_CALLBACK
  */
 
 
-void data_indication(zb_uint8_t param) ZB_CALLBACK
+void data_indication(zb_uint8_t param) 
 {
     zb_uint8_t *ptr;
     zb_buf_t *asdu = (zb_buf_t *)ZB_BUF_FROM_REF(param);

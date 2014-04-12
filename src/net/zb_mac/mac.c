@@ -606,7 +606,6 @@ void zb_mlme_command_accept(zb_uint8_t param) ZB_CALLBACK
     ZB_SCHEDULE_TX_CB(zb_handle_beacon_req, 0);
     TRACE_MSG(TRACE_MAC3, "free buf %p", (FMT__P, request));
     zb_free_buf(request);
-    ZIG->ioctx.recv_data_buf = NULL;
   }
   else if ((*cmd_ptr) == MAC_CMD_ASSOCIATION_REQUEST)
   {

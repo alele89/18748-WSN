@@ -73,26 +73,20 @@ PURPOSE: Global context definition
    Some subsystems has its own structures in the globals (for example, APS
    globals). It can be accesses by special macros, like APSG->bar.
  */
-#ifndef ZB_SNIFFER
 struct zb_globals_s;
 typedef struct zb_globals_s zb_globals_t;
-#endif
 
 struct zb_intr_globals_s;
-typedef ZB_VOLATILE struct zb_intr_globals_s zb_intr_globals_t;
+typedef struct zb_intr_globals_s zb_intr_globals_t;
 
-#ifndef ZB_SNIFFER
-extern ZB_SDCC_XDATA zb_globals_t g_zb;
-#endif
-extern ZB_SDCC_XDATA zb_intr_globals_t g_izb;
+extern  zb_globals_t g_zb;
+extern  zb_intr_globals_t g_izb;
 
 /**
    Macro to access globals
  */
 /* Hope compiler can optimize &g_zb-> to g_zb. */
-#ifndef ZB_SNIFFER
 #define ZG (&g_zb)
-#endif
 
 #define ZIG (&g_izb)
 
@@ -101,7 +95,6 @@ extern ZB_SDCC_XDATA zb_intr_globals_t g_izb;
   Per-subsystem globals files are named like zb_xxx_globals.h and included here.
  */
 
-#ifndef ZB_SNIFFER
 #include "zb_scheduler.h"
 #include "zb_bufpool_globals.h"
 #include "zb_addr_globals.h"
@@ -113,18 +106,10 @@ extern ZB_SDCC_XDATA zb_intr_globals_t g_izb;
 #include "zb_zcl_globals.h"
 #include "zb_rf231_soc.h" /* TODO: configure this include depending
                           * on transceiver */
-#else
 #include "zb_ringbuffer.h"
-#endif /* ZB_SNIFFER */
 
 #include "zb_time.h"
-#include "zb_transport_globals.h"
 
-#ifdef ZB_CC25XX
-#include "zb_cc25xx.h"
-#endif
-
-#ifndef ZB_SNIFFER
 /**
    Global data area for data not to be accessed from interrupt handlers
  */
@@ -140,23 +125,17 @@ struct zb_globals_s
   zb_zcl_globals_t        zcl;
 };
 
-#endif
-
 /**
    Global data area for data to be accessed from interrupt handlers
  */
 struct zb_intr_globals_s
 {
-  zb_io_ctx_t             ioctx;
   zb_timer_t              time;
   zb_transceiver_ctx_t    transceiver;
 };
 
-#define ZB_IOCTX() g_izb.ioctx
 #define ZB_TIMER_CTX() g_izb.time
 #define TRANS_CTX() (g_izb.transceiver)
-#define SER_CTX() ZB_IOCTX().serial_ctx
-#define SPI_CTX() ZB_IOCTX().spi_ctx
 
 
 /*! @} */

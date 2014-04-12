@@ -53,7 +53,6 @@ PURPOSE: Mac layer API
 #include "zb_debug.h"
 #include "zb_bufpool.h"
 #include "zb_rf231_soc.h"
-#include "zb_ns3.h"
 #ifdef ZB_CC25XX
 #include "zb_cc25xx.h"
 #endif
@@ -227,26 +226,6 @@ zb_addr_mode_t;
    MAC base superframe duration value
  */
 #define ZB_MAC_BASE_SUPERFRAME_DURATION ZB_MAC_BASE_SLOT_DURATION * ZB_MAC_NUM_SUPERFRAME_SLOTS /* = 960 */
-
-/*
-NOTE: 1 beacon interval = ZB_MAC_BASE_SUPERFRAME_DURATION * 1 symbol (16e-6 sec) = 15.36 milliseconds
-Beacon interval is used to measure MAC timeouts
-*/
-
-/**
-   Wait synchronously for packet transmit
- */
-#define ZB_SYNC_WAIT_FOR_SEND_COMPLETION() \
-  ZB_SCHED_WAIT_COND(ZB_GET_SEND_STATUS() == ZB_SEND_FINISHED); \
-  ZB_SET_SEND_STATUS(ZB_NO_IO);
-
-/**
-   Waiting for packet receive complete
- */
-#define ZB_SYNC_WAIT_FOR_RECV_COMPLETION()                      \
-  ZB_SCHED_WAIT_COND(ZB_GET_RECV_STATUS() == ZB_RECV_FINISHED); \
-  ZB_SET_RECV_STATUS(ZB_NO_IO);
-
 
 /* TRICKY: set MAC_CTX().ack_dsn value before calling this macro!!! */
 /**
@@ -2371,7 +2350,7 @@ zb_ret_t zb_mlme_orphan_scan() ;
    performs processing of the MLME-Start.request.
    @return RET_OK, RET_BLOCKED, error code on error
  */
-zb_ret_t zb_mac_process_mlme_start() ZB_SDCC_BANKED;
+zb_ret_t zb_mac_process_mlme_start() ;
 
 /**
   Fill packed mac header
@@ -2565,7 +2544,7 @@ zb_ret_t zb_mac_get_indirect_data(zb_mlme_data_req_params_t *data_req_cmd_params
   transmission. Coordinator side
   @return RET_PENDING on success, RET_ERROR on error
  */
-zb_ret_t zb_mac_put_data_to_pending_queue(zb_mac_pending_data_t *pend_data) ZB_SDCC_BANKED;
+zb_ret_t zb_mac_put_data_to_pending_queue(zb_mac_pending_data_t *pend_data) ;
 
 /**
   Handles data request command, coordinator side. Finds pending data

@@ -273,26 +273,6 @@ zb_ret_t zb_schedule_alarm_cancel(zb_callback_t func, zb_uint8_t param) ;
 
 
 /**
-   Wait (block, go idle) until condition will not be true.
-
-   @param condition - condition to check for
- */
-#define ZB_SCHED_WAIT_COND(condition)           \
-do                                              \
-{                                               \
-  ZB_SCHED_GLOBAL_LOCK();                       \
-  while ( !(condition) )                        \
-  {                                             \
-    ZB_SCHED_GLOBAL_UNLOCK();                   \
-    ZB_GO_IDLE();                               \
-    ZB_SCHED_GLOBAL_LOCK();                     \
-  }                                             \
-  ZB_SCHED_GLOBAL_UNLOCK();                     \
-}                                               \
-while(0)
-
-
-/**
    Global lock operation
    Protect manupulation with queues in the main loop by this macro.
    It disables interrupts on 8051 device and locks mutex in Linux.

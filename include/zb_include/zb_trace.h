@@ -154,9 +154,33 @@ void zb_trace_msg_8051(zb_char_t ZB_IAR_CODE *file_name, zb_int_t line_number, z
 #define _T1(s, l, args) if ((zb_int_t)ZB_TRACE_LEVEL>=(zb_int_t)l && ((s) & ZB_TRACE_MASK)) zb_trace_msg_8051 args
 #define TRACE_MSG(lm, fmt, args) _T1(lm, args)
 
-#else  /* !unix, !8051 */
+#else  /* !unix, !8051 , firefly3*/
 
-#error Port me!
+void zb_trace_init_firefly3(zb_char_t *name);
+void zb_trace_deinit_firefly3();
+
+
+/**
+ Initialize trace subsystem
+
+ @param name - trace file name component
+*/
+#define TRACE_INIT(name)   zb_trace_init_firefly3(name)
+
+/**
+ Deinitialize trace subsystem
+*/
+#define TRACE_DEINIT zb_trace_deinit_firefly3
+
+/**
+ Print trace message
+*/
+void zb_trace_msg_firefly3(zb_char_t *format, zb_char_t *file_name, zb_int_t line_number, zb_int_t args_size, ...);
+
+#define _T0(...) __VA_ARGS__
+#define _T1(s, l, fmts, args) if ((zb_int_t)ZB_TRACE_LEVEL>=(zb_int_t)l && ((s) & ZB_TRACE_MASK)) zb_trace_msg_firefly3(fmts, _T0 args)
+#define TRACE_MSG(lm, fmts, args) _T1(lm, fmts, args)
+
 
 #endif  /* unix, 8051 */
 
