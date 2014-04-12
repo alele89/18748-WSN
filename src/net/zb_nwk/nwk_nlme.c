@@ -59,9 +59,6 @@ PURPOSE: Network layer main module
 /*! \addtogroup ZB_NWK */
 /*! @{ */
 
-#include "zb_bank_6.h"
-
-
 #ifndef ZB_LIMITED_FEATURES
 void zb_nlme_leave_request(zb_uint8_t param) ZB_CALLBACK
 {

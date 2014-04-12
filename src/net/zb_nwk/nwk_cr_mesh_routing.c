@@ -102,8 +102,6 @@ PURPOSE: Network tree routing
     entry will expire and be removed from the table.
 */
 
-#include "zb_bank_5.h"
-
 /* Parse mac header. Mac header offset saved inside buffer header, to be able to
  * get mac hdr data. Get source address if mac hdr exists, otherwise get device
  * source address */

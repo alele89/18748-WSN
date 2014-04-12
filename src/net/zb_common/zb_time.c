@@ -48,7 +48,6 @@ PURPOSE: time functions implementation for 8051 for the Common bank
 
 
 #include "zb_common.h"
-#include "zb_osif.h"
 #include "zb_time.h"
 #include <nrk.h>
 #include <hal.h>
