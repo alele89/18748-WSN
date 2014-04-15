@@ -56,7 +56,7 @@ PURPOSE: Roitines specific to mlme scan for coordinator/router
 /*! @{ */
 
 #if defined ZB_COORDINATOR_ROLE || defined ZB_ROUTER_ROLE
-void zb_mlme_associate_response(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_associate_response(zb_uint8_t param) 
 {
   zb_ret_t ret;
   if (!ZG->nwk.handle.joined_pro)
@@ -79,7 +79,7 @@ void zb_mlme_associate_response(zb_uint8_t param) ZB_CALLBACK
   }
 }
 
-zb_ret_t zb_handle_associate_response() ZB_SDCC_REENTRANT
+zb_ret_t zb_handle_associate_response() 
 {
   zb_ret_t ret = RET_OK;
   zb_mlme_associate_response_t *params;
@@ -198,7 +198,7 @@ zb_ret_t zb_handle_associate_response() ZB_SDCC_REENTRANT
 
 /* Coordinator side: get request command, say ACK to end device,
  * signal to high level with associate.indication */
-void zb_accept_ass_request_cmd(zb_uint8_t param) ZB_CALLBACK
+void zb_accept_ass_request_cmd(zb_uint8_t param) 
 {
   zb_ret_t ret = RET_OK;
   zb_uint8_t *cmd_ptr;

@@ -51,12 +51,12 @@ PURPOSE: ZDO common functions, both client and server side
 
 #define ZB_TSN_HASH(tsn) ZB_1INT_HASH_FUNC(tsn) % ZDO_TRAN_TABLE_SIZE
 
-void register_zdo_cb(zb_uint8_t tsn, zb_callback_t cb, zb_uint8_t resp_counter) ZB_SDCC_REENTRANT;
+void register_zdo_cb(zb_uint8_t tsn, zb_callback_t cb, zb_uint8_t resp_counter) ;
 
 void zdo_send_req_by_short(zb_uint16_t command_id, zb_uint8_t param, zb_callback_t cb, zb_uint16_t addr,
                            zb_uint8_t resp_count);
 void zdo_send_req_by_long(zb_uint8_t command_id, zb_uint8_t param, zb_callback_t cb, zb_ieee_addr_t addr);
-void zdo_send_resp_by_short(zb_uint16_t command_id, zb_uint8_t param, zb_uint8_t tsn, zb_uint16_t addr) ZB_SDCC_REENTRANT;
+void zdo_send_resp_by_short(zb_uint16_t command_id, zb_uint8_t param, zb_uint8_t tsn, zb_uint16_t addr) ;
 
 /*
    Signal user that response came.

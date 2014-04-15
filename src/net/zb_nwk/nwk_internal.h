@@ -212,7 +212,7 @@ while(0)
    zb_mac_scan_confirm_t
    @return nothing
  */
-void nwk_formation_ed_scan_confirm(zb_buf_t *buf) ZB_SDCC_REENTRANT;
+void nwk_formation_ed_scan_confirm(zb_buf_t *buf) ;
 
 /**
    Called from the discovery confirm with active scan results.
@@ -222,7 +222,7 @@ void nwk_formation_ed_scan_confirm(zb_buf_t *buf) ZB_SDCC_REENTRANT;
    zb_mac_scan_confirm_t
    @return nothing
  */
-void nwk_formation_select_channel(zb_buf_t *buf) ZB_SDCC_REENTRANT;
+void nwk_formation_select_channel(zb_buf_t *buf) ;
 
 
 #ifdef ZB_NWK_DISTRIBUTED_ADDRESS_ASSIGN
@@ -239,7 +239,7 @@ void nwk_formation_select_channel(zb_buf_t *buf) ZB_SDCC_REENTRANT;
    @param depth - depth of the node inside tree
    @return Cskip value
  */
-zb_uint16_t zb_nwk_daa_calc_cskip(zb_uint8_t depth ) ZB_SDCC_REENTRANT;
+zb_uint16_t zb_nwk_daa_calc_cskip(zb_uint8_t depth ) ;
 
 /**
    Calculate address for child router. See 3.6.1.6
@@ -278,7 +278,7 @@ zb_uint16_t zb_nwk_daa_calc_cskip(zb_uint8_t depth ) ZB_SDCC_REENTRANT;
 
    @return nothing
  */
-void zb_nwk_tree_routing_init() ZB_SDCC_REENTRANT;
+void zb_nwk_tree_routing_init() ;
 
 /**
    zb_nwk_tree_routing_route
@@ -288,7 +288,7 @@ void zb_nwk_tree_routing_init() ZB_SDCC_REENTRANT;
    @param dest_address - address of the destination device
    @return Neighbor table entry to route packet to, NULL on error
  */
-zb_neighbor_tbl_ent_t *zb_nwk_tree_routing_route(zb_uint16_t dest_address) ZB_SDCC_REENTRANT;
+zb_neighbor_tbl_ent_t *zb_nwk_tree_routing_route(zb_uint16_t dest_address) ;
 #endif /* ZB_NWK_TREE_ROUTING */
 
 #ifdef ZB_NWK_MESH_ROUTING
@@ -300,7 +300,7 @@ zb_neighbor_tbl_ent_t *zb_nwk_tree_routing_route(zb_uint16_t dest_address) ZB_SD
 
    @return nothing
  */
-void zb_nwk_mesh_routing_init() ZB_SDCC_REENTRANT;
+void zb_nwk_mesh_routing_init() ;
 
 /**
    zb_nwk_mesh_routing_deinit
@@ -309,7 +309,7 @@ void zb_nwk_mesh_routing_init() ZB_SDCC_REENTRANT;
 
    @return nothing
  */
-void zb_nwk_mesh_routing_deinit() ZB_SDCC_REENTRANT;
+void zb_nwk_mesh_routing_deinit() ;
 
 /**
    zb_nwk_mesh_route_discovery
@@ -322,7 +322,7 @@ void zb_nwk_mesh_routing_deinit() ZB_SDCC_REENTRANT;
    @param radius - route discovery radius, 0 - use default radius
    @return nothing
  */
-void zb_nwk_mesh_route_discovery(zb_buf_t *cbuf, zb_uint16_t dest_addr, zb_uint8_t radius) ZB_SDCC_REENTRANT;
+void zb_nwk_mesh_route_discovery(zb_buf_t *cbuf, zb_uint16_t dest_addr, zb_uint8_t radius) ;
 
 /**
    zb_nwk_mesh_rreq_handler
@@ -335,7 +335,7 @@ void zb_nwk_mesh_route_discovery(zb_buf_t *cbuf, zb_uint16_t dest_addr, zb_uint8
    @param nwk_cmd_rreq - pointer to the network route request header
    @return nothing
  */
-void zb_nwk_mesh_rreq_handler(zb_buf_t *buf, zb_nwk_hdr_t *nwk_hdr, zb_nwk_cmd_rreq_t *nwk_cmd_rreq) ZB_SDCC_REENTRANT;
+void zb_nwk_mesh_rreq_handler(zb_buf_t *buf, zb_nwk_hdr_t *nwk_hdr, zb_nwk_cmd_rreq_t *nwk_cmd_rreq) ;
 
 /**
    zb_nwk_mesh_rrep_handler
@@ -347,7 +347,7 @@ void zb_nwk_mesh_rreq_handler(zb_buf_t *buf, zb_nwk_hdr_t *nwk_hdr, zb_nwk_cmd_r
    @param nwk_cmd_rrep - pointer to the network route reply header
    @return nothing
  */
-void zb_nwk_mesh_rrep_handler(zb_buf_t *buf, zb_nwk_hdr_t *nwk_hdr, zb_nwk_cmd_rrep_t *nwk_cmd_rrep) ZB_SDCC_REENTRANT;
+void zb_nwk_mesh_rrep_handler(zb_buf_t *buf, zb_nwk_hdr_t *nwk_hdr, zb_nwk_cmd_rrep_t *nwk_cmd_rrep) ;
 
 /**
    zb_nwk_mesh_find_route
@@ -357,7 +357,7 @@ void zb_nwk_mesh_rrep_handler(zb_buf_t *buf, zb_nwk_hdr_t *nwk_hdr, zb_nwk_cmd_r
    @param dest_addr - packet destination address
    @return routing table entry if route exists, NULL - otherwise
  */
-zb_nwk_routing_t *zb_nwk_mesh_find_route(zb_uint16_t dest_addr) ZB_SDCC_REENTRANT;
+zb_nwk_routing_t *zb_nwk_mesh_find_route(zb_uint16_t dest_addr) ;
 
 /**
    zb_nwk_mesh_find_route_discovery_entry
@@ -367,7 +367,7 @@ zb_nwk_routing_t *zb_nwk_mesh_find_route(zb_uint16_t dest_addr) ZB_SDCC_REENTRAN
    @param dest_addr - packet destination address
    @return route discovery table entry if exists, NULL - otherwise
  */
-zb_nwk_route_discovery_t *zb_nwk_mesh_find_route_discovery_entry(zb_uint16_t dest_addr) ZB_SDCC_REENTRANT;
+zb_nwk_route_discovery_t *zb_nwk_mesh_find_route_discovery_entry(zb_uint16_t dest_addr) ;
 
 /**
    zb_nwk_mesh_add_buf_to_pending
@@ -378,10 +378,10 @@ zb_nwk_route_discovery_t *zb_nwk_mesh_find_route_discovery_entry(zb_uint16_t des
    @param handle - nsdu packet handle
    @return RET_OK on success, error code otherwise
  */
-zb_ret_t zb_nwk_mesh_add_buf_to_pending(zb_buf_t *buf, zb_uint8_t handle) ZB_SDCC_REENTRANT;
+zb_ret_t zb_nwk_mesh_add_buf_to_pending(zb_buf_t *buf, zb_uint8_t handle) ;
 #endif /* ZB_NWK_MESH_ROUTING */
 
-void zb_nwk_forward(zb_uint8_t param) ZB_CALLBACK;
+void zb_nwk_forward(zb_uint8_t param) ;
 
 
 /**
@@ -390,7 +390,7 @@ void zb_nwk_forward(zb_uint8_t param) ZB_CALLBACK;
    @param param - buffer with scan result
    @return nothing
  */
-void zb_nlme_rejoin_scan_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_rejoin_scan_confirm(zb_uint8_t param) ;
 
 /**
    zb_nlme_rejoin_response
@@ -398,7 +398,7 @@ void zb_nlme_rejoin_scan_confirm(zb_uint8_t param) ZB_CALLBACK;
    @param param - buffer
    @return nothing
  */
-void zb_nlme_rejoin_response(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_rejoin_response(zb_uint8_t param) ;
 
 /**
    zb_nlme_rejoin_response_timeout
@@ -406,7 +406,7 @@ void zb_nlme_rejoin_response(zb_uint8_t param) ZB_CALLBACK;
    @param param - buffer
    @return nothing
  */
-void zb_nlme_rejoin_response_timeout(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_rejoin_response_timeout(zb_uint8_t param) ;
 
 /**
    zb_nlme_rejoin_request
@@ -414,7 +414,7 @@ void zb_nlme_rejoin_response_timeout(zb_uint8_t param) ZB_CALLBACK;
    @param param - buffer
    @return nothing
  */
-void zb_nlme_rejoin_request(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_rejoin_request(zb_uint8_t param) ;
 
 /**
    zb_nlme_rejoin_resp_sent
@@ -422,7 +422,7 @@ void zb_nlme_rejoin_request(zb_uint8_t param) ZB_CALLBACK;
    @param param - buffer
    @return nothing
  */
-void zb_nlme_rejoin_resp_sent(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_rejoin_resp_sent(zb_uint8_t param) ;
 
 /**
    zb_nlme_orphan_scan_confirm
@@ -430,7 +430,7 @@ void zb_nlme_rejoin_resp_sent(zb_uint8_t param) ZB_CALLBACK;
    @param param - buffer
    @return nothing
  */
-void zb_nlme_orphan_scan_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_nlme_orphan_scan_confirm(zb_uint8_t param) ;
 
 /**
    zb_nwk_nib_init
@@ -456,14 +456,14 @@ void remove_parent_from_potential_parents(zb_ext_neighbor_tbl_ent_t *parent);
 
 void zb_panid_conflict_got_network_report(zb_uint8_t param, zb_uint16_t *panids, zb_uint8_t n_panids);
 void zb_panid_conflict_remember_panid(zb_uint16_t panid);
-void zb_panid_conflict_network_update(zb_uint8_t param) ZB_SDCC_REENTRANT;
-zb_uint8_t * zb_nwk_fill_out_command(zb_uint8_t param, zb_uint16_t dest, zb_uint8_t command_id, zb_uint8_t size) ZB_SDCC_REENTRANT;
-void zb_panid_conflict_send_network_report(zb_uint8_t param) ZB_CALLBACK;
-void zb_panid_conflict_send_nwk_update(zb_uint8_t param) ZB_CALLBACK;
-void zb_panid_conflict_send_status_ind(zb_uint8_t param) ZB_CALLBACK;
+void zb_panid_conflict_network_update(zb_uint8_t param) ;
+zb_uint8_t * zb_nwk_fill_out_command(zb_uint8_t param, zb_uint16_t dest, zb_uint8_t command_id, zb_uint8_t size) ;
+void zb_panid_conflict_send_network_report(zb_uint8_t param) ;
+void zb_panid_conflict_send_nwk_update(zb_uint8_t param) ;
+void zb_panid_conflict_send_status_ind(zb_uint8_t param) ;
 void zb_panid_conflict_network_update_recv(zb_nwk_update_cmd_t *upd);
-void zb_panid_conflict_set_panid_alarm(zb_uint8_t param) ZB_CALLBACK;
-void zb_panid_conflict_set_panid(zb_uint8_t param) ZB_CALLBACK;
+void zb_panid_conflict_set_panid_alarm(zb_uint8_t param) ;
+void zb_panid_conflict_set_panid(zb_uint8_t param) ;
 void zb_panid_conflict_schedule_network_report(zb_uint8_t param, zb_uint16_t panid);
 
 /*
@@ -473,7 +473,7 @@ zb_nwk_hdr_t *nwk_alloc_and_fill_hdr(zb_buf_t *buf,
                                      zb_uint16_t dst_addr,
                                      zb_uint8_t *src_ieee_addr, zb_uint8_t *dst_ieee_addr,
                                      zb_bool_t is_multicast, zb_bool_t is_secured,
-                                     zb_bool_t is_cmd_frame) ZB_SDCC_REENTRANT;
+                                     zb_bool_t is_cmd_frame) ;
 
 /*
   Alloc and fill place for nwk command, return pointer to the command payload

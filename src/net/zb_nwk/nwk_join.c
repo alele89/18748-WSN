@@ -59,9 +59,9 @@ PURPOSE: Network creation routine
 /*! \addtogroup ZB_NWK */
 /*! @{ */
 
-static void nwk_join_failure_confirm(zb_uint8_t param, zb_uint8_t s) ZB_SDCC_REENTRANT
+static void nwk_join_failure_confirm(zb_uint8_t param, zb_uint8_t s) 
 {
-  zb_buf_t ZB_SDCC_XDATA *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
+  zb_buf_t  *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_nlme_join_confirm_t *join_confirm = ZB_GET_BUF_PARAM(buf, zb_nlme_join_confirm_t);
   join_confirm->status = (zb_mac_status_t)(s);
   buf->u.hdr.status = s;
@@ -70,7 +70,7 @@ static void nwk_join_failure_confirm(zb_uint8_t param, zb_uint8_t s) ZB_SDCC_REE
   ZB_SCHEDULE_CALLBACK(zb_nlme_join_confirm, param);
 }
 
-static zb_ext_neighbor_tbl_ent_t *nwk_choose_parent(zb_address_pan_id_ref_t panid_ref, zb_mac_capability_info_t capability_information) ZB_SDCC_REENTRANT
+static zb_ext_neighbor_tbl_ent_t *nwk_choose_parent(zb_address_pan_id_ref_t panid_ref, zb_mac_capability_info_t capability_information) 
 {
   zb_ext_neighbor_tbl_ent_t *ret = NULL;
   zb_uint_t i;
@@ -173,7 +173,7 @@ static zb_ext_neighbor_tbl_ent_t *nwk_choose_parent(zb_address_pan_id_ref_t pani
    This routine can be called when upper layer called join first time or for
    attempt to join to another parent.
  */
-static zb_ret_t nwk_association_join(zb_buf_t *buf, zb_nlme_join_request_t *request) ZB_SDCC_REENTRANT
+static zb_ret_t nwk_association_join(zb_buf_t *buf, zb_nlme_join_request_t *request) 
 {
   zb_ext_neighbor_tbl_ent_t *best_parent = NULL;
   zb_address_pan_id_ref_t panid_ref = 0; /* shutup sdcc */
@@ -276,7 +276,7 @@ static zb_ret_t nwk_association_join(zb_buf_t *buf, zb_nlme_join_request_t *requ
 }
 
 
-void zb_mlme_associate_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_associate_confirm(zb_uint8_t param) 
 {
   zb_ret_t ret = 0;
   zb_mlme_associate_confirm_t *request = ZB_GET_BUF_PARAM((zb_buf_t *)ZB_BUF_FROM_REF(param), zb_mlme_associate_confirm_t);
@@ -444,7 +444,7 @@ void zb_mlme_associate_confirm(zb_uint8_t param) ZB_CALLBACK
   TRACE_MSG(TRACE_NWK1, "<<assoc_conf", (FMT__0));
 }
 
-static void zb_nlme_rejoin(zb_uint8_t param) ZB_SDCC_REENTRANT
+static void zb_nlme_rejoin(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_nlme_join_request_t *request = ZB_GET_BUF_PARAM((zb_buf_t *)ZB_BUF_FROM_REF(param), zb_nlme_join_request_t);
@@ -481,7 +481,7 @@ static void zb_nlme_rejoin(zb_uint8_t param) ZB_SDCC_REENTRANT
 }
 
 #ifndef ZB_LIMITED_FEATURES2
-void zb_nlme_rejoin_scan_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_rejoin_scan_confirm(zb_uint8_t param) 
 {
   zb_ret_t ret = ZB_NWK_STATUS_SUCCESS;
   zb_address_pan_id_ref_t panid_ref = 0;
@@ -659,7 +659,7 @@ void remove_parent_from_potential_parents(zb_ext_neighbor_tbl_ent_t *parent)
   }
 }
 
-void zb_nlme_rejoin_response_timeout(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_rejoin_response_timeout(zb_uint8_t param) 
 {
   TRACE_MSG(TRACE_NWK1, ">>rejoin_resp_tmo %hd", (FMT__H, param));
 
@@ -686,7 +686,7 @@ void zb_nlme_rejoin_response_timeout(zb_uint8_t param) ZB_CALLBACK
   TRACE_MSG(TRACE_NWK1, "<<rejoin_resp_tmo", (FMT__0));
 }
 
-void zb_nlme_rejoin_response(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_rejoin_response(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_nwk_hdr_t *nwhdr = (zb_nwk_hdr_t *)ZB_BUF_BEGIN(buf);
@@ -794,7 +794,7 @@ void zb_nlme_rejoin_response(zb_uint8_t param) ZB_CALLBACK
 
 
 #ifndef ZB_LIMITED_FEATURES
-static void zb_nlme_orphan_scan(zb_uint8_t param) ZB_SDCC_REENTRANT
+static void zb_nlme_orphan_scan(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_nlme_join_request_t *request = ZB_GET_BUF_PARAM(buf, zb_nlme_join_request_t);
@@ -817,7 +817,7 @@ static void zb_nlme_orphan_scan(zb_uint8_t param) ZB_SDCC_REENTRANT
   TRACE_MSG(TRACE_NWK1, "<< orphan_scan", (FMT__0));
 }
 
-void zb_nlme_orphan_scan_confirm(zb_uint8_t param) ZB_SDCC_REENTRANT
+void zb_nlme_orphan_scan_confirm(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_mac_scan_confirm_t *confirm = ZB_GET_BUF_PARAM(buf, zb_mac_scan_confirm_t);
@@ -877,7 +877,7 @@ void zb_mlme_orphan_indication(zb_uint8_t param)
 #endif  /* ZB_LIMITED_FEATURES */
 
 
-void zb_nlme_join_request(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_join_request(zb_uint8_t param) 
 {
   zb_ret_t ret = RET_OK;
   zb_nlme_join_request_t *request = ZB_GET_BUF_PARAM((zb_buf_t *)ZB_BUF_FROM_REF(param), zb_nlme_join_request_t);
@@ -923,7 +923,7 @@ void zb_nlme_join_request(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_mlme_comm_status_indication(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_comm_status_indication(zb_uint8_t param) 
 {
   zb_ret_t ret;
   zb_address_ieee_ref_t addr_ref;

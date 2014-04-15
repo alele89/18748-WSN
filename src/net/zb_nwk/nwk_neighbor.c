@@ -58,9 +58,9 @@ PURPOSE: Neighbor table
 static void base_neighbor_cleanup();
 #endif
 
-static zb_ret_t alloc_new_extneiboard(zb_address_pan_id_ref_t panid_ref, zb_uint16_t short_addr, zb_ext_neighbor_tbl_ent_t **enbt)  ZB_SDCC_REENTRANT;
+static zb_ret_t alloc_new_extneiboard(zb_address_pan_id_ref_t panid_ref, zb_uint16_t short_addr, zb_ext_neighbor_tbl_ent_t **enbt)  ;
 
-void zb_nwk_neighbor_init() ZB_SDCC_REENTRANT
+void zb_nwk_neighbor_init() 
 {
   TRACE_MSG(TRACE_NWK1, "nb_init", (FMT__0));
   ZB_MEMSET(&ZG->nwk.neighbor.addr_to_neighbor[0], -1, sizeof(ZG->nwk.neighbor.addr_to_neighbor));
@@ -71,7 +71,7 @@ void zb_nwk_neighbor_init() ZB_SDCC_REENTRANT
 }
 
 #ifndef ZB_ED_ROLE
-void zb_nwk_exneighbor_start() ZB_SDCC_REENTRANT
+void zb_nwk_exneighbor_start() 
 {
   zb_uint8_t cut;
 
@@ -157,7 +157,7 @@ void zb_nwk_exneighbor_start() ZB_SDCC_REENTRANT
   TRACE_MSG(TRACE_NWK1, "<<exnb_start", (FMT__0));
 }
 
-void zb_nwk_exneighbor_stop(zb_uint16_t parent_short_addr) ZB_SDCC_REENTRANT
+void zb_nwk_exneighbor_stop(zb_uint16_t parent_short_addr) 
 {
   zb_ret_t ret = RET_OK;
   zb_ushort_t i;
@@ -301,7 +301,7 @@ void zb_nwk_exneighbor_stop(zb_uint16_t parent_short_addr) ZB_SDCC_REENTRANT
 #endif /* ZB_ED_ROLE */
 
 #ifdef ZB_ED_ROLE
-void zb_nwk_exneighbor_stop(zb_uint16_t parent_short_addr) ZB_SDCC_REENTRANT
+void zb_nwk_exneighbor_stop(zb_uint16_t parent_short_addr) 
 {
   zb_address_ieee_ref_t addr_ref;
 
@@ -362,7 +362,7 @@ void zb_nwk_exneighbor_stop(zb_uint16_t parent_short_addr) ZB_SDCC_REENTRANT
 
 
 zb_ret_t zb_nwk_exneighbor_by_short(zb_address_pan_id_ref_t panid_ref, zb_uint16_t short_addr,
-                                    zb_ext_neighbor_tbl_ent_t **enbt) ZB_SDCC_REENTRANT
+                                    zb_ext_neighbor_tbl_ent_t **enbt) 
 {
   zb_ret_t ret;
   zb_ushort_t i;
@@ -392,7 +392,7 @@ fin:
 
 
 #ifndef ZB_LIMITED_FEATURES
-zb_ret_t zb_nwk_exneighbor_by_ieee(zb_address_pan_id_ref_t panid_ref, zb_ieee_addr_t long_addr, zb_ext_neighbor_tbl_ent_t **enbt) ZB_SDCC_REENTRANT
+zb_ret_t zb_nwk_exneighbor_by_ieee(zb_address_pan_id_ref_t panid_ref, zb_ieee_addr_t long_addr, zb_ext_neighbor_tbl_ent_t **enbt) 
 {
   zb_ret_t ret = RET_NOT_FOUND;
   zb_ushort_t i;
@@ -433,7 +433,7 @@ zb_ret_t zb_nwk_exneighbor_by_ieee(zb_address_pan_id_ref_t panid_ref, zb_ieee_ad
 
    @return RET_OK if ok, RET_NOT_FOUND if no more free entries.
  */
-static zb_ret_t alloc_new_extneiboard(zb_address_pan_id_ref_t panid_ref, zb_uint16_t short_addr, zb_ext_neighbor_tbl_ent_t **enbt)  ZB_SDCC_REENTRANT
+static zb_ret_t alloc_new_extneiboard(zb_address_pan_id_ref_t panid_ref, zb_uint16_t short_addr, zb_ext_neighbor_tbl_ent_t **enbt)  
 {
   zb_ret_t ret = RET_OK;
 
@@ -494,7 +494,7 @@ static void base_neighbor_cleanup()
 }
 #endif
 
-zb_ret_t zb_nwk_neighbor_get(zb_address_ieee_ref_t addr, zb_bool_t create_if_absent, zb_neighbor_tbl_ent_t **nbt) ZB_SDCC_REENTRANT
+zb_ret_t zb_nwk_neighbor_get(zb_address_ieee_ref_t addr, zb_bool_t create_if_absent, zb_neighbor_tbl_ent_t **nbt) 
 {
   zb_ret_t ret = RET_OK;
   zb_uint8_t n = ZG->nwk.neighbor.addr_to_neighbor[addr];
@@ -548,7 +548,7 @@ zb_ret_t zb_nwk_neighbor_get(zb_address_ieee_ref_t addr, zb_bool_t create_if_abs
 
 
 #ifndef ZB_LIMITED_FEATURES2
-zb_ret_t zb_nwk_neighbor_ext_to_base_tmp(zb_ext_neighbor_tbl_ent_t *ext_ent) ZB_SDCC_REENTRANT
+zb_ret_t zb_nwk_neighbor_ext_to_base_tmp(zb_ext_neighbor_tbl_ent_t *ext_ent) 
 {
   zb_ret_t ret = RET_OK;
 
@@ -604,7 +604,7 @@ void zb_nwk_neighbor_clear()
   zb_nwk_neighbor_init();
 }
 
-zb_ret_t zb_nwk_neighbor_get_by_short(zb_uint16_t short_addr, zb_neighbor_tbl_ent_t **nbt) ZB_SDCC_REENTRANT
+zb_ret_t zb_nwk_neighbor_get_by_short(zb_uint16_t short_addr, zb_neighbor_tbl_ent_t **nbt) 
 {
   zb_address_ieee_ref_t addr_ref;
 

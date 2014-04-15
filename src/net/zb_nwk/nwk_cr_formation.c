@@ -58,12 +58,12 @@ PURPOSE: Network creation routine
 /*! @{ */
 
 #ifdef ZB_ROUTER_ROLE
-static void call_mlme_start(zb_buf_t *buf, zb_uint16_t pan_id, zb_uint16_t channel) ZB_SDCC_REENTRANT;
+static void call_mlme_start(zb_buf_t *buf, zb_uint16_t pan_id, zb_uint16_t channel) ;
 #endif
 
 #ifdef ZB_COORDINATOR_ROLE
 
-void zb_nlme_network_formation_request(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_network_formation_request(zb_uint8_t param) 
 {
 
   TRACE_MSG(TRACE_NWK1, ">>nwk_formation_req %hd", (FMT__H, param));
@@ -128,7 +128,7 @@ void zb_nlme_network_formation_request(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void nwk_formation_ed_scan_confirm(zb_buf_t *buf) ZB_SDCC_REENTRANT
+void nwk_formation_ed_scan_confirm(zb_buf_t *buf) 
 {
   zb_mac_scan_confirm_t *scan_confirm = ZB_GET_BUF_PARAM(buf, zb_mac_scan_confirm_t);
   zb_uint32_t channel_mask = 1;
@@ -187,7 +187,7 @@ void nwk_formation_ed_scan_confirm(zb_buf_t *buf) ZB_SDCC_REENTRANT
 
    @param buf - buffer with results
  */
-void nwk_formation_select_channel(zb_buf_t *buf) ZB_SDCC_REENTRANT
+void nwk_formation_select_channel(zb_buf_t *buf) 
 {
   zb_uint8_t channel = ZB_MAC_START_CHANNEL_NUMBER;
   zb_uint8_t channel_networks = 0xff;
@@ -315,7 +315,7 @@ void nwk_formation_select_channel(zb_buf_t *buf) ZB_SDCC_REENTRANT
 #ifdef ZB_ROUTER_ROLE
 /* Note that coordinator role suppose router role. */
 
-void zb_nlme_start_router_request(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_start_router_request(zb_uint8_t param) 
 {
   TRACE_MSG(TRACE_NWK1, ">>start_router_req %hd", (FMT__H, param));
 
@@ -358,7 +358,7 @@ void zb_nlme_start_router_request(zb_uint8_t param) ZB_CALLBACK
    @param pan_id - pan id for the network
    @param channel - channel to use
  */
-static void call_mlme_start(zb_buf_t *buf, zb_uint16_t pan_id, zb_uint16_t channel) ZB_SDCC_REENTRANT
+static void call_mlme_start(zb_buf_t *buf, zb_uint16_t pan_id, zb_uint16_t channel) 
 {
   zb_mlme_start_req_t req;
 
@@ -450,7 +450,7 @@ void zb_nwk_update_beacon_payload()
    Not used now!!
  */
 /* not banked: in the same bank with MAC */
-void zb_mlme_reset_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_reset_confirm(zb_uint8_t param) 
 {
   TRACE_MSG(TRACE_NWK1, ">>mlme_reset_conf %hd", (FMT__H, param));
 #ifdef ZB_COORDINATOR_ROLE
@@ -486,7 +486,7 @@ void zb_mlme_reset_confirm(zb_uint8_t param) ZB_CALLBACK
   TRACE_MSG(TRACE_NWK1, "<<mlme_reset_conf", (FMT__0));
 }
 
-void zb_nlme_network_formation_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_network_formation_confirm(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   TRACE_MSG(TRACE_NWK1, ">>zb_nlme_network_formation vbuf %hd", (FMT__H, param));

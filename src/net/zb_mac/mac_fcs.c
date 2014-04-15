@@ -55,7 +55,7 @@ PURPOSE: routine for FCS calculation
 #ifdef ZB_NS_BUILD
 /* FCS is necessary for ns build only. Real transiver calc fcs itself */
 
-void zb_mac_fcs_add(zb_buf_t *buf) ZB_SDCC_REENTRANT
+void zb_mac_fcs_add(zb_buf_t *buf) 
 {
   static ZB_CODE const zb_uint16_t table[256] =
     {

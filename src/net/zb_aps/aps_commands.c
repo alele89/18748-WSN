@@ -54,7 +54,7 @@ PURPOSE:
 /*! \addtogroup ZB_APS */
 /*! @{ */
 
-void zb_aps_in_command_handle(zb_uint8_t param) ZB_CALLBACK
+void zb_aps_in_command_handle(zb_uint8_t param) 
 {
 #ifdef ZB_SECURITY
   zb_uint8_t *cmd_id_p;

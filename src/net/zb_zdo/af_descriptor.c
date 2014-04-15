@@ -56,7 +56,7 @@ PURPOSE: AF layer
 /*! @{ */
 
 #ifndef ZB_LIMITED_FEATURES
-void zb_set_node_descriptor(zb_logical_type_t device_type, zb_int8_t power_src, zb_int8_t rx_on_when_idle, zb_int8_t alloc_addr) ZB_SDCC_REENTRANT
+void zb_set_node_descriptor(zb_logical_type_t device_type, zb_int8_t power_src, zb_int8_t rx_on_when_idle, zb_int8_t alloc_addr) 
 {
   zb_mac_capability_info_t mac_cap = 0;
 
@@ -89,7 +89,7 @@ void zb_set_node_descriptor(zb_logical_type_t device_type, zb_int8_t power_src, 
   Set node descriptor for FFD
   param device_type - FFD device type ZB_COORDINATOR or ZB_ROUTER
 */
-void zb_set_ffd_node_descriptor(zb_logical_type_t device_type) ZB_SDCC_REENTRANT
+void zb_set_ffd_node_descriptor(zb_logical_type_t device_type) 
 {
   TRACE_MSG(TRACE_ZDO3, "zb_set_ffd_node_descriptor", (FMT__0));
   zb_set_node_descriptor(device_type, 0, 1, 0);
@@ -101,7 +101,7 @@ void zb_set_ffd_node_descriptor(zb_logical_type_t device_type) ZB_SDCC_REENTRANT
   param rx_on_when_idle - receiver on when idle sub-field
   param alloc_addr - allocate address sub-field
 */
-void zb_set_ed_node_descriptor(zb_int8_t power_src, zb_int8_t rx_on_when_idle, zb_int8_t alloc_addr) ZB_SDCC_REENTRANT
+void zb_set_ed_node_descriptor(zb_int8_t power_src, zb_int8_t rx_on_when_idle, zb_int8_t alloc_addr) 
 {
     TRACE_MSG(TRACE_ZDO3, "zb_set_ed_node_descriptor", (FMT__0));
   zb_set_node_descriptor(ZB_END_DEVICE, power_src, rx_on_when_idle, alloc_addr);
@@ -115,7 +115,7 @@ void zb_set_ed_node_descriptor(zb_int8_t power_src, zb_int8_t rx_on_when_idle, z
   param current_power_source_level - current power source level
 */
 void zb_set_node_power_descriptor(zb_current_power_mode_t current_power_mode, zb_uint8_t available_power_sources,
-                                  zb_uint8_t current_power_source, zb_power_source_level_t current_power_source_level) ZB_SDCC_REENTRANT
+                                  zb_uint8_t current_power_source, zb_power_source_level_t current_power_source_level) 
 {
   ZB_SET_POWER_DESC_CUR_POWER_MODE(ZB_ZDO_NODE_POWER_DESC(), current_power_mode);
   ZB_SET_POWER_DESC_AVAIL_POWER_SOURCES(ZB_ZDO_NODE_POWER_DESC(), available_power_sources);
@@ -136,7 +136,7 @@ void zb_set_node_power_descriptor(zb_current_power_mode_t current_power_mode, zb
 void zb_set_simple_descriptor(zb_af_simple_desc_1_1_t *simple_desc,
                               zb_uint8_t  endpoint, zb_uint16_t app_profile_id,
                               zb_uint16_t app_device_id, zb_bitfield_t app_device_version,
-                              zb_uint8_t app_input_cluster_count, zb_uint8_t app_output_cluster_count) ZB_SDCC_REENTRANT
+                              zb_uint8_t app_input_cluster_count, zb_uint8_t app_output_cluster_count) 
 {
   simple_desc->endpoint = endpoint;
   simple_desc->app_profile_id = app_profile_id;
@@ -153,7 +153,7 @@ void zb_set_simple_descriptor(zb_af_simple_desc_1_1_t *simple_desc,
   param cluster_number - cluster item number
   param cluster_id - cluster id
 */
-void zb_set_input_cluster_id(zb_af_simple_desc_1_1_t *simple_desc, zb_uint8_t cluster_number, zb_uint16_t cluster_id) ZB_SDCC_REENTRANT
+void zb_set_input_cluster_id(zb_af_simple_desc_1_1_t *simple_desc, zb_uint8_t cluster_number, zb_uint16_t cluster_id) 
 {
   TRACE_MSG(TRACE_ZDO2, "cluster_id 0x%hx, cluster_number %hu, input count %hd",
             (FMT__H_H_H, cluster_id, cluster_number, simple_desc->app_input_cluster_count));
@@ -167,7 +167,7 @@ void zb_set_input_cluster_id(zb_af_simple_desc_1_1_t *simple_desc, zb_uint8_t cl
   param cluster_number - cluster item number
   param cluster_id - cluster id
 */
-void zb_set_output_cluster_id(zb_af_simple_desc_1_1_t *simple_desc, zb_uint8_t cluster_number, zb_uint16_t cluster_id) ZB_SDCC_REENTRANT
+void zb_set_output_cluster_id(zb_af_simple_desc_1_1_t *simple_desc, zb_uint8_t cluster_number, zb_uint16_t cluster_id) 
 {
 TRACE_MSG(TRACE_ZDO2, "cluster_id 0x%hx, cluster_number %hd, output count %hd",
           (FMT__H_H_H, cluster_id, cluster_number, simple_desc->app_output_cluster_count));
@@ -175,7 +175,7 @@ TRACE_MSG(TRACE_ZDO2, "cluster_id 0x%hx, cluster_number %hd, output count %hd",
   simple_desc->app_cluster_list[simple_desc->app_input_cluster_count + cluster_number] = cluster_id;
 }
 
-void zb_set_zdo_descriptor() ZB_SDCC_REENTRANT
+void zb_set_zdo_descriptor() 
 {
   zb_set_simple_descriptor((zb_af_simple_desc_1_1_t*)ZB_ZDO_SIMPLE_DESC(),
                            0 /* endpoint */,                0 /* app_profile_id */,
@@ -237,7 +237,7 @@ void zb_set_zdo_descriptor() ZB_SDCC_REENTRANT
 }
 
 #if defined ZB_COORDINATOR_ROLE || defined ZB_ROUTER_ROLE
-void zb_set_default_ffd_descriptor_values(zb_logical_type_t device_type) ZB_SDCC_REENTRANT
+void zb_set_default_ffd_descriptor_values(zb_logical_type_t device_type) 
 {
   TRACE_MSG(TRACE_ZDO3, "zb_set_default_ffd_descriptor_values", (FMT__0));
   zb_set_node_descriptor(device_type, 0, 1, 0);
@@ -250,7 +250,7 @@ void zb_set_default_ffd_descriptor_values(zb_logical_type_t device_type) ZB_SDCC
 #endif
 
 
-void zb_set_default_ed_descriptor_values() ZB_SDCC_REENTRANT
+void zb_set_default_ed_descriptor_values() 
 {
   TRACE_MSG(TRACE_ZDO3, "zb_set_default_ed_descriptor_values", (FMT__0));
   zb_set_node_descriptor(ZB_END_DEVICE, 0, 1, 0);
@@ -264,7 +264,7 @@ void zb_set_default_ed_descriptor_values() ZB_SDCC_REENTRANT
   param simple_desc - pointer to simple descriptor to add
   return RET_OK, RET_OVERFLOW
  */
-zb_ret_t zb_add_simple_descriptor(zb_af_simple_desc_1_1_t *simple_desc) ZB_SDCC_REENTRANT
+zb_ret_t zb_add_simple_descriptor(zb_af_simple_desc_1_1_t *simple_desc) 
 {
   zb_ret_t ret = RET_OK;
 

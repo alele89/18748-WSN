@@ -51,7 +51,7 @@ PURPOSE: Zigbee scheduler: init
 
 #include "zb_common.h"
 
-void zb_sched_init() ZB_CALLBACK /* __reentrant for sdcc, to save DSEG space */
+void zb_sched_init()  /* __reentrant for sdcc, to save DSEG space */
 {
   zb_uint8_t i;
 

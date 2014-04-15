@@ -62,7 +62,7 @@ PURPOSE: Network address assign
 
 /* see 3.6.1.6 for Distributed address assign mechanism */
 /* and doc/html/nwk/Zigbee-Tree-Routing-How-It-Works-and-Why-It-Sucks.html */
-zb_uint16_t zb_nwk_daa_calc_cskip(zb_uint8_t depth ) ZB_SDCC_REENTRANT
+zb_uint16_t zb_nwk_daa_calc_cskip(zb_uint8_t depth ) 
 {
   zb_uint16_t ret = 0;
 

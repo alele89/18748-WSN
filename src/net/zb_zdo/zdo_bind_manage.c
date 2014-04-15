@@ -60,14 +60,14 @@ PURPOSE: ZDO Bind management
 /* todo: this define used only to fit in 64k */
 #ifndef ZB_LIMITED_FEATURES
 
-zb_uint8_t* copy_cluster_id(zb_uint8_t *cluster_dst, zb_uint8_t *cluster_src, zb_uint8_t cluster_num) ZB_SDCC_REENTRANT;
-static void zb_zdo_bind_unbind_req(zb_uint8_t param, zb_callback_t cb, zb_bool_t bind) ZB_SDCC_REENTRANT;
-static void send_bind_unbind_req(zb_uint8_t param, zb_uint8_t target_dev_num, zb_uint16_t cluster_id, zb_callback_t cb, zb_bool_t bind) ZB_SDCC_REENTRANT;
+zb_uint8_t* copy_cluster_id(zb_uint8_t *cluster_dst, zb_uint8_t *cluster_src, zb_uint8_t cluster_num) ;
+static void zb_zdo_bind_unbind_req(zb_uint8_t param, zb_callback_t cb, zb_bool_t bind) ;
+static void send_bind_unbind_req(zb_uint8_t param, zb_uint8_t target_dev_num, zb_uint16_t cluster_id, zb_callback_t cb, zb_bool_t bind) ;
 
-void zb_zdo_send_check_bind_unbind(zb_uint8_t param) ZB_CALLBACK;
-void zb_zdo_bind_unbind_check_cb(zb_uint8_t param) ZB_CALLBACK;
-void zb_zdo_end_device_bind_cb(zb_uint8_t param) ZB_CALLBACK;
-void zb_zdo_end_device_unbind_cb(zb_uint8_t param) ZB_CALLBACK;
+void zb_zdo_send_check_bind_unbind(zb_uint8_t param) ;
+void zb_zdo_bind_unbind_check_cb(zb_uint8_t param) ;
+void zb_zdo_end_device_bind_cb(zb_uint8_t param) ;
+void zb_zdo_end_device_unbind_cb(zb_uint8_t param) ;
 
 void zb_zdo_bind_req(zb_uint8_t param, zb_callback_t cb)
 {
@@ -79,7 +79,7 @@ void zb_zdo_unbind_req(zb_uint8_t param, zb_callback_t cb)
   zb_zdo_bind_unbind_req(param, cb, ZB_FALSE);
 }
 
-static void zb_zdo_bind_unbind_req(zb_uint8_t param, zb_callback_t cb, zb_bool_t bind) ZB_SDCC_REENTRANT
+static void zb_zdo_bind_unbind_req(zb_uint8_t param, zb_callback_t cb, zb_bool_t bind) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_zdo_bind_req_param_t *bind_param;
@@ -125,7 +125,7 @@ static void zb_zdo_bind_unbind_req(zb_uint8_t param, zb_callback_t cb, zb_bool_t
   TRACE_MSG(TRACE_ZDO2, "<< zb_zdo_bind_unbind_req param", (FMT__0));
 }
 
-void zb_zdo_bind_unbind_res(zb_uint8_t param, zb_bool_t bind) ZB_SDCC_REENTRANT
+void zb_zdo_bind_unbind_res(zb_uint8_t param, zb_bool_t bind) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_zdo_bind_resp_t *bind_resp;
@@ -204,7 +204,7 @@ void zb_zdo_add_group_req(zb_uint8_t param, zb_callback_t cb)
   zb_schedule_callback(cb, param);
 }
 
-void zb_get_peer_short_addr_cb(zb_uint8_t param) ZB_CALLBACK
+void zb_get_peer_short_addr_cb(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_zdo_nwk_addr_resp_head_t *resp;
@@ -238,7 +238,7 @@ void zb_get_peer_short_addr_cb(zb_uint8_t param) ZB_CALLBACK
    param param - buffer reference to use for i/o
  */
 
-void zb_get_peer_short_addr(zb_uint8_t param) ZB_CALLBACK
+void zb_get_peer_short_addr(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_zdo_nwk_addr_req_param_t *req_param;
@@ -263,7 +263,7 @@ void zb_start_get_peer_short_addr(zb_address_ieee_ref_t dst_addr_ref, zb_callbac
   ZB_GET_OUT_BUF_DELAYED(zb_get_peer_short_addr);
 }
 
-static void copy_end_device_bind_req_head(zb_zdo_end_device_bind_req_head_t *dst_head, zb_zdo_end_device_bind_req_head_t *src_head) ZB_SDCC_REENTRANT
+static void copy_end_device_bind_req_head(zb_zdo_end_device_bind_req_head_t *dst_head, zb_zdo_end_device_bind_req_head_t *src_head) 
 {
   TRACE_MSG(TRACE_ZDO2, "copy_end_device_bind_req_head", (FMT__0));
   ZB_HTOLE16(&dst_head->binding_target, &src_head->binding_target);
@@ -273,7 +273,7 @@ static void copy_end_device_bind_req_head(zb_zdo_end_device_bind_req_head_t *dst
   dst_head->num_in_cluster = src_head->num_in_cluster;
 }
 
-void zb_end_device_bind_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT
+void zb_end_device_bind_req(zb_uint8_t param, zb_callback_t cb) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_end_device_bind_req_param_t *req_param_init;
@@ -308,7 +308,7 @@ void zb_end_device_bind_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRAN
   zdo_send_req_by_short(ZDO_END_DEVICE_BIND_REQ_CLID, param, cb, req_param->dst_addr, 1);
 }
 
-void zb_zdo_end_device_bind_timer(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_end_device_bind_timer(zb_uint8_t param) 
 {
   TRACE_MSG(TRACE_ZDO2, "zb_zdo_end_device_bind_timer param %hd", (FMT__H, param));
   ZDO_CTX().end_device_bind_ctx.bind_device_info[ZB_ZDO_BIND_DEV_1].end_device_bind_param = ZB_UNDEFINED_BUFFER;
@@ -318,7 +318,7 @@ void zb_zdo_end_device_bind_timer(zb_uint8_t param) ZB_CALLBACK
 #ifndef ZB_DISABLE_ED_BIND_REQ
 static void check_cluster_list(zb_uint8_t device_num,
                                zb_uint8_t *cluster_list1, zb_uint8_t num_cluster1,
-                               zb_uint8_t *cluster_list2, zb_uint8_t num_cluster2) ZB_SDCC_REENTRANT
+                               zb_uint8_t *cluster_list2, zb_uint8_t num_cluster2) 
 {
   zb_uint8_t i;
   zb_uint8_t j;
@@ -352,7 +352,7 @@ static void check_cluster_list(zb_uint8_t device_num,
   }
 }
 #endif
-void zb_zdo_end_device_bind_handler(zb_uint8_t param) ZB_SDCC_REENTRANT
+void zb_zdo_end_device_bind_handler(zb_uint8_t param) 
 {
 #ifdef ZB_DISABLE_ED_BIND_REQ
   zb_zdo_end_device_bind_resp(param, ZB_ZDP_STATUS_NOT_SUPPORTED);
@@ -480,7 +480,7 @@ void zb_zdo_end_device_bind_handler(zb_uint8_t param) ZB_SDCC_REENTRANT
 #endif
 }
 
-void zb_zdo_send_check_bind_unbind(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_send_check_bind_unbind(zb_uint8_t param) 
 {
   TRACE_MSG(TRACE_ZDO3, "zb_zdo_send_check_bind_unbind param %hd", (FMT__H, param));
 
@@ -498,7 +498,7 @@ void zb_zdo_send_check_bind_unbind(zb_uint8_t param) ZB_CALLBACK
 
 }
 
-static void send_bind_unbind_req(zb_uint8_t param, zb_uint8_t target_dev_num, zb_uint16_t cluster_id, zb_callback_t cb, zb_bool_t bind) ZB_SDCC_REENTRANT
+static void send_bind_unbind_req(zb_uint8_t param, zb_uint8_t target_dev_num, zb_uint16_t cluster_id, zb_callback_t cb, zb_bool_t bind) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_zdo_bind_req_param_t *bind_param;
@@ -533,7 +533,7 @@ static void send_bind_unbind_req(zb_uint8_t param, zb_uint8_t target_dev_num, zb
   }
 }
 
-static void send_bind_unbind_with_check(zb_uint8_t param, zb_bool_t bind, zb_callback_t cb) ZB_SDCC_REENTRANT
+static void send_bind_unbind_with_check(zb_uint8_t param, zb_bool_t bind, zb_callback_t cb) 
 {
   TRACE_MSG(TRACE_ZDO2, "send_bind_unbind_with_check param %hd, bind %hd, cur device %hd, cluster_num %hd",
             (FMT__H_H_H_H, param, bind, ZDO_CTX().end_device_bind_ctx.current_device,
@@ -564,7 +564,7 @@ static void send_bind_unbind_with_check(zb_uint8_t param, zb_bool_t bind, zb_cal
     }
 }
 
-void zb_zdo_bind_unbind_check_cb(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_bind_unbind_check_cb(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_zdo_bind_resp_t *resp = (zb_zdo_bind_resp_t*)ZB_BUF_BEGIN(buf);
@@ -589,19 +589,19 @@ void zb_zdo_bind_unbind_check_cb(zb_uint8_t param) ZB_CALLBACK
   send_bind_unbind_with_check(param, bind_req, cb);
 }
 
-void zb_zdo_end_device_bind_cb(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_end_device_bind_cb(zb_uint8_t param) 
 {
   TRACE_MSG(TRACE_ZDO2, "zb_zdo_end_device_bind_cb param %hd", (FMT__H, param));
   send_bind_unbind_with_check(param, ZB_TRUE, zb_zdo_end_device_bind_cb);
 }
 
-void zb_zdo_end_device_unbind_cb(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_end_device_unbind_cb(zb_uint8_t param) 
 {
   TRACE_MSG(TRACE_ZDO2, "zb_zdo_end_device_unbind_cb param %hd", (FMT__H, param));
   send_bind_unbind_with_check(param, ZB_FALSE, zb_zdo_end_device_unbind_cb);
 }
 
-void zb_zdo_end_device_bind_resp(zb_uint8_t param, zb_zdp_status_t status) ZB_SDCC_REENTRANT
+void zb_zdo_end_device_bind_resp(zb_uint8_t param, zb_zdp_status_t status) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_zdo_end_device_bind_resp_t *resp;

@@ -63,14 +63,14 @@ PURPOSE: Network layer main module
    NIB database in memory
  */
 
-void zb_nwk_btr_expiry(zb_uint8_t param) ZB_CALLBACK;
-void nwk_frame_indication(zb_uint8_t param) ZB_CALLBACK;
+void zb_nwk_btr_expiry(zb_uint8_t param) ;
+void nwk_frame_indication(zb_uint8_t param) ;
 #ifndef ZB_LIMITED_FEATURES
-void zb_nwk_leave_ind_prnt(zb_uint8_t param) ZB_CALLBACK;
+void zb_nwk_leave_ind_prnt(zb_uint8_t param) ;
 static void zb_nwk_call_leave_ind(zb_uint8_t param, zb_uint8_t rejoin, zb_address_ieee_ref_t addr_ref);
-static void zb_nwk_leave_handler(zb_uint8_t param, zb_nwk_hdr_t *nwk_hdr, zb_uint8_t lp) ZB_SDCC_REENTRANT;
+static void zb_nwk_leave_handler(zb_uint8_t param, zb_nwk_hdr_t *nwk_hdr, zb_uint8_t lp) ;
 #endif
-void zb_nwk_call_br_confirm(zb_uint8_t param) ZB_CALLBACK;
+void zb_nwk_call_br_confirm(zb_uint8_t param) ;
 
 /* Start btr entries expiry if btt was empty and now it has entries */
 #if 1
@@ -132,7 +132,7 @@ void zb_nwk_nib_init()
 zb_nwk_hdr_t *nwk_alloc_and_fill_hdr(zb_buf_t *buf,
                                      zb_uint16_t dst_addr,
                                      zb_uint8_t *src_ieee_addr, zb_uint8_t *dst_ieee_addr,
-                                     zb_bool_t is_multicast, zb_bool_t is_secured, zb_bool_t is_cmd_frame) ZB_SDCC_REENTRANT
+                                     zb_bool_t is_multicast, zb_bool_t is_secured, zb_bool_t is_cmd_frame) 
 {
   zb_nwk_hdr_t *nwhdr;
   zb_ushort_t hdr_size = ( src_ieee_addr && dst_ieee_addr ) ? ZB_NWK_FULL_HDR_SIZE(is_multicast)
@@ -211,7 +211,7 @@ zb_uint8_t *nwk_alloc_and_fill_cmd(zb_buf_t *buf, zb_nwk_cmd_t cmd, zb_uint8_t c
 }
 
 
-void zb_nlde_data_request(zb_uint8_t param)   ZB_CALLBACK
+void zb_nlde_data_request(zb_uint8_t param)   
 {
   zb_buf_t *nsdu = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_nlde_data_req_t *nldereq = ZB_GET_BUF_TAIL(nsdu, sizeof(zb_nlde_data_req_t));
@@ -287,7 +287,7 @@ void zb_nlde_data_request(zb_uint8_t param)   ZB_CALLBACK
    @return RET_OK on success, RET_BUSY - when route discovery has been initiated or
    route discovery is in progress, error code otherwise
  */
-static zb_ret_t nwk_calc_destination(zb_buf_t *nsdu, zb_uint8_t handle, zb_uint16_t *mac_dst, zb_short_t *indirect, zb_nwk_command_status_t *cmd_status) ZB_SDCC_REENTRANT
+static zb_ret_t nwk_calc_destination(zb_buf_t *nsdu, zb_uint8_t handle, zb_uint16_t *mac_dst, zb_short_t *indirect, zb_nwk_command_status_t *cmd_status) 
 {
   zb_ret_t ret = RET_OK;
   zb_nwk_hdr_t *nwhdr = (zb_nwk_hdr_t *)ZB_BUF_BEGIN(nsdu);
@@ -449,7 +449,7 @@ static zb_ret_t nwk_calc_destination(zb_buf_t *nsdu, zb_uint8_t handle, zb_uint1
 #ifdef ZB_ROUTER_ROLE
 /* Retransmit broadcast packets nwkMaxBroadcastRetries times and unicast
  * broadcast packets to EDs with rx_on_when_idle == false */
-void nwk_broadcast_transmition(zb_uint8_t param) ZB_CALLBACK
+void nwk_broadcast_transmition(zb_uint8_t param) 
 {
   int i = 0;
   zb_nwk_broadcast_retransmit_t *ent = NULL;
@@ -660,7 +660,7 @@ void nwk_broadcast_transmition(zb_uint8_t param) ZB_CALLBACK
 
    @param param - NWK packet to proceed.
  */
-void zb_nwk_forward(zb_uint8_t param) ZB_CALLBACK
+void zb_nwk_forward(zb_uint8_t param) 
 {
   zb_ret_t ret = RET_OK;
   zb_short_t indirect;
@@ -794,7 +794,7 @@ void zb_nwk_forward(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void call_status_indication(zb_uint8_t param) ZB_CALLBACK
+void call_status_indication(zb_uint8_t param) 
 {
   zb_nlme_status_indication_t *status =  ZB_GET_BUF_PARAM(ZB_BUF_FROM_REF(param), zb_nlme_status_indication_t);
 
@@ -811,7 +811,7 @@ void call_status_indication(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_mcps_data_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_mcps_data_confirm(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_mcps_data_confirm_params_t *confirm = ZB_GET_BUF_PARAM(buf, zb_mcps_data_confirm_params_t);
@@ -908,7 +908,7 @@ void zb_mcps_data_confirm(zb_uint8_t param) ZB_CALLBACK
 
 
 #ifdef ZB_ROUTER_ROLE
-void new_buffer_allocated(zb_uint8_t param) ZB_CALLBACK
+void new_buffer_allocated(zb_uint8_t param) 
 {
   TRACE_MSG(TRACE_NWK1, ">>new_buffer_allocated %hd", (FMT__H, param));
 
@@ -962,7 +962,7 @@ void new_buffer_allocated(zb_uint8_t param) ZB_CALLBACK
 #endif  /* ZB_ROUTER_ROLE */
 
 
-void zb_mcps_data_indication(zb_uint8_t param) ZB_CALLBACK
+void zb_mcps_data_indication(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_nwk_hdr_t *nwk_hdr = NULL;
@@ -1249,7 +1249,7 @@ if (!ZG->nwk.handle.joined_pro)
 
    Add MAC hdr to the frame, then call mcps_data_confirm
  */
-void zb_nwk_call_br_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_nwk_call_br_confirm(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_uint8_t *p;
@@ -1280,7 +1280,7 @@ void zb_nwk_call_br_confirm(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void nwk_frame_indication(zb_uint8_t param) ZB_CALLBACK
+void nwk_frame_indication(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_nwk_hdr_t *nwk_hdr = (zb_nwk_hdr_t *)ZB_BUF_BEGIN(buf);
@@ -1398,7 +1398,7 @@ void nwk_frame_indication(zb_uint8_t param) ZB_CALLBACK
   }
 }
 
-void zb_nwk_btr_expiry(zb_uint8_t param) ZB_CALLBACK
+void zb_nwk_btr_expiry(zb_uint8_t param) 
 {
   ZVUNUSED(param);
   TRACE_MSG(TRACE_NWK1, ">>nwk_btr_expiry %hd", (FMT__H, param));
@@ -1447,7 +1447,7 @@ void zb_nwk_btr_expiry(zb_uint8_t param) ZB_CALLBACK
    @param nwk_header - already parsed network header
    @param lp - LEAVE command payload (1 byte)
  */
-static void zb_nwk_leave_handler(zb_uint8_t param, zb_nwk_hdr_t *nwk_hdr, zb_uint8_t lp) ZB_SDCC_REENTRANT
+static void zb_nwk_leave_handler(zb_uint8_t param, zb_nwk_hdr_t *nwk_hdr, zb_uint8_t lp) 
 {
   zb_ret_t    status = RET_OK;
   zb_address_ieee_ref_t addr_ref;
@@ -1580,7 +1580,7 @@ static void zb_nwk_leave_handler(zb_uint8_t param, zb_nwk_hdr_t *nwk_hdr, zb_uin
 }
 
 
-void zb_nwk_leave_ind_prnt(zb_uint8_t param) ZB_CALLBACK
+void zb_nwk_leave_ind_prnt(zb_uint8_t param) 
 {
   zb_nwk_call_leave_ind(param, ZG->nwk.leave_context.leave_ind_prnt.rejoin,
                         ZG->nwk.leave_context.leave_ind_prnt.addr_ref);
@@ -1615,7 +1615,7 @@ void zb_nwk_forget_device(zb_address_ieee_ref_t addr_ref)
    @param param - buffer to be used for rejoin
    @param rejoin - rejoin flag
  */
-void zb_nwk_do_leave(zb_uint8_t param, zb_uint8_t rejoin) ZB_SDCC_REENTRANT
+void zb_nwk_do_leave(zb_uint8_t param, zb_uint8_t rejoin) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
 

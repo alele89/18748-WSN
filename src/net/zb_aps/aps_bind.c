@@ -74,7 +74,7 @@ zb_uint8_t aps_find_src_ref(zb_address_ieee_ref_t src_addr_ref, zb_uint8_t src_e
   return (zb_uint8_t)-1;
 }
 
-void zb_apsme_bind_request(zb_uint8_t param) ZB_CALLBACK
+void zb_apsme_bind_request(zb_uint8_t param) 
 {
   zb_buf_t *aps = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   /* zb_apsme_binding_req_t *apsreq = (zb_apsme_binding_req_t *)ZB_BUF_BEGIN(aps);*/
@@ -147,7 +147,7 @@ void zb_apsme_bind_request(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_apsme_unbind_request(zb_uint8_t param) ZB_CALLBACK
+void zb_apsme_unbind_request(zb_uint8_t param) 
 {
   zb_buf_t *aps = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_apsme_binding_req_t *apsreq = ZB_GET_BUF_PARAM(aps, zb_apsme_binding_req_t);
@@ -246,7 +246,7 @@ void zb_apsme_unbind_request(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_apsme_bind_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_apsme_bind_confirm(zb_uint8_t param) 
 {
   zb_ret_t ret;
 
@@ -254,7 +254,7 @@ void zb_apsme_bind_confirm(zb_uint8_t param) ZB_CALLBACK
   TRACE_MSG(TRACE_APS2, "+bind_confirm status %d", (FMT__D, ret));
 }
 
-void zb_apsme_unbind_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_apsme_unbind_confirm(zb_uint8_t param) 
 {
   zb_ret_t ret;
 
@@ -263,7 +263,7 @@ void zb_apsme_unbind_confirm(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_apsme_add_group_request(zb_uint8_t param) ZB_CALLBACK
+void zb_apsme_add_group_request(zb_uint8_t param) 
 {
   zb_uint8_t status = 0;
   zb_apsme_add_group_req_t req;

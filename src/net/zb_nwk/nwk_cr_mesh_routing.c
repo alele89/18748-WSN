@@ -121,18 +121,18 @@ static void nwk_get_mac_source_addr(zb_buf_t *b, zb_uint16_t *s)
 
 #if 0
 /* This function called periodically to resend route requests */
-void zb_nwk_mesh_expiry_rreq(zb_uint8_t param) ZB_CALLBACK;
+void zb_nwk_mesh_expiry_rreq(zb_uint8_t param) ;
 #endif
 
 /* This function called periodically to find expired discovery table entries */
-void zb_nwk_mesh_expiry_route_disc(zb_uint8_t param) ZB_CALLBACK;
+void zb_nwk_mesh_expiry_route_disc(zb_uint8_t param) ;
 /* This function called periodically to find expired pending elements */
-void zb_nwk_mesh_expiry_pending(zb_uint8_t param) ZB_CALLBACK;
+void zb_nwk_mesh_expiry_pending(zb_uint8_t param) ;
 
 /* Incoming route request handling */
-void zb_nwk_mesh_rreq_handler(zb_buf_t *buf, zb_nwk_hdr_t *nwk_hdr, zb_nwk_cmd_rreq_t *nwk_cmd_rreq) ZB_SDCC_REENTRANT;
+void zb_nwk_mesh_rreq_handler(zb_buf_t *buf, zb_nwk_hdr_t *nwk_hdr, zb_nwk_cmd_rreq_t *nwk_cmd_rreq) ;
 
-void zb_nwk_mesh_routing_init() ZB_SDCC_REENTRANT
+void zb_nwk_mesh_routing_init() 
 {
   TRACE_MSG(TRACE_NWK1, ">> mesh_r_init", (FMT__0));
 
@@ -151,7 +151,7 @@ void zb_nwk_mesh_routing_init() ZB_SDCC_REENTRANT
  * Generate and send a route request command frame.
  * Add route request entry into the rreq list to be able to track this request.
 */
-static zb_ret_t zb_nwk_mesh_send_rreq(zb_buf_t *cbuf, zb_nwk_cmd_rreq_t *nwk_cmd_rreq, zb_uint16_t src_addr, zb_uint8_t seq_num, zb_uint8_t path_cost, zb_uint8_t radius) ZB_SDCC_REENTRANT
+static zb_ret_t zb_nwk_mesh_send_rreq(zb_buf_t *cbuf, zb_nwk_cmd_rreq_t *nwk_cmd_rreq, zb_uint16_t src_addr, zb_uint8_t seq_num, zb_uint8_t path_cost, zb_uint8_t radius) 
 {
   zb_ret_t ret = RET_OK;
 
@@ -233,7 +233,7 @@ static zb_ret_t zb_nwk_mesh_send_rreq(zb_buf_t *cbuf, zb_nwk_cmd_rreq_t *nwk_cmd
 /*
  * Generate and send a route reply command frame.
 */
-static zb_ret_t zb_nwk_mesh_send_rrep(zb_buf_t *cbuf, zb_uint8_t rreq_id, zb_uint16_t originator, zb_uint16_t responder, zb_uint8_t path_cost, zb_uint16_t sender_addr) ZB_SDCC_REENTRANT
+static zb_ret_t zb_nwk_mesh_send_rrep(zb_buf_t *cbuf, zb_uint8_t rreq_id, zb_uint16_t originator, zb_uint16_t responder, zb_uint8_t path_cost, zb_uint16_t sender_addr) 
 {
   zb_ret_t ret = RET_OK;
   zb_nwk_hdr_t *nwhdr;
@@ -264,7 +264,7 @@ static zb_ret_t zb_nwk_mesh_send_rrep(zb_buf_t *cbuf, zb_uint8_t rreq_id, zb_uin
 }
 
 /* This function is called when we got new buffer to initiate route discovery */
-void zb_nwk_mesh_initiate_route_discovery(zb_uint8_t param) ZB_CALLBACK
+void zb_nwk_mesh_initiate_route_discovery(zb_uint8_t param) 
 {
   zb_nwk_pend_t *ent;
   zb_buf_t *cbuf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
@@ -293,7 +293,7 @@ void zb_nwk_mesh_initiate_route_discovery(zb_uint8_t param) ZB_CALLBACK
  * Sets up new route discovery operation.
  * Call rreq_handler to do a real discovery.
  */
-void zb_nwk_mesh_route_discovery(zb_buf_t *cbuf, zb_uint16_t dest_addr, zb_uint8_t radius) ZB_SDCC_REENTRANT
+void zb_nwk_mesh_route_discovery(zb_buf_t *cbuf, zb_uint16_t dest_addr, zb_uint8_t radius) 
 {
   zb_nwk_hdr_t *nwk_hdr;
   zb_nwk_cmd_rreq_t *nwk_cmd_rreq;
@@ -340,7 +340,7 @@ void zb_nwk_mesh_route_discovery(zb_buf_t *cbuf, zb_uint16_t dest_addr, zb_uint8
   a route reply will be sent. Otherwise, it will relay the route request via
   broadcast.
 */
-void zb_nwk_mesh_rreq_handler(zb_buf_t *buf, zb_nwk_hdr_t *nwk_hdr, zb_nwk_cmd_rreq_t *nwk_cmd_rreq) ZB_SDCC_REENTRANT
+void zb_nwk_mesh_rreq_handler(zb_buf_t *buf, zb_nwk_hdr_t *nwk_hdr, zb_nwk_cmd_rreq_t *nwk_cmd_rreq) 
 {
   zb_uint8_t ret = RET_OK;
   zb_uint8_t path_cost = 0;
@@ -514,7 +514,7 @@ void zb_nwk_mesh_rreq_handler(zb_buf_t *buf, zb_nwk_hdr_t *nwk_hdr, zb_nwk_cmd_r
  * route reply to the sender of the route request as recorded in the discover
  * table entry.
  */
-void zb_nwk_mesh_rrep_handler(zb_buf_t *buf, zb_nwk_hdr_t *nwk_hdr, zb_nwk_cmd_rrep_t *nwk_cmd_rrep) ZB_SDCC_REENTRANT
+void zb_nwk_mesh_rrep_handler(zb_buf_t *buf, zb_nwk_hdr_t *nwk_hdr, zb_nwk_cmd_rrep_t *nwk_cmd_rrep) 
 {
   zb_uint8_t path_cost;
   zb_nwk_route_discovery_t *disc_ent;
@@ -660,7 +660,7 @@ static void zb_nwk_mesh_resend_rreq(zb_buf_t *cbuf, zb_nwk_rreq_t *rreq)
 }
 
 /* This function called periodically to find expired route requests */
-void zb_nwk_mesh_expiry_rreq(zb_uint8_t param) ZB_CALLBACK
+void zb_nwk_mesh_expiry_rreq(zb_uint8_t param) 
 {
   TRACE_MSG(TRACE_NWK1, ">> expiry_rreq p %hd", (FMT__H, param));
 
@@ -706,7 +706,7 @@ void zb_nwk_mesh_expiry_rreq(zb_uint8_t param) ZB_CALLBACK
 #endif
 
 
-void nwk_route_disc_failed(zb_uint8_t param) ZB_CALLBACK
+void nwk_route_disc_failed(zb_uint8_t param) 
 {
   zb_nlme_status_indication_t *status =  ZB_GET_BUF_PARAM(ZB_BUF_FROM_REF(param), zb_nlme_status_indication_t);
 
@@ -724,7 +724,7 @@ void nwk_route_disc_failed(zb_uint8_t param) ZB_CALLBACK
 }
 
 /* This function called periodically to find expired discovery table entries */
-void zb_nwk_mesh_expiry_route_disc(zb_uint8_t param) ZB_CALLBACK
+void zb_nwk_mesh_expiry_route_disc(zb_uint8_t param) 
 {
   ZVUNUSED(param);
   TRACE_MSG(TRACE_NWK1, ">> exp_r_disc", (FMT__0));
@@ -779,7 +779,7 @@ void zb_nwk_mesh_expiry_route_disc(zb_uint8_t param) ZB_CALLBACK
 }
 
 /* This function called periodically to find expired pending elements */
-void zb_nwk_mesh_expiry_pending(zb_uint8_t param) ZB_CALLBACK
+void zb_nwk_mesh_expiry_pending(zb_uint8_t param) 
 {
   ZVUNUSED(param);
   TRACE_MSG(TRACE_NWK1, ">> exp_pend", (FMT__0));
@@ -814,21 +814,21 @@ void zb_nwk_mesh_expiry_pending(zb_uint8_t param) ZB_CALLBACK
   TRACE_MSG(TRACE_NWK1, "<< exp_pend", (FMT__0));
 }
 
-zb_nwk_routing_t *zb_nwk_mesh_find_route(zb_uint16_t dest_addr) ZB_SDCC_REENTRANT
+zb_nwk_routing_t *zb_nwk_mesh_find_route(zb_uint16_t dest_addr) 
 {
   zb_nwk_routing_t *route;
   NWK_ARRAY_FIND_ENT(ZG->nwk.nib.routing_table, route, route->dest_addr == dest_addr);
   return route;
 }
 
-zb_nwk_route_discovery_t *zb_nwk_mesh_find_route_discovery_entry(zb_uint16_t dest_addr) ZB_SDCC_REENTRANT
+zb_nwk_route_discovery_t *zb_nwk_mesh_find_route_discovery_entry(zb_uint16_t dest_addr) 
 {
   zb_nwk_route_discovery_t *disc_ent;
   NWK_ARRAY_FIND_ENT(ZG->nwk.nib.route_disc_table, disc_ent, disc_ent->dest_addr == dest_addr);
   return disc_ent;
 }
 
-zb_ret_t zb_nwk_mesh_add_buf_to_pending(zb_buf_t *buf, zb_uint8_t handle) ZB_SDCC_REENTRANT
+zb_ret_t zb_nwk_mesh_add_buf_to_pending(zb_buf_t *buf, zb_uint8_t handle) 
 {
   zb_ret_t ret = RET_OK;
   zb_nwk_hdr_t *nwhdr = (zb_nwk_hdr_t *)ZB_BUF_BEGIN(buf);
@@ -852,7 +852,7 @@ zb_ret_t zb_nwk_mesh_add_buf_to_pending(zb_buf_t *buf, zb_uint8_t handle) ZB_SDC
   return ret;
 }
 
-void zb_nwk_mesh_routing_deinit() ZB_SDCC_REENTRANT
+void zb_nwk_mesh_routing_deinit() 
 {
   TRACE_MSG(TRACE_NWK1, ">> r_deinit", (FMT__0));
 

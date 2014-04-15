@@ -58,11 +58,11 @@ PURPOSE: AF layer
 
 #ifdef ZB_TEST_PROFILE
 
-static void tp_buffer_test_request_handler(zb_uint8_t param) ZB_SDCC_REENTRANT;
-static void tp_buffer_test_response_handler(zb_uint8_t param) ZB_SDCC_REENTRANT;
-static void tp_buffer_test_response(zb_uint8_t param) ZB_SDCC_REENTRANT;
+static void tp_buffer_test_request_handler(zb_uint8_t param) ;
+static void tp_buffer_test_response_handler(zb_uint8_t param) ;
+static void tp_buffer_test_response(zb_uint8_t param) ;
 
-void zb_test_profile_indication(zb_uint8_t param) ZB_CALLBACK
+void zb_test_profile_indication(zb_uint8_t param) 
 {
   zb_buf_t *asdu = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_apsde_data_indication_t *ind = (zb_apsde_data_indication_t *)ZB_GET_BUF_PARAM(asdu, zb_apsde_data_indication_t);
@@ -95,13 +95,13 @@ void zb_test_profile_indication(zb_uint8_t param) ZB_CALLBACK
   }
 }
 
-void tp_start_send_counted_packet(zb_uint8_t param) ZB_CALLBACK
+void tp_start_send_counted_packet(zb_uint8_t param) 
 {
   ZVUNUSED(param);
   ZB_GET_OUT_BUF_DELAYED(tp_send_counted_packet);
 }
 
-void tp_send_counted_packet(zb_uint8_t param) ZB_CALLBACK
+void tp_send_counted_packet(zb_uint8_t param) 
 {
   zb_tp_transmit_counted_packets_req_t *req;
 
@@ -142,7 +142,7 @@ void zb_tp_transmit_counted_packets_req(zb_uint8_t param, zb_callback_t cb)
 }
 
 
-void tp_send_req_by_short(zb_uint16_t command_id, zb_uint8_t param,zb_uint16_t addr, zb_uint8_t src_ep, zb_uint8_t dst_ep, zb_uint8_t tx_options) ZB_SDCC_REENTRANT
+void tp_send_req_by_short(zb_uint16_t command_id, zb_uint8_t param,zb_uint16_t addr, zb_uint8_t src_ep, zb_uint8_t dst_ep, zb_uint8_t tx_options) 
 {
   zb_apsde_data_req_t *dreq = ZB_GET_BUF_TAIL(ZB_BUF_FROM_REF(param), sizeof(zb_apsde_data_req_t));
 
@@ -159,7 +159,7 @@ void tp_send_req_by_short(zb_uint16_t command_id, zb_uint8_t param,zb_uint16_t a
   ZB_SCHEDULE_CALLBACK(zb_apsde_data_request, param);
 }
 
-void tp_send_req_by_EP(zb_uint16_t command_id, zb_uint8_t param, zb_uint8_t src_ep, zb_uint8_t dst_ep, zb_uint8_t tx_options) ZB_SDCC_REENTRANT
+void tp_send_req_by_EP(zb_uint16_t command_id, zb_uint8_t param, zb_uint8_t src_ep, zb_uint8_t dst_ep, zb_uint8_t tx_options) 
 {
   zb_apsde_data_req_t *dreq = ZB_GET_BUF_TAIL(ZB_BUF_FROM_REF(param), sizeof(zb_apsde_data_req_t));
 
@@ -176,7 +176,7 @@ void tp_send_req_by_EP(zb_uint16_t command_id, zb_uint8_t param, zb_uint8_t src_
 }
 
 #if 0                           /* not used */
-void tp_send_req_by_EP_brdcast(zb_uint16_t command_id, zb_uint8_t param, zb_uint8_t src_ep, zb_uint8_t dst_ep, zb_uint8_t tx_options) ZB_SDCC_REENTRANT
+void tp_send_req_by_EP_brdcast(zb_uint16_t command_id, zb_uint8_t param, zb_uint8_t src_ep, zb_uint8_t dst_ep, zb_uint8_t tx_options) 
 {
   zb_apsde_data_req_t *dreq = ZB_GET_BUF_TAIL(ZB_BUF_FROM_REF(param), sizeof(zb_apsde_data_req_t));
 
@@ -194,7 +194,7 @@ void tp_send_req_by_EP_brdcast(zb_uint16_t command_id, zb_uint8_t param, zb_uint
 }
 #endif
 
-void buffer_test_req_timeout(zb_uint8_t param) ZB_CALLBACK
+void buffer_test_req_timeout(zb_uint8_t param) 
 {
   ZVUNUSED(param);
   TRACE_MSG(TRACE_ZDO2, "buffer_test_req_timeout", (FMT__0));
@@ -206,7 +206,7 @@ void buffer_test_req_timeout(zb_uint8_t param) ZB_CALLBACK
 }
 
 /* 6.7	Buffer test request, CID=0x1c */
-void zb_tp_buffer_test_request(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT
+void zb_tp_buffer_test_request(zb_uint8_t param, zb_callback_t cb) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_buffer_test_req_param_t *req_param = ZB_GET_BUF_PARAM(buf, zb_buffer_test_req_param_t);
@@ -227,7 +227,7 @@ void zb_tp_buffer_test_request(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENT
 }
 
 /* 6.7	Buffer test request, CID=0x1c */
-void zb_tp_buffer_test_request_EP(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT
+void zb_tp_buffer_test_request_EP(zb_uint8_t param, zb_callback_t cb) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_buffer_test_req_param_EP_t *req_param = ZB_GET_BUF_PARAM(buf, zb_buffer_test_req_param_EP_t);
@@ -246,7 +246,7 @@ void zb_tp_buffer_test_request_EP(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_RE
   tp_send_req_by_EP(TP_BUFFER_TEST_REQUEST_CLID, param, req_param->src_ep, req_param->dst_ep, 0);
 }
 
-static void tp_buffer_test_request_handler(zb_uint8_t param) ZB_SDCC_REENTRANT
+static void tp_buffer_test_request_handler(zb_uint8_t param) 
 {
   zb_buf_t *asdu = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_buffer_test_req_t *test_req;
@@ -270,7 +270,7 @@ static void tp_buffer_test_request_handler(zb_uint8_t param) ZB_SDCC_REENTRANT
 }
 
 
-void tp_buffer_test_response(zb_uint8_t param) ZB_SDCC_REENTRANT
+void tp_buffer_test_response(zb_uint8_t param) 
 {
   zb_buffer_test_response_t *test_resp;
   zb_buffer_test_response_param_t *test_param;
@@ -300,7 +300,7 @@ void tp_buffer_test_response(zb_uint8_t param) ZB_SDCC_REENTRANT
 ZB_APSDE_TX_OPT_ACK_TX);
 }
 
-static void tp_buffer_test_response_handler(zb_uint8_t param) ZB_SDCC_REENTRANT
+static void tp_buffer_test_response_handler(zb_uint8_t param) 
 {
   zb_buf_t *asdu = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_buffer_test_response_t *test_resp;
@@ -320,7 +320,7 @@ static void tp_buffer_test_response_handler(zb_uint8_t param) ZB_SDCC_REENTRANT
 }
 
 
-void tp_packet_ack(zb_uint8_t param) ZB_SDCC_REENTRANT
+void tp_packet_ack(zb_uint8_t param) 
 {
   zb_buf_t *asdu = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_aps_hdr_t aps_hdr;

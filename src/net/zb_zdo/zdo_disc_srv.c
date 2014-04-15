@@ -61,7 +61,7 @@ Mandatory calls onnly. Other calls will be implemented in some other project sco
 
 #ifndef ZB_LIMITED_FEATURES
 
-void zdo_send_desc_resp(zb_uint8_t param) ZB_SDCC_REENTRANT
+void zdo_send_desc_resp(zb_uint8_t param) 
 {
   zb_uint16_t addr_of_interest;
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
@@ -134,7 +134,7 @@ void zdo_send_desc_resp(zb_uint8_t param) ZB_SDCC_REENTRANT
 }
 
 
-void zdo_send_simple_desc_resp(zb_uint8_t param) ZB_SDCC_REENTRANT
+void zdo_send_simple_desc_resp(zb_uint8_t param) 
 {
   zb_uint16_t addr_of_interest;
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
@@ -221,7 +221,7 @@ void zdo_send_simple_desc_resp(zb_uint8_t param) ZB_SDCC_REENTRANT
 }
 
 
-void zb_copy_node_desc(zb_af_node_desc_t *dst_desc, zb_af_node_desc_t *src_desc) ZB_SDCC_REENTRANT
+void zb_copy_node_desc(zb_af_node_desc_t *dst_desc, zb_af_node_desc_t *src_desc) 
 {
   ZB_LETOH16(&dst_desc->node_desc_flags, &src_desc->node_desc_flags);
   dst_desc->mac_capability_flags = src_desc->mac_capability_flags;
@@ -232,12 +232,12 @@ void zb_copy_node_desc(zb_af_node_desc_t *dst_desc, zb_af_node_desc_t *src_desc)
   ZB_LETOH16(&dst_desc->max_outgoing_transfer_size, &src_desc->max_outgoing_transfer_size);
 }
 
-void zb_copy_power_desc(zb_af_node_power_desc_t *dst_desc, zb_af_node_power_desc_t *src_desc) ZB_SDCC_REENTRANT
+void zb_copy_power_desc(zb_af_node_power_desc_t *dst_desc, zb_af_node_power_desc_t *src_desc) 
 {
   ZB_LETOH16(&dst_desc->power_desc_flags, &src_desc->power_desc_flags);
 }
 
-void zb_copy_simple_desc(zb_af_simple_desc_1_1_t* dst_desc, zb_af_simple_desc_1_1_t*src_desc) ZB_SDCC_REENTRANT
+void zb_copy_simple_desc(zb_af_simple_desc_1_1_t* dst_desc, zb_af_simple_desc_1_1_t*src_desc) 
 {
   zb_ushort_t i;
   zb_uint8_t out_count;
@@ -260,7 +260,7 @@ void zb_copy_simple_desc(zb_af_simple_desc_1_1_t* dst_desc, zb_af_simple_desc_1_
 
 }
 
-void zdo_device_nwk_addr_res(zb_uint8_t param, zb_uint8_t fc) ZB_SDCC_REENTRANT
+void zdo_device_nwk_addr_res(zb_uint8_t param, zb_uint8_t fc) 
 {
   zb_uint8_t status = ZB_ZDP_STATUS_SUCCESS;
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
@@ -454,7 +454,7 @@ void zdo_device_nwk_addr_res(zb_uint8_t param, zb_uint8_t fc) ZB_SDCC_REENTRANT
 }
 
 
-void zdo_device_ieee_addr_res(zb_uint8_t param, zb_uint8_t fc) ZB_SDCC_REENTRANT
+void zdo_device_ieee_addr_res(zb_uint8_t param, zb_uint8_t fc) 
 {
   zb_uint8_t status = ZB_ZDP_STATUS_SUCCESS;
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
@@ -615,7 +615,7 @@ void zdo_device_ieee_addr_res(zb_uint8_t param, zb_uint8_t fc) ZB_SDCC_REENTRANT
   zdo_send_resp_by_short(ZDO_IEEE_ADDR_RESP_CLID, param, tsn, ind.src_addr);
 }
 
-void zdo_active_ep_res(zb_uint8_t param) ZB_SDCC_REENTRANT
+void zdo_active_ep_res(zb_uint8_t param) 
 {
   zb_uint8_t status = ZB_ZDP_STATUS_SUCCESS;
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
@@ -679,7 +679,7 @@ void zdo_active_ep_res(zb_uint8_t param) ZB_SDCC_REENTRANT
 }
 
 /* adds value to sorted list, if the same value was not added before exists */
-static zb_uint8_t add_ep_sorted(zb_uint8_t *ep_list, zb_uint8_t ep_num, zb_uint8_t endpoint) ZB_SDCC_REENTRANT
+static zb_uint8_t add_ep_sorted(zb_uint8_t *ep_list, zb_uint8_t ep_num, zb_uint8_t endpoint) 
 {
   zb_uint8_t i;
   zb_uint8_t index;
@@ -706,7 +706,7 @@ static zb_uint8_t add_ep_sorted(zb_uint8_t *ep_list, zb_uint8_t ep_num, zb_uint8
   return ep_num;
 }
 
-zb_uint8_t* copy_cluster_id(zb_uint8_t *cluster_dst, zb_uint8_t *cluster_src, zb_uint8_t cluster_num) ZB_SDCC_REENTRANT
+zb_uint8_t* copy_cluster_id(zb_uint8_t *cluster_dst, zb_uint8_t *cluster_src, zb_uint8_t cluster_num) 
 {
   zb_uint8_t i;
   for (i = 0; i < cluster_num; i++)
@@ -716,7 +716,7 @@ zb_uint8_t* copy_cluster_id(zb_uint8_t *cluster_dst, zb_uint8_t *cluster_src, zb
   return (zb_uint8_t*)(cluster_dst + cluster_num * sizeof(zb_uint16_t));
 }
 
-void zdo_match_desc_res(zb_uint8_t param) ZB_SDCC_REENTRANT
+void zdo_match_desc_res(zb_uint8_t param) 
 {
   zb_uint8_t status = ZB_ZDP_STATUS_SUCCESS;
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);

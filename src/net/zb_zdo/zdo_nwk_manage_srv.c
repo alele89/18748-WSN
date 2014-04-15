@@ -59,11 +59,11 @@ PURPOSE: ZDO network management functions, client side
 #ifndef ZB_LIMITED_FEATURES
 /*! \addtogroup ZB_ZDO */
 /*! @{ */
-void zb_zdo_new_channel_cb(zb_uint8_t param) ZB_CALLBACK;
-void zb_nwk_do_leave_local(zb_uint8_t param) ZB_CALLBACK;
+void zb_zdo_new_channel_cb(zb_uint8_t param) ;
+void zb_nwk_do_leave_local(zb_uint8_t param) ;
 
 /* Handle nwk_update_req, 2.4.3.3.9 Mgmt_NWK_Update_req */
-void zb_zdo_mgmt_nwk_update_handler(zb_uint8_t param) ZB_SDCC_REENTRANT
+void zb_zdo_mgmt_nwk_update_handler(zb_uint8_t param) 
 {
   zb_apsde_data_indication_t *ind;
   zb_zdo_mgmt_nwk_update_req_hdr_t *req_hdr;
@@ -186,7 +186,7 @@ void zb_zdo_mgmt_nwk_update_handler(zb_uint8_t param) ZB_SDCC_REENTRANT
 }
 
 /* sends 2.4.4.3.9 Mgmt_NWK_Update_notify */
-void zb_zdo_nwk_upd_notify(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_nwk_upd_notify(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_zdo_mgmt_nwk_update_notify_param_t *notify_param = ZB_GET_BUF_PARAM(buf, zb_zdo_mgmt_nwk_update_notify_param_t);
@@ -236,7 +236,7 @@ void zb_zdo_nwk_upd_notify(zb_uint8_t param) ZB_CALLBACK
   TRACE_MSG(TRACE_ZDO3, "<<nwk_upd_notify", (FMT__0));
 }
 
-void zb_start_ed_scan(zb_uint8_t param) ZB_CALLBACK
+void zb_start_ed_scan(zb_uint8_t param) 
 {
   zb_nlme_ed_scan_request_t *rq;
 
@@ -250,7 +250,7 @@ void zb_start_ed_scan(zb_uint8_t param) ZB_CALLBACK
   ZB_SCHEDULE_CALLBACK(zb_nlme_ed_scan_request, param);
 }
 
-void zb_zdo_new_channel_cb(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_new_channel_cb(zb_uint8_t param) 
 {
   /* Upon receipt of a Mgmt_NWK_Update_req with a change of channels,
    * change channel to the new value, increment NIB.UpdateId and reset
@@ -310,7 +310,7 @@ void zb_zdo_mgmt_nwk_leave_res(zb_uint8_t param, zb_callback_t cb)
 
 }
 
-void zdo_lqi_resp(zb_uint8_t param) ZB_SDCC_REENTRANT
+void zdo_lqi_resp(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_uint8_t *aps_body;
@@ -390,7 +390,7 @@ void zdo_lqi_resp(zb_uint8_t param) ZB_SDCC_REENTRANT
 }
 
 
-void zdo_mgmt_leave_srv(zb_uint8_t param) ZB_SDCC_REENTRANT
+void zdo_mgmt_leave_srv(zb_uint8_t param) 
 {
   zb_ushort_t i;
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
@@ -494,7 +494,7 @@ void zdo_mgmt_leave_srv(zb_uint8_t param) ZB_SDCC_REENTRANT
 }
 
 #ifndef ZB_LIMITED_FEATURES
-zb_bool_t zdo_try_send_mgmt_leave_rsp(zb_uint8_t param, zb_uint8_t status, zb_uint8_t will_leave) ZB_SDCC_REENTRANT
+zb_bool_t zdo_try_send_mgmt_leave_rsp(zb_uint8_t param, zb_uint8_t status, zb_uint8_t will_leave) 
 {
   zb_ushort_t i;
   for (i = 0 ; i < ZG->nwk.leave_context.pending_list_size ; ++i)
@@ -576,13 +576,13 @@ zb_bool_t zdo_try_mgmt_leave_complete(zb_uint8_t param)
   return ZB_FALSE;
 }
 
-void zb_nwk_do_leave_local(zb_uint8_t param) ZB_CALLBACK
+void zb_nwk_do_leave_local(zb_uint8_t param) 
 {
   zb_nwk_do_leave(param, ZG->nwk.leave_context.rejoin_after_leave);
 }
 
 #ifdef ZB_ROUTER_ROLE
-void zb_zdo_mgmt_permit_joining_handle(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_mgmt_permit_joining_handle(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_uint8_t *aps_body = ZB_BUF_BEGIN(buf);

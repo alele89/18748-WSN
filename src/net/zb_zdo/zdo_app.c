@@ -61,12 +61,12 @@ PURPOSE: Typical ZDO applications: ZC, ZR, ZE
 static void send_data();
 #endif
 
-void zdo_send_device_annce(zb_uint8_t param) ZB_CALLBACK;
-void zdo_join_done(zb_uint8_t param) ZB_CALLBACK;
-void zb_zdo_force_child_leave(zb_uint8_t param, zb_uint16_t child_addr) ZB_SDCC_REENTRANT;
-static void init_config_attr() ZB_SDCC_REENTRANT;
+void zdo_send_device_annce(zb_uint8_t param) ;
+void zdo_join_done(zb_uint8_t param) ;
+void zb_zdo_force_child_leave(zb_uint8_t param, zb_uint16_t child_addr) ;
+static void init_config_attr() ;
 
-void zb_zdo_init() ZB_CALLBACK
+void zb_zdo_init() 
 {
   ZDO_CTX().conf_attr.nwk_indirect_poll_rate = ZB_ZDO_INDIRECT_POLL_TIMER;
   ZDO_CTX().max_parent_threshold_retry = ZB_ZDO_MAX_PARENT_THRESHOLD_RETRY;
@@ -83,7 +83,7 @@ void zb_zdo_init() ZB_CALLBACK
   init_config_attr();
 }
 
-static void init_config_attr() ZB_SDCC_REENTRANT
+static void init_config_attr() 
 {
   ZDO_CTX().conf_attr.nwk_scan_attempts = ZB_ZDO_NWK_SCAN_ATTEMPTS;
   ZDO_CTX().conf_attr.nwk_time_btwn_scans = ZB_ZDO_NWK_TIME_BTWN_SCANS;
@@ -110,7 +110,7 @@ void zdo_main_loop()
   }
 }
 
-zb_ret_t zdo_dev_start() ZB_SDCC_REENTRANT
+zb_ret_t zdo_dev_start() 
 {
   zb_ret_t ret = RET_OK;
 
@@ -201,7 +201,7 @@ zb_ret_t zdo_dev_start() ZB_SDCC_REENTRANT
 
 
 #ifndef ZB_LIMITED_FEATURES2
-zb_ret_t zdo_initiate_rejoin(zb_buf_t *buf) ZB_SDCC_REENTRANT
+zb_ret_t zdo_initiate_rejoin(zb_buf_t *buf) 
 {
   zb_nlme_join_request_t *req = ZB_GET_BUF_PARAM(buf, zb_nlme_join_request_t);
 
@@ -244,7 +244,7 @@ zb_ret_t zdo_initiate_rejoin(zb_buf_t *buf) ZB_SDCC_REENTRANT
 
 #ifdef ZB_COORDINATOR_ROLE
 
-void zb_nlme_network_formation_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_network_formation_confirm(zb_uint8_t param) 
 {
   zb_nlme_permit_joining_request_t *request = ZB_GET_BUF_PARAM(ZB_BUF_FROM_REF(param), zb_nlme_permit_joining_request_t);
   TRACE_MSG(TRACE_NWK1, "formation conf st %hd", (FMT__H, ((zb_buf_t *)ZB_BUF_FROM_REF(param))->u.hdr.status));
@@ -265,7 +265,7 @@ void zb_nlme_network_formation_confirm(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_nlme_permit_joining_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_permit_joining_confirm(zb_uint8_t param) 
 {
   zb_address_ieee_ref_t addr_ref;
 
@@ -279,7 +279,7 @@ void zb_nlme_permit_joining_confirm(zb_uint8_t param) ZB_CALLBACK
 }
 #endif  /* ZB_COORDINATOR_ROLE */
 
-void zb_nlme_join_indication(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_join_indication(zb_uint8_t param) 
 {
 #ifdef ZB_TRACE_LEVEL
   zb_nlme_join_indication_t *ind = ZB_GET_BUF_PARAM(ZB_BUF_FROM_REF(param), zb_nlme_join_indication_t);
@@ -308,7 +308,7 @@ void zb_nlme_join_indication(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_nlme_network_discovery_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_network_discovery_confirm(zb_uint8_t param) 
 {
   zb_nlme_network_discovery_confirm_t *cnf;
   zb_nlme_network_descriptor_t *dsc;
@@ -386,7 +386,7 @@ void zb_nlme_network_discovery_confirm(zb_uint8_t param) ZB_CALLBACK
   }
 }
 
-void zdo_join_done(zb_uint8_t param) ZB_CALLBACK
+void zdo_join_done(zb_uint8_t param) 
 {
   TRACE_MSG(TRACE_NWK1, ">>join_done %hd", (FMT__H, param));
 
@@ -414,7 +414,7 @@ void zdo_join_done(zb_uint8_t param) ZB_CALLBACK
 }
 
 #ifndef ZB_ED_ROLE
-void zb_nlme_start_router_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_start_router_confirm(zb_uint8_t param) 
 {
   TRACE_MSG(TRACE_NWK1, ">> start_router_confirm", (FMT__0));
 
@@ -424,7 +424,7 @@ void zb_nlme_start_router_confirm(zb_uint8_t param) ZB_CALLBACK
 }
 #endif
 
-void zb_nlme_join_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_join_confirm(zb_uint8_t param) 
 {
   zb_nlme_join_confirm_t *confirm = ZB_GET_BUF_PARAM((zb_buf_t *)ZB_BUF_FROM_REF(param), zb_nlme_join_confirm_t);
 
@@ -490,7 +490,7 @@ void zb_nlme_join_confirm(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zdo_send_device_annce(zb_uint8_t param) ZB_CALLBACK
+void zdo_send_device_annce(zb_uint8_t param) 
 {
   TRACE_MSG(TRACE_ZDO1, "device_annce", (FMT__0));
 
@@ -551,7 +551,7 @@ void zdo_send_device_annce(zb_uint8_t param) ZB_CALLBACK
 
   See 2.4.3.1.11
  */
-void zb_zdo_device_annce(zb_uint8_t param) ZB_SDCC_REENTRANT
+void zb_zdo_device_annce(zb_uint8_t param) 
 {
   {
     zb_uint8_t *tsn_p;
@@ -579,7 +579,7 @@ void zb_zdo_device_annce(zb_uint8_t param) ZB_SDCC_REENTRANT
 }
 #endif
 
-void zb_apsde_data_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_apsde_data_confirm(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_address_ieee_ref_t addr_ref;
@@ -667,7 +667,7 @@ static void send_data()
 }
 #endif
 
-void zb_nlme_sync_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_sync_confirm(zb_uint8_t param) 
 {
   zb_bool_t sched_poll = (zb_bool_t)ZG->nwk.handle.joined;
 
@@ -729,7 +729,7 @@ void zb_zdo_reschedule_poll_parent(zb_uint16_t timeout)
 }
 
 
-void zb_zdo_poll_parent(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_poll_parent(zb_uint8_t param) 
 {
 
   TRACE_MSG(TRACE_NWK1, ">>poll_prnt %hd", (FMT__H, param));
@@ -753,7 +753,7 @@ void zb_zdo_poll_parent(zb_uint8_t param) ZB_CALLBACK
 }
 
 /* 3.2.2.30 NLME-NWK-STATUS.indication */
-void zb_nlme_status_indication(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_status_indication(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_nlme_status_indication_t *status = ZB_GET_BUF_PARAM(buf, zb_nlme_status_indication_t);
@@ -835,7 +835,7 @@ void zb_nlme_status_indication(zb_uint8_t param) ZB_CALLBACK
 #ifdef ZB_ROUTER_ROLE
 
 
-void zb_zdo_force_child_leave(zb_uint8_t param, zb_uint16_t child_addr) ZB_SDCC_REENTRANT
+void zb_zdo_force_child_leave(zb_uint8_t param, zb_uint16_t child_addr) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_nlme_leave_request_t *lr = NULL;
@@ -862,7 +862,7 @@ void zb_zdo_force_child_leave(zb_uint8_t param, zb_uint16_t child_addr) ZB_SDCC_
 #endif  /* ZB_ROUTER_ROLE */
 
 #ifndef ZB_LIMITED_FEATURES
-void zb_nlme_reset_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_reset_confirm(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
 
@@ -882,7 +882,7 @@ void zb_nlme_reset_confirm(zb_uint8_t param) ZB_CALLBACK
   TRACE_MSG(TRACE_NWK1, "<<zb_nlme_reset_confirm", (FMT__0));
 }
 
-void zb_zdo_reset(zb_uint8_t param, zb_uint8_t warm_start, zb_callback_t cb) ZB_SDCC_REENTRANT
+void zb_zdo_reset(zb_uint8_t param, zb_uint8_t warm_start, zb_callback_t cb) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_nlme_reset_request_t *request = ZB_GET_BUF_PARAM(buf, zb_nlme_reset_request_t);
@@ -901,7 +901,7 @@ void zb_zdo_reset(zb_uint8_t param, zb_uint8_t warm_start, zb_callback_t cb) ZB_
    Called when device got LEAVE command from the net. It can be request for us
    to leave or intication that other device has left.
 */
-void zb_nlme_leave_indication(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_leave_indication(zb_uint8_t param) 
 {
   zb_nlme_leave_indication_t *request = ZB_GET_BUF_PARAM(ZB_BUF_FROM_REF(param), zb_nlme_leave_indication_t);
 
@@ -953,7 +953,7 @@ void zb_nlme_leave_indication(zb_uint8_t param) ZB_CALLBACK
 
    Called when LEAVE initiated by LEAVE.REQUEST sent LEAVE command to net.
  */
-void zb_nlme_leave_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_leave_confirm(zb_uint8_t param) 
 {
   zb_nlme_leave_confirm_t *lc = ZB_GET_BUF_PARAM(ZB_BUF_FROM_REF(param), zb_nlme_leave_confirm_t);
   zb_uint8_t will_leave = (!lc->status && ZB_IEEE_ADDR_IS_ZERO(lc->device_address));
@@ -987,7 +987,7 @@ void zb_nlme_leave_confirm(zb_uint8_t param) ZB_CALLBACK
 #endif
 }
 
-void zb_mlme_set_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_set_confirm(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
 

@@ -59,7 +59,7 @@ PURPOSE: Roitines specific mac data transfer
 /*! @{ */
 
 /* sends data request command */
-zb_ret_t zb_mlme_send_data_req_cmd(zb_mlme_data_req_params_t *params) ZB_SDCC_REENTRANT
+zb_ret_t zb_mlme_send_data_req_cmd(zb_mlme_data_req_params_t *params) 
 {
   zb_ret_t ret = RET_OK;
   zb_mac_mhr_t mhr;
@@ -495,7 +495,7 @@ zb_ret_t zb_mcps_data_request_fill_hdr(zb_buf_t *data_req)
   in thios case buffer allocated and filled with data on the higher
   level is used.
 */
-void zb_mcps_data_request(zb_uint8_t param) ZB_CALLBACK
+void zb_mcps_data_request(zb_uint8_t param) 
 {
   TRACE_MSG( TRACE_MAC1, ">>zb_mcps_data_request", (FMT__0));
   {
@@ -552,7 +552,7 @@ zb_ret_t zb_mac_check_security(zb_buf_t *data_buf)
 
 
 /* handle mac data request, caller side */
-void zb_handle_mcps_data_req(zb_uint8_t param) ZB_CALLBACK
+void zb_handle_mcps_data_req(zb_uint8_t param) 
 {
   zb_ret_t ret = RET_OK;
   zb_mcps_data_req_params_t *data_req_params;
@@ -656,7 +656,7 @@ send_command:
   TRACE_MSG(TRACE_MAC2, "<< zb_handle_mcps_data_req %i", (FMT__D, ret));
 }
 
-void zb_handle_mcps_data_req_continue(zb_uint8_t param) ZB_CALLBACK
+void zb_handle_mcps_data_req_continue(zb_uint8_t param) 
 {
   zb_ret_t ret;
   zb_mcps_data_req_params_t *data_req_params;
@@ -699,7 +699,7 @@ void zb_handle_mcps_data_req_continue(zb_uint8_t param) ZB_CALLBACK
   TRACE_MSG(TRACE_MAC2, "<< zb_handle_mcps_data_req_continue", (FMT__0));
 }
 
-void zb_handle_data_frame(zb_uint8_t param) ZB_CALLBACK
+void zb_handle_data_frame(zb_uint8_t param) 
 {
   zb_ret_t ret = RET_OK;
 #ifdef ZB_MANUAL_ACK
@@ -747,7 +747,7 @@ void zb_handle_data_frame(zb_uint8_t param) ZB_CALLBACK
 
 /* function is used to call call_indirect_data_callback() with
  * allocated buffer */
-void indirect_data_callback_caller(zb_uint8_t param) ZB_CALLBACK
+void indirect_data_callback_caller(zb_uint8_t param) 
 {
   call_indirect_data_callback(MAC_CTX().rt_ctx.indirect_data.cb_type,
                               MAC_CTX().rt_ctx.indirect_data.cb_status, ZB_BUF_FROM_REF(param));

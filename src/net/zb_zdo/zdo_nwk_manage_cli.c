@@ -58,11 +58,11 @@ PURPOSE: ZDO network management functions, client side
 #ifndef ZB_LIMITED_FEATURES
 /*! \addtogroup ZB_ZDO */
 /*! @{ */
-void zdo_mgmt_leave_cli(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT;
+void zdo_mgmt_leave_cli(zb_uint8_t param, zb_callback_t cb) ;
 
-void zb_zdo_new_channel_cb(zb_uint8_t param) ZB_CALLBACK;
+void zb_zdo_new_channel_cb(zb_uint8_t param) ;
 
-void zb_zdo_mgmt_nwk_update_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT
+void zb_zdo_mgmt_nwk_update_req(zb_uint8_t param, zb_callback_t cb) 
 {
   zb_zdo_mgmt_nwk_update_req_t *req_param;
   zb_zdo_mgmt_nwk_update_req_hdr_t *req;
@@ -115,7 +115,7 @@ void zb_zdo_mgmt_nwk_update_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REEN
   TRACE_MSG(TRACE_ZDO2, "<< zb_zdo_mgmt_nwk_update_req", (FMT__0));
 }
 
-void zb_zdo_system_server_discovery_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT
+void zb_zdo_system_server_discovery_req(zb_uint8_t param, zb_callback_t cb) 
 {
   zb_zdo_system_server_discovery_req_t *req;
   zb_zdo_system_server_discovery_param_t *req_param;
@@ -133,7 +133,7 @@ void zb_zdo_system_server_discovery_req(zb_uint8_t param, zb_callback_t cb) ZB_S
 
 
 
-void zb_zdo_mgmt_lqi_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT
+void zb_zdo_mgmt_lqi_req(zb_uint8_t param, zb_callback_t cb) 
 {
   zb_zdo_mgmt_lqi_req_t *req;
   zb_zdo_mgmt_lqi_param_t *req_param;
@@ -149,7 +149,7 @@ void zb_zdo_mgmt_lqi_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT
 }
 
 
-void zdo_mgmt_leave_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT
+void zdo_mgmt_leave_req(zb_uint8_t param, zb_callback_t cb) 
 {
   zb_zdo_mgmt_leave_req_t *req;
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
@@ -181,7 +181,7 @@ void zdo_mgmt_leave_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT
   }
 }
 
-void zdo_mgmt_leave_cli(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT
+void zdo_mgmt_leave_cli(zb_uint8_t param, zb_callback_t cb) 
 {
   zb_ushort_t i = 0;
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
@@ -246,7 +246,7 @@ void zdo_mgmt_leave_cli(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT
 }
 
 #ifdef ZB_ROUTER_ROLE
-void zb_zdo_mgmt_permit_joining_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT
+void zb_zdo_mgmt_permit_joining_req(zb_uint8_t param, zb_callback_t cb) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_zdo_mgmt_permit_joining_req_t *req;

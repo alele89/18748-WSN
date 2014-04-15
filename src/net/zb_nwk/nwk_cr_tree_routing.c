@@ -58,7 +58,7 @@ PURPOSE: Network tree routing
 /*! \addtogroup ZB_NWK */
 /*! @{ */
 
-void zb_nwk_tree_routing_init() ZB_SDCC_REENTRANT
+void zb_nwk_tree_routing_init() 
 {
   ZG->nwk.nib.cskip = 0xFFFF;
 }
@@ -68,7 +68,7 @@ void zb_nwk_tree_routing_init() ZB_SDCC_REENTRANT
 
    @return pointer to neighbor table entry, NULL otherwise
  */
-static zb_neighbor_tbl_ent_t *zb_nwk_tree_routing_find_router(zb_uint16_t dest_address) ZB_SDCC_REENTRANT
+static zb_neighbor_tbl_ent_t *zb_nwk_tree_routing_find_router(zb_uint16_t dest_address) 
 {
   zb_neighbor_tbl_ent_t *ret = NULL;
   zb_address_ieee_ref_t ieee_ref;
@@ -114,7 +114,7 @@ static zb_neighbor_tbl_ent_t *zb_nwk_tree_routing_find_router(zb_uint16_t dest_a
 }
 
 
-zb_neighbor_tbl_ent_t *zb_nwk_tree_routing_route(zb_uint16_t dest_address) ZB_SDCC_REENTRANT
+zb_neighbor_tbl_ent_t *zb_nwk_tree_routing_route(zb_uint16_t dest_address) 
 {
   zb_neighbor_tbl_ent_t *ret = NULL;
   zb_uint16_t cskip_parent;

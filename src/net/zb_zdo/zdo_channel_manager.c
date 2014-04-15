@@ -60,11 +60,11 @@ PURPOSE: ZDO network management functions, client side
 
 #ifndef ZB_LIMITED_FEATURES
 
-void zb_zdo_channel_change_timer_cb(zb_uint8_t param) ZB_CALLBACK;
-void zb_zdo_long_timer_cb(zb_uint8_t param) ZB_CALLBACK;
+void zb_zdo_channel_change_timer_cb(zb_uint8_t param) ;
+void zb_zdo_long_timer_cb(zb_uint8_t param) ;
 void zb_zdo_start_long_timer(zb_callback_t func, zb_uint8_t param, zb_uint8_t long_timer);
 
-void zb_zdo_check_fails(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_check_fails(zb_uint8_t param) 
 {
   ZVUNUSED(param);
 #ifndef ZB_ED_ROLE
@@ -94,7 +94,7 @@ void zb_zdo_check_fails(zb_uint8_t param) ZB_CALLBACK
   TRACE_MSG(TRACE_MAC2, "<< zb_zdo_check_fails", (FMT__0));
 }
 
-void zb_zdo_channel_check_timer_cb(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_channel_check_timer_cb(zb_uint8_t param) 
 {
   ZVUNUSED(param);
   TRACE_MSG(TRACE_MAC2, "channel_check_timer_cb", (FMT__0));
@@ -102,7 +102,7 @@ void zb_zdo_channel_check_timer_cb(zb_uint8_t param) ZB_CALLBACK
 }
 
 #ifndef ZB_LIMITED_FEATURES
-void zb_nlme_ed_scan_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_ed_scan_confirm(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
 
@@ -162,7 +162,7 @@ void zb_nlme_ed_scan_confirm(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_zdo_channel_check_scan_result(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_channel_check_scan_result(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_mac_scan_confirm_t *scan_result = ZB_GET_BUF_PARAM(MAC_CTX().pending_buf, zb_mac_scan_confirm_t);
@@ -203,7 +203,7 @@ void zb_zdo_channel_check_scan_result(zb_uint8_t param) ZB_CALLBACK
   TRACE_MSG(TRACE_MAC2, "<< zb_zdo_channel_check_scan_result", (FMT__0));
 }
 #endif
-void zb_zdo_channel_check_finish_cb(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_channel_check_finish_cb(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
 
@@ -216,7 +216,7 @@ void zb_zdo_channel_check_finish_cb(zb_uint8_t param) ZB_CALLBACK
 }
 
 /* Performs channel change procedure, server side */
-void zdo_change_channel(zb_uint8_t param) ZB_SDCC_REENTRANT
+void zdo_change_channel(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_uint8_t *body = ZB_BUF_BEGIN(buf);
@@ -304,7 +304,7 @@ void zb_zdo_start_long_timer(zb_callback_t func, zb_uint8_t param, zb_uint8_t lo
 }
 
 
-void zb_zdo_long_timer_cb(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_long_timer_cb(zb_uint8_t param) 
 {
   ZVUNUSED(param);
   ZG->zdo.long_timer--;
@@ -321,7 +321,7 @@ void zb_zdo_long_timer_cb(zb_uint8_t param) ZB_CALLBACK
 }
 
 /* clear channel_changed flag */
-void zb_zdo_channel_change_timer_cb(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_channel_change_timer_cb(zb_uint8_t param) 
 {
   ZVUNUSED(param);
   TRACE_MSG(TRACE_MAC1, "zb_zdo_channel_change_timer_cb", (FMT__0));

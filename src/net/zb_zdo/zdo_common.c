@@ -59,7 +59,7 @@ PURPOSE: ZDO common functions, both client and server side
 /*! @{ */
 
 #ifndef ZB_LIMITED_FEATURES2
-static void zdo_send_req(zb_uint8_t param, zb_callback_t cb, zb_uint8_t resp_counter) ZB_SDCC_REENTRANT;
+static void zdo_send_req(zb_uint8_t param, zb_callback_t cb, zb_uint8_t resp_counter) ;
 
 void zdo_send_req_by_short(zb_uint16_t command_id, zb_uint8_t param, zb_callback_t cb, zb_uint16_t addr,
                            zb_uint8_t resp_counter)
@@ -94,7 +94,7 @@ void zdo_send_req_by_long(zb_uint8_t command_id, zb_uint8_t param, zb_callback_t
 }
 
 
-static void zdo_send_req(zb_uint8_t param, zb_callback_t cb, zb_uint8_t resp_counter) ZB_SDCC_REENTRANT
+static void zdo_send_req(zb_uint8_t param, zb_callback_t cb, zb_uint8_t resp_counter) 
 {
   zb_apsde_data_req_t *dreq = ZB_GET_BUF_TAIL(ZB_BUF_FROM_REF(param), sizeof(zb_apsde_data_req_t));
   zb_uint8_t *tsn_p;
@@ -114,7 +114,7 @@ static void zdo_send_req(zb_uint8_t param, zb_callback_t cb, zb_uint8_t resp_cou
 }
 
 
-void zdo_send_resp_by_short(zb_uint16_t command_id, zb_uint8_t param, zb_uint8_t tsn, zb_uint16_t addr) ZB_SDCC_REENTRANT
+void zdo_send_resp_by_short(zb_uint16_t command_id, zb_uint8_t param, zb_uint8_t tsn, zb_uint16_t addr) 
 {
   zb_apsde_data_req_t *dreq = ZB_GET_BUF_TAIL(ZB_BUF_FROM_REF(param), sizeof(zb_apsde_data_req_t));
   zb_uint8_t *tsn_p;
@@ -134,7 +134,7 @@ void zdo_send_resp_by_short(zb_uint16_t command_id, zb_uint8_t param, zb_uint8_t
 }
 
 
-void register_zdo_cb(zb_uint8_t tsn, zb_callback_t cb, zb_uint8_t resp_counter) ZB_SDCC_REENTRANT
+void register_zdo_cb(zb_uint8_t tsn, zb_callback_t cb, zb_uint8_t resp_counter) 
 {
   zb_ushort_t h_i = ZB_TSN_HASH(tsn);
   zb_ushort_t i = h_i;

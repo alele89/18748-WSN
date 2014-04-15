@@ -59,7 +59,7 @@ PURPOSE: Network creation routine
 /*! @{ */
 #if defined ZB_COORDINATOR_ROLE || defined ZB_ROUTER_ROLE
 
-void zb_nlme_route_discovery_request(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_route_discovery_request(zb_uint8_t param) 
 {
   zb_ret_t ret = RET_OK;
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);

@@ -60,7 +60,7 @@ PURPOSE: Test for ZC application written using ZDO.
 
 static void send_data(zb_buf_t *buf);
 #ifndef APS_RETRANSMIT_TEST
-void data_indication(zb_uint8_t param) ZB_CALLBACK;
+void data_indication(zb_uint8_t param) ;
 #endif
 
 /*
@@ -117,7 +117,7 @@ MAIN()
 }
 
 
-void zb_zdo_startup_complete(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_startup_complete(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   if (buf->u.hdr.status == 0)

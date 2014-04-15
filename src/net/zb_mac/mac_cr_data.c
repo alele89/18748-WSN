@@ -76,7 +76,7 @@ zb_ret_t pending_queue_is_empty()
 
 #ifdef ZB_COORDINATOR_ROLE
 
-void zb_accept_data_request_cmd(zb_uint8_t param) ZB_CALLBACK
+void zb_accept_data_request_cmd(zb_uint8_t param) 
 {
   zb_ret_t ret = RET_OK;
 
@@ -97,7 +97,7 @@ void zb_accept_data_request_cmd(zb_uint8_t param) ZB_CALLBACK
 
 
 
-static zb_int8_t check_pending_data(zb_mac_mhr_t *mhr, zb_uint8_t index) ZB_SDCC_REENTRANT
+static zb_int8_t check_pending_data(zb_mac_mhr_t *mhr, zb_uint8_t index) 
 {
   zb_int8_t i;
 
@@ -145,7 +145,7 @@ static zb_int8_t check_pending_data(zb_mac_mhr_t *mhr, zb_uint8_t index) ZB_SDCC
   Fills frame header with zero payload length. mhr_req contains mac
   header of the incoming request.
 */
-static zb_ret_t fill_empty_frame(zb_mac_mhr_t *mhr_req, zb_buf_t *buf) ZB_SDCC_REENTRANT
+static zb_ret_t fill_empty_frame(zb_mac_mhr_t *mhr_req, zb_buf_t *buf) 
 {
   zb_ret_t ret = RET_OK;
   zb_mac_mhr_t mhr;
@@ -196,7 +196,7 @@ static zb_ret_t fill_empty_frame(zb_mac_mhr_t *mhr_req, zb_buf_t *buf) ZB_SDCC_R
   command, 7.5.6.3 Extracting pending data from a coordinator.
   return RET_OK, RET_ERROR, RET_BLOCKED
 */
-zb_ret_t zb_handle_data_request_cmd() ZB_SDCC_REENTRANT
+zb_ret_t zb_handle_data_request_cmd() 
 {
   zb_ret_t ret = RET_OK;
   zb_int8_t data_found_index;
@@ -379,7 +379,7 @@ send_data_resp:
   return ret;
 }
 
-void zb_handle_data_request_cmd_continue(zb_uint8_t param) ZB_CALLBACK
+void zb_handle_data_request_cmd_continue(zb_uint8_t param) 
 {
   zb_uint8_t ret;
   zb_uint8_t data_found  = 1;

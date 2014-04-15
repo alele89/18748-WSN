@@ -56,7 +56,7 @@ PURPOSE: Network discovery routine
 /*! \addtogroup ZB_NWK */
 /*! @{ */
 
-void zb_nlme_network_discovery_request(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_network_discovery_request(zb_uint8_t param) 
 {
   zb_nlme_network_discovery_request_t *request = ZB_GET_BUF_PARAM((zb_buf_t *)ZB_BUF_FROM_REF(param), zb_nlme_network_discovery_request_t);
 
@@ -111,7 +111,7 @@ void zb_nlme_network_discovery_request(zb_uint8_t param) ZB_CALLBACK
 }
 
 #ifndef ZB_LIMITED_FEATURES
-void zb_nlme_ed_scan_request(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_ed_scan_request(zb_uint8_t param) 
 {
   zb_nlme_ed_scan_request_t *request = ZB_GET_BUF_PARAM((zb_buf_t *)ZB_BUF_FROM_REF(param), zb_nlme_ed_scan_request_t);
 
@@ -138,7 +138,7 @@ void zb_nlme_ed_scan_request(zb_uint8_t param) ZB_CALLBACK
 #endif
 
 
-void zb_mlme_beacon_notify_indication(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_beacon_notify_indication(zb_uint8_t param) 
 {
   zb_uint8_t *mac_hdr = ZB_MAC_GET_FCF_PTR(ZB_BUF_BEGIN((zb_buf_t *)ZB_BUF_FROM_REF(param)));
   zb_mac_mhr_t mhr;
@@ -346,7 +346,7 @@ void zb_mlme_beacon_notify_indication(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_mlme_scan_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_scan_confirm(zb_uint8_t param) 
 {
   TRACE_MSG(TRACE_NWK1, ">>zb_mlme_scan_confirm %hd", (FMT__H, param));
 

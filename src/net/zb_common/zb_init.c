@@ -58,7 +58,7 @@ PURPOSE: ZigBee stack initialization
 /*! \addtogroup ZB_BASE */
 /*! @{ */
 
-void zb_zdo_init() ZB_CALLBACK;
+void zb_zdo_init() ;
 
 
 /**
@@ -66,15 +66,15 @@ void zb_zdo_init() ZB_CALLBACK;
 
    FIXME: maybe, put it into separate .c file?
  */
-ZB_SDCC_XDATA zb_globals_t g_zb;
-ZB_SDCC_XDATA zb_intr_globals_t g_izb;
-ZB_SDCC_XDATA zb_64bit_addr_t g_zero_addr={0,0,0,0,0,0,0,0};
+ zb_globals_t g_zb;
+ zb_intr_globals_t g_izb;
+ zb_64bit_addr_t g_zero_addr={0,0,0,0,0,0,0,0};
 
 
 #ifdef ZB_INIT_HAS_ARGS
-void zb_init(zb_char_t *trace_comment, zb_char_t *rx_pipe, zb_char_t *tx_pipe) ZB_CALLBACK
+void zb_init(zb_char_t *trace_comment, zb_char_t *rx_pipe, zb_char_t *tx_pipe) 
 #else
-void zb_init() ZB_CALLBACK
+void zb_init() 
 #endif
 {
 #ifdef ZB_INIT_HAS_ARGS

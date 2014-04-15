@@ -58,9 +58,9 @@ PURPOSE: AF: RX path.
 /*! \addtogroup ZB_AF */
 /*! @{ */
 
-void zb_zdo_data_indication(zb_uint8_t param) ZB_CALLBACK;
+void zb_zdo_data_indication(zb_uint8_t param) ;
 
-void zb_apsde_data_indication(zb_uint8_t param) ZB_CALLBACK
+void zb_apsde_data_indication(zb_uint8_t param) 
 {
   zb_buf_t *asdu = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_apsde_data_indication_t *ind = ZB_GET_BUF_PARAM(asdu, zb_apsde_data_indication_t);
@@ -105,7 +105,7 @@ void zb_af_set_data_indication(zb_callback_t cb)
   ZG->zdo.af_data_cb = cb;
 }
 
-void zb_apsde_data_acknowledged(zb_uint8_t param) ZB_CALLBACK
+void zb_apsde_data_acknowledged(zb_uint8_t param) 
 {
   zb_aps_hdr_t aps_hdr;
   zb_buf_t *asdu = (zb_buf_t *)ZB_BUF_FROM_REF(param);

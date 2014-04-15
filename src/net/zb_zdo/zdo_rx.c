@@ -59,10 +59,10 @@ PURPOSE: ZDO RX path
 /*! @{ */
 
 #ifdef ZB_ROUTER_ROLE
-static void zdo_device_annce_srv(zb_uint8_t param, void *dt) ZB_SDCC_REENTRANT;
+static void zdo_device_annce_srv(zb_uint8_t param, void *dt) ;
 #endif
 
-void zb_zdo_data_indication(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_data_indication(zb_uint8_t param) 
 {
   zb_buf_t *asdu = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_apsde_data_indication_t *ind = (zb_apsde_data_indication_t *)ZB_GET_BUF_PARAM(asdu, zb_apsde_data_indication_t);
@@ -343,7 +343,7 @@ void zb_zdo_data_indication(zb_uint8_t param) ZB_CALLBACK
 
 
 #ifdef ZB_ROUTER_ROLE
-static void zdo_device_annce_srv(zb_uint8_t param, void *dt) ZB_SDCC_REENTRANT
+static void zdo_device_annce_srv(zb_uint8_t param, void *dt) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_zdo_device_annce_t *da = dt;
@@ -392,7 +392,7 @@ static void zdo_device_annce_srv(zb_uint8_t param, void *dt) ZB_SDCC_REENTRANT
 }
 
 
-zb_neighbor_tbl_ent_t *zdo_device_info_upd(zb_buf_t *buf, zb_ieee_addr_t ieee_addr, zb_uint16_t addr) ZB_SDCC_REENTRANT
+zb_neighbor_tbl_ent_t *zdo_device_info_upd(zb_buf_t *buf, zb_ieee_addr_t ieee_addr, zb_uint16_t addr) 
 {
   zb_neighbor_tbl_ent_t *ne;
   zb_address_ieee_ref_t addr_ref;

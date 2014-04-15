@@ -57,10 +57,10 @@ PURPOSE: APS subsystem. Dups detection.
 
 #define APS_DUPS_DEBUG
 
-void zb_aps_check_timer_cb(zb_uint8_t param) ZB_CALLBACK;
+void zb_aps_check_timer_cb(zb_uint8_t param) ;
 
 
-zb_short_t aps_check_dups(zb_uint16_t src_addr, zb_uint8_t aps_counter) ZB_SDCC_REENTRANT
+zb_short_t aps_check_dups(zb_uint16_t src_addr, zb_uint8_t aps_counter) 
 {
 #if defined ZB_LIMITED_FEATURES
   (void)src_addr;
@@ -108,7 +108,7 @@ zb_short_t aps_check_dups(zb_uint16_t src_addr, zb_uint8_t aps_counter) ZB_SDCC_
 /**
    Alarm callback for the APS dups detection.
  */
-void zb_aps_check_timer_cb(zb_uint8_t param) ZB_CALLBACK
+void zb_aps_check_timer_cb(zb_uint8_t param) 
 {
   zb_ushort_t i;
   zb_ushort_t n;

@@ -57,7 +57,7 @@ PURPOSE: Network creation routine
 /*! \addtogroup ZB_NWK */
 /*! @{ */
 
-void zb_mlme_start_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_start_confirm(zb_uint8_t param) 
 {
 #ifdef ZB_ROUTER_ROLE
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);

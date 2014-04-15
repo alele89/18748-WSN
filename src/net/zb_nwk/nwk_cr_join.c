@@ -60,10 +60,10 @@ PURPOSE: Network creation routine
 /*! @{ */
 
 #ifdef ZB_ROUTER_ROLE
-static zb_mac_status_t zb_nwk_accept_child(zb_ieee_addr_t device_address, zb_mac_capability_info_t capability, zb_uint8_t lqi, zb_uint16_t *address) ZB_SDCC_REENTRANT;
+static zb_mac_status_t zb_nwk_accept_child(zb_ieee_addr_t device_address, zb_mac_capability_info_t capability, zb_uint8_t lqi, zb_uint16_t *address) ;
 
 
-void zb_nlme_rejoin_request(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_rejoin_request(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_nwk_hdr_t *nwhdr = (zb_nwk_hdr_t *)ZB_BUF_BEGIN(buf);
@@ -189,7 +189,7 @@ void zb_nlme_rejoin_request(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_nlme_rejoin_resp_sent(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_rejoin_resp_sent(zb_uint8_t param) 
 {
   zb_address_ieee_ref_t addr_ref;
   zb_neighbor_tbl_ent_t *nent;
@@ -245,7 +245,7 @@ void zb_nlme_rejoin_resp_sent(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-static zb_mac_status_t zb_nwk_accept_child(zb_ieee_addr_t device_address, zb_mac_capability_info_t capability, zb_uint8_t lqi, zb_uint16_t *address) ZB_SDCC_REENTRANT
+static zb_mac_status_t zb_nwk_accept_child(zb_ieee_addr_t device_address, zb_mac_capability_info_t capability, zb_uint8_t lqi, zb_uint16_t *address) 
 {
   zb_mac_status_t status = 0;
   zb_neighbor_tbl_ent_t *ent = NULL;
@@ -379,7 +379,7 @@ static zb_mac_status_t zb_nwk_accept_child(zb_ieee_addr_t device_address, zb_mac
   return status;
 }
 
-void zb_mlme_associate_indication(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_associate_indication(zb_uint8_t param) 
 {
 #ifndef MAC_CERT_TEST_HACKS
   zb_mac_status_t status = MAC_SUCCESS;

@@ -60,7 +60,7 @@ PURPOSE: Network layer main module
 /*! @{ */
 
 #ifndef ZB_LIMITED_FEATURES
-void zb_nlme_leave_request(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_leave_request(zb_uint8_t param) 
 {
   zb_ret_t ret = RET_OK;
   zb_neighbor_tbl_ent_t *nbt = NULL;
@@ -211,7 +211,7 @@ void zb_nlme_leave_request(zb_uint8_t param) ZB_CALLBACK
 
 
 #ifndef ZB_LIMITED_FEATURES
-void zb_nlme_reset_request(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_reset_request(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_nlme_reset_request_t *request = ZB_GET_BUF_PARAM(buf, zb_nlme_reset_request_t);
@@ -252,7 +252,7 @@ void zb_nlme_reset_request(zb_uint8_t param) ZB_CALLBACK
   TRACE_MSG(TRACE_NWK1, "<<reset_req", (FMT__0));
 }
 
-void zb_mlme_reset_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_reset_confirm(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
 
@@ -274,7 +274,7 @@ void zb_mlme_reset_confirm(zb_uint8_t param) ZB_CALLBACK
 }
 #endif  /* ZB_LIMITED_FEATURES */
 
-void zb_nlme_sync_request(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_sync_request(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_nlme_sync_request_t *request = ZB_GET_BUF_PARAM(buf, zb_nlme_sync_request_t);
@@ -305,7 +305,7 @@ void zb_nlme_sync_request(zb_uint8_t param) ZB_CALLBACK
 
 
 
-void zb_mlme_poll_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_poll_confirm(zb_uint8_t param) 
 {
   TRACE_MSG(TRACE_NWK1, ">>poll_cnfrm %hd", (FMT__H, param));
 
@@ -339,7 +339,7 @@ void zb_mlme_poll_confirm(zb_uint8_t param) ZB_CALLBACK
 
 
 #ifndef ZB_LIMITED_FEATURES
-void zb_mlme_sync_loss_indication(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_sync_loss_indication(zb_uint8_t param) 
 {
   zb_mlme_sync_loss_ind_t *ind = ZB_GET_BUF_PARAM(ZB_BUF_FROM_REF(param), zb_mlme_sync_loss_ind_t);
 
@@ -362,7 +362,7 @@ void zb_mlme_sync_loss_indication(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_nlme_get_request(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_get_request(zb_uint8_t param) 
 {
 #ifdef ZB_LIMITED_FEATURES
   (void)param;
@@ -485,7 +485,7 @@ void zb_nlme_get_request(zb_uint8_t param) ZB_CALLBACK
 #endif /* ZB_LIMITED_FEATURES */
 }
 
-void zb_nlme_get_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_get_confirm(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_nlme_get_confirm_t *conf = NULL;
@@ -502,7 +502,7 @@ void zb_nlme_get_confirm(zb_uint8_t param) ZB_CALLBACK
   zb_free_buf(buf);
 }
 
-void zb_nlme_set_request(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_set_request(zb_uint8_t param) 
 {
 #ifdef ZB_LIMITED_FEATURES
   (void)param;
@@ -597,7 +597,7 @@ void zb_nlme_set_request(zb_uint8_t param) ZB_CALLBACK
 #endif /* ZB_LIMITED_FEATURES */
 }
 
-void zb_nlme_set_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_set_confirm(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
 
@@ -615,7 +615,7 @@ void zb_nlme_set_confirm(zb_uint8_t param) ZB_CALLBACK
 
 
 #ifdef ZB_ROUTER_ROLE
-void zb_nlme_send_status(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_send_status(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_nlme_send_status_t *request = ZB_GET_BUF_PARAM(buf, zb_nlme_send_status_t);

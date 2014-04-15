@@ -59,7 +59,7 @@ PURPOSE: Zigbee packet buffers pool: init
 #endif
 
 
-void zb_init_buffers() ZB_CALLBACK
+void zb_init_buffers() 
 {
   zb_uint8_t i;
   zb_buf_s_t *p;

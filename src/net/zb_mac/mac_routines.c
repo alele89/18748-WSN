@@ -156,7 +156,7 @@ zb_ret_t zb_mac_process_mlme_start() ZB_SDCC_BANKED
 #endif  /* ZB_ROUTER_ROLE */
 
 
-void zb_mlme_start_request(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_start_request(zb_uint8_t param) 
 {
   zb_mlme_start_req_t *params = NULL;
   zb_mac_status_t status = MAC_SUCCESS;
@@ -273,7 +273,7 @@ zb_ret_t zb_beacon_request_command()
 
 /* sends MLME-COMM-STATUS.indication to higher level. Parameters for
  * indication are taken from panding_buf.mhr */
-zb_ret_t zb_mac_send_comm_status(zb_buf_t *pending_buf, zb_uint8_t mac_status, zb_buf_t *buffer) ZB_SDCC_REENTRANT
+zb_ret_t zb_mac_send_comm_status(zb_buf_t *pending_buf, zb_uint8_t mac_status, zb_buf_t *buffer) 
 {
   zb_mac_mhr_t mhr_pend;
   zb_mlme_comm_status_indication_t *ind_params;
@@ -301,7 +301,7 @@ zb_ret_t zb_mac_send_comm_status(zb_buf_t *pending_buf, zb_uint8_t mac_status, z
 
 
 #ifdef ZB_MAC_TESTING_MODE
-void zb_mlme_purge_request(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_purge_request(zb_uint8_t param) 
 {
   zb_ushort_t i;
   zb_mlme_purge_request_t *req = ZB_GET_BUF_PARAM(ZB_BUF_FROM_REF(param), zb_mlme_purge_request_t);
@@ -345,7 +345,7 @@ void zb_mlme_purge_request(zb_uint8_t param) ZB_CALLBACK
 #endif
 
 
-void zb_mac_pending_data_timeout(zb_uint8_t param) ZB_CALLBACK
+void zb_mac_pending_data_timeout(zb_uint8_t param) 
 {
   TRACE_MSG(TRACE_MAC2, "pend_data_tmo param %hd", (FMT__H, param));
 
@@ -417,7 +417,7 @@ zb_ret_t zb_mac_put_data_to_pending_queue(zb_mac_pending_data_t *pend_data) ZB_S
   return ret;
 }
 
-void zb_mac_put_request_to_queue (zb_buf_t *request, zb_mac_request_type_e req_type) ZB_CALLBACK
+void zb_mac_put_request_to_queue (zb_buf_t *request, zb_mac_request_type_e req_type) 
 {
   zb_mac_request_t *ent;
   /* just put packet to the out queue and process it later */

@@ -60,7 +60,7 @@ PURPOSE: Network confirm routine
 /* Note: all that callbacks are temporary here. It must be somewhere in */
 
 #ifndef ZB_LIMITED_FEATURES
-void zb_nlme_route_discovery_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_route_discovery_confirm(zb_uint8_t param) 
 {
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);
 
@@ -78,7 +78,7 @@ void zb_nlme_route_discovery_confirm(zb_uint8_t param) ZB_CALLBACK
 
 
 #if 0
-void zb_nlme_sync_loss_indication(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_sync_loss_indication(zb_uint8_t param) 
 {
   zb_ret_t ret = RET_OK;
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);

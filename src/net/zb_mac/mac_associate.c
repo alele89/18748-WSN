@@ -73,7 +73,7 @@ PURPOSE: Roitines specific to mlme scan
   - if response is received, send acknowledgement
   - if assosiation was not successful, set macPANId to 0xFFFF
 */
-void zb_mlme_associate_request(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_associate_request(zb_uint8_t param) 
 {
   zb_ret_t ret = RET_OK;
   zb_mlme_associate_params_t *params = NULL;
@@ -134,7 +134,7 @@ command_send:
   TRACE_MSG(TRACE_MAC2, "<<mlme_ass_req", (FMT__0));
 }
 
-void zb_mlme_send_association_req_continue(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_send_association_req_continue(zb_uint8_t param) 
 {
   zb_ret_t ret = RET_OK;
   ZVUNUSED(param);
@@ -202,7 +202,7 @@ zb_ret_t zb_mac_setup_for_associate(zb_uint8_t logical_channel, zb_uint16_t pan_
   sends association request command
   return RET_OK, RET_ERROR
 */
-void zb_mlme_send_association_req_cmd(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_send_association_req_cmd(zb_uint8_t param) 
 {
   zb_ret_t ret;
   zb_mac_mhr_t mhr;

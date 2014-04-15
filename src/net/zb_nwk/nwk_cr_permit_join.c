@@ -59,9 +59,9 @@ PURPOSE: Permit join API
 
 #if defined ZB_COORDINATOR_ROLE || defined ZB_ROUTER_ROLE
 
-void nwk_permit_timeout(zb_uint8_t param) ZB_CALLBACK;
+void nwk_permit_timeout(zb_uint8_t param) ;
 
-void nwk_permit_timeout(zb_uint8_t param) ZB_CALLBACK
+void nwk_permit_timeout(zb_uint8_t param) 
 {
   ZVUNUSED(param);
   TRACE_MSG(TRACE_NWK1, ">>nwk_permit_timeout %hd", (FMT__H, param));
@@ -72,7 +72,7 @@ void nwk_permit_timeout(zb_uint8_t param) ZB_CALLBACK
   TRACE_MSG(TRACE_NWK1, "<<nwk_permit_timeout", (FMT__0));
 }
 
-void zb_nlme_permit_joining_request(zb_uint8_t param) ZB_CALLBACK
+void zb_nlme_permit_joining_request(zb_uint8_t param) 
 {
   zb_ret_t ret = RET_OK;
   zb_buf_t *buf = (zb_buf_t *)ZB_BUF_FROM_REF(param);

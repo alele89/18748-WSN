@@ -57,7 +57,7 @@ PURPOSE: Roitines specific to coordinator role
 /*! @{ */
 
 #if defined ZB_COORDINATOR_ROLE || defined ZB_ROUTER_ROLE
-zb_ret_t zb_send_beacon_frame(zb_beacon_frame_params_t *beacon_frame_params) ZB_SDCC_REENTRANT;
+zb_ret_t zb_send_beacon_frame(zb_beacon_frame_params_t *beacon_frame_params) ;
 
 /*
   Sends coordinator realignment command
@@ -265,7 +265,7 @@ zb_ret_t  zb_realign_pan()
 
 
 #if defined ZB_COORDINATOR_ROLE || defined ZB_ROUTER_ROLE
-zb_ret_t zb_send_beacon_frame(zb_beacon_frame_params_t *beacon_frame_params) ZB_SDCC_REENTRANT
+zb_ret_t zb_send_beacon_frame(zb_beacon_frame_params_t *beacon_frame_params) 
 {
   zb_uint8_t packet_length;
   zb_uint8_t mhr_len;
@@ -442,7 +442,7 @@ void zb_mac_update_superframe_and_pib()
 }
 
 #if defined ZB_COORDINATOR_ROLE || defined ZB_ROUTER_ROLE
-void zb_handle_beacon_req(zb_uint8_t param) ZB_CALLBACK
+void zb_handle_beacon_req(zb_uint8_t param) 
 {
   zb_ret_t ret = RET_OK;
   ZVUNUSED(param);
@@ -489,7 +489,7 @@ void zb_handle_beacon_req(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_mlme_handle_orphan_response(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_handle_orphan_response(zb_uint8_t param) 
 {
   zb_mac_orphan_response_t oresp;
   zb_mlme_start_req_t *req;
@@ -512,7 +512,7 @@ void zb_mlme_handle_orphan_response(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_mlme_handle_orphan_response_continue(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_handle_orphan_response_continue(zb_uint8_t param) 
 {
   zb_ret_t ret;
   zb_mac_orphan_response_t oresp; /* possible better to send it via MAC_CTX() */

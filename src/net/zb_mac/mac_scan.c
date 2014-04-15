@@ -57,7 +57,7 @@ PURPOSE: Roitines specific to mlme scan
 
 
 
-void zb_handle_scan_request(zb_uint8_t param) ZB_CALLBACK
+void zb_handle_scan_request(zb_uint8_t param) 
 {
   zb_ret_t ret;
   zb_uint8_t scan_type;
@@ -92,7 +92,7 @@ void zb_handle_scan_request(zb_uint8_t param) ZB_CALLBACK
 
 
 /* 7.1.11.1 MLME-SCAN.request */
-void zb_mlme_scan_request(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_scan_request(zb_uint8_t param) 
 {
   zb_ret_t ret = RET_OK;
   zb_mlme_scan_params_t *params;
@@ -195,7 +195,7 @@ zb_ret_t zb_mlme_ed_scan()
 #endif
 
 /* this is a universal routine for ed/active/orphan scans */
-void zb_mlme_scan_step(zb_uint8_t param) ZB_CALLBACK
+void zb_mlme_scan_step(zb_uint8_t param) 
 {
   zb_uint8_t channel_number;
   zb_mlme_scan_params_t *scan_params;
@@ -335,7 +335,7 @@ void zb_mlme_scan_step(zb_uint8_t param) ZB_CALLBACK
   TRACE_MSG(TRACE_MAC1, "<< zb_mlme_scan_step", (FMT__0));
 }
 
-zb_ret_t zb_mlme_active_scan() ZB_SDCC_REENTRANT
+zb_ret_t zb_mlme_active_scan() 
 {
   zb_ret_t ret = RET_OK;
   zb_mlme_scan_params_t *scan_params;
@@ -387,7 +387,7 @@ zb_ret_t zb_mlme_active_scan() ZB_SDCC_REENTRANT
 
 
 #ifndef ZB_LIMITED_FEATURES
-zb_ret_t zb_mlme_orphan_scan() ZB_SDCC_REENTRANT
+zb_ret_t zb_mlme_orphan_scan() 
 {
   zb_ret_t ret = RET_OK;
   zb_mlme_scan_params_t *scan_params;

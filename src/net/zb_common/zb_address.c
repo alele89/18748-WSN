@@ -53,26 +53,26 @@ PURPOSE: Zigbee addresses routine
 #include "zb_hash.h"
 #include "zb_address.h"
 
-static zb_bool_t ieee_search(zb_ieee_addr_compressed_t *ieee_compressed, zb_address_ieee_ref_t *ref_p) ZB_SDCC_REENTRANT;
+static zb_bool_t ieee_search(zb_ieee_addr_compressed_t *ieee_compressed, zb_address_ieee_ref_t *ref_p) ;
 
-static zb_bool_t short_search(zb_uint16_t short_addr, zb_address_ieee_ref_t *ref_p) ZB_SDCC_REENTRANT;
+static zb_bool_t short_search(zb_uint16_t short_addr, zb_address_ieee_ref_t *ref_p) ;
 
 static zb_ret_t addr_add(zb_ieee_addr_compressed_t *ieee_compressed,
-                         zb_uint16_t short_addr, zb_address_ieee_ref_t *ref_p) ZB_SDCC_REENTRANT;
+                         zb_uint16_t short_addr, zb_address_ieee_ref_t *ref_p) ;
 
-static void del_short_sorted(zb_address_ieee_ref_t ref) ZB_SDCC_REENTRANT;
+static void del_short_sorted(zb_address_ieee_ref_t ref) ;
 
-static void add_short_sorted(zb_address_ieee_ref_t ref, zb_uint16_t short_addr) ZB_SDCC_REENTRANT;
+static void add_short_sorted(zb_address_ieee_ref_t ref, zb_uint16_t short_addr) ;
 
-static void clock_tick() ZB_SDCC_REENTRANT;
+static void clock_tick() ;
 
 
-static zb_ushort_t zb_check_bit_in_bit_vector(zb_uint8_t *v, zb_ushort_t b) ZB_SDCC_REENTRANT
+static zb_ushort_t zb_check_bit_in_bit_vector(zb_uint8_t *v, zb_ushort_t b) 
 {
   return ZB_CHECK_BIT_IN_BIT_VECTOR(v, b);
 }
 
-static void zb_set_bit_in_bit_vector(zb_uint8_t *v, zb_ushort_t b) ZB_SDCC_REENTRANT
+static void zb_set_bit_in_bit_vector(zb_uint8_t *v, zb_ushort_t b) 
 {
   ZB_SET_BIT_IN_BIT_VECTOR(v, b);
 }
@@ -81,7 +81,7 @@ static void zb_set_bit_in_bit_vector(zb_uint8_t *v, zb_ushort_t b) ZB_SDCC_REENT
 
 
 #ifndef ZB_LIMITED_FEATURES2
-zb_ret_t zb_address_set_pan_id(zb_uint16_t short_pan_id, zb_ext_pan_id_t pan_id, zb_address_pan_id_ref_t *ref) ZB_CALLBACK
+zb_ret_t zb_address_set_pan_id(zb_uint16_t short_pan_id, zb_ext_pan_id_t pan_id, zb_address_pan_id_ref_t *ref) 
 {
   zb_ret_t ret = RET_OK;
   zb_address_pan_id_ref_t h_i = ZB_ADDRESS_PAN_ID_HASH(pan_id);
@@ -148,7 +148,7 @@ zb_ret_t zb_address_set_pan_id(zb_uint16_t short_pan_id, zb_ext_pan_id_t pan_id,
 }
 
 
-void zb_address_get_pan_id(zb_address_pan_id_ref_t pan_id_ref, zb_ext_pan_id_t pan_id) ZB_CALLBACK
+void zb_address_get_pan_id(zb_address_pan_id_ref_t pan_id_ref, zb_ext_pan_id_t pan_id) 
 {
   TRACE_MSG(TRACE_COMMON1, ">>zb_address_get_pan_id pan_id_reference %d pan_id %p", (FMT__D_P,(int) pan_id_ref, pan_id));
 
@@ -159,7 +159,7 @@ void zb_address_get_pan_id(zb_address_pan_id_ref_t pan_id_ref, zb_ext_pan_id_t p
   TRACE_MSG(TRACE_COMMON1, "<<zb_address_get_pan_id", (FMT__0));
 }
 
-zb_ret_t zb_address_get_pan_id_ref(zb_ext_pan_id_t pan_id , zb_address_pan_id_ref_t *ref) ZB_CALLBACK
+zb_ret_t zb_address_get_pan_id_ref(zb_ext_pan_id_t pan_id , zb_address_pan_id_ref_t *ref) 
 {
   zb_ret_t ret = RET_NOT_FOUND;
   zb_address_pan_id_ref_t h_i = ZB_ADDRESS_PAN_ID_HASH(pan_id);
@@ -193,7 +193,7 @@ zb_ret_t zb_address_get_pan_id_ref(zb_ext_pan_id_t pan_id , zb_address_pan_id_re
 }
 
 
-void zb_address_get_short_pan_id(zb_address_pan_id_ref_t pan_id_ref, zb_uint16_t *pan_id_p) ZB_CALLBACK
+void zb_address_get_short_pan_id(zb_address_pan_id_ref_t pan_id_ref, zb_uint16_t *pan_id_p) 
 {
   TRACE_MSG(TRACE_COMMON1, ">>zb_address_get_pan_id pan_id_reference %d pan_id %p", (FMT__D_P, (int)pan_id_ref, pan_id_p));
 
@@ -205,7 +205,7 @@ void zb_address_get_short_pan_id(zb_address_pan_id_ref_t pan_id_ref, zb_uint16_t
 }
 
 
-zb_bool_t zb_address_cmp_pan_id_by_ref(zb_address_pan_id_ref_t pan_id_ref, zb_ext_pan_id_t pan_id) ZB_CALLBACK
+zb_bool_t zb_address_cmp_pan_id_by_ref(zb_address_pan_id_ref_t pan_id_ref, zb_ext_pan_id_t pan_id) 
 {
   zb_bool_t ret;
   TRACE_MSG(TRACE_COMMON1, ">>zb_address_cmp_pan_id_by_ref pan_id_reference %d pan_id %p", (FMT__D_P,(int) pan_id_ref, pan_id));
@@ -220,7 +220,7 @@ zb_bool_t zb_address_cmp_pan_id_by_ref(zb_address_pan_id_ref_t pan_id_ref, zb_ex
 
 #else  /* ZB_LIMITED_FEATURES2 */
 
-zb_ret_t zb_address_set_pan_id(zb_uint16_t short_pan_id, zb_ext_pan_id_t pan_id, zb_address_pan_id_ref_t *ref) ZB_CALLBACK
+zb_ret_t zb_address_set_pan_id(zb_uint16_t short_pan_id, zb_ext_pan_id_t pan_id, zb_address_pan_id_ref_t *ref) 
 {
   *ref = 0;
   ZB_EXTPANID_COPY(ZG->addr.pan_map[0].long_panid, pan_id);
@@ -230,25 +230,25 @@ zb_ret_t zb_address_set_pan_id(zb_uint16_t short_pan_id, zb_ext_pan_id_t pan_id,
 }
 
 
-void zb_address_get_pan_id(zb_address_pan_id_ref_t pan_id_ref, zb_ext_pan_id_t pan_id) ZB_CALLBACK
+void zb_address_get_pan_id(zb_address_pan_id_ref_t pan_id_ref, zb_ext_pan_id_t pan_id) 
 {
   ZB_EXTPANID_COPY(pan_id, ZG->addr.pan_map[0].long_panid);
 }
 
-zb_ret_t zb_address_get_pan_id_ref(zb_ext_pan_id_t pan_id , zb_address_pan_id_ref_t *ref) ZB_CALLBACK
+zb_ret_t zb_address_get_pan_id_ref(zb_ext_pan_id_t pan_id , zb_address_pan_id_ref_t *ref) 
 {
   *ref = 0;
   return RET_OK;
 }
 
 
-void zb_address_get_short_pan_id(zb_address_pan_id_ref_t pan_id_ref, zb_uint16_t *pan_id_p) ZB_CALLBACK
+void zb_address_get_short_pan_id(zb_address_pan_id_ref_t pan_id_ref, zb_uint16_t *pan_id_p) 
 {
   *pan_id_p = ZG->addr.pan_map[0].short_panid;
 }
 
 
-zb_bool_t zb_address_cmp_pan_id_by_ref(zb_address_pan_id_ref_t pan_id_ref, zb_ext_pan_id_t pan_id) ZB_CALLBACK
+zb_bool_t zb_address_cmp_pan_id_by_ref(zb_address_pan_id_ref_t pan_id_ref, zb_ext_pan_id_t pan_id) 
 {
   return ZB_TRUE;
 }
@@ -256,7 +256,7 @@ zb_bool_t zb_address_cmp_pan_id_by_ref(zb_address_pan_id_ref_t pan_id_ref, zb_ex
 #endif  /* ZB_LIMITED_FEATURES2 */
 
 
-void zb_ieee_addr_compress(zb_ieee_addr_t address, zb_ieee_addr_compressed_t *compressed_address) ZB_CALLBACK
+void zb_ieee_addr_compress(zb_ieee_addr_t address, zb_ieee_addr_compressed_t *compressed_address) 
 {
   /* try to find this manufacturer */
   zb_ushort_t i;
@@ -299,7 +299,7 @@ void zb_ieee_addr_compress(zb_ieee_addr_t address, zb_ieee_addr_compressed_t *co
 }
 
 
-void zb_ieee_addr_decompress(zb_ieee_addr_t address, zb_ieee_addr_compressed_t *compressed_address) ZB_CALLBACK
+void zb_ieee_addr_decompress(zb_ieee_addr_t address, zb_ieee_addr_compressed_t *compressed_address) 
 {
   ZB_ADDRESS_DECOMPRESS(address, *compressed_address);
 }
@@ -315,12 +315,12 @@ void zb_ieee_addr_decompress(zb_ieee_addr_t address, zb_ieee_addr_compressed_t *
   (zb_uint16_t)(addr)->device_id[4]) % ZB_IEEE_ADDR_TABLE_SIZE )
 
 
-static zb_address_ieee_ref_t zb_address_compressed_ieee_hash(zb_ieee_addr_compressed_t *ieee_compressed) ZB_SDCC_REENTRANT
+static zb_address_ieee_ref_t zb_address_compressed_ieee_hash(zb_ieee_addr_compressed_t *ieee_compressed) 
 {
   return ZB_ADDRESS_COMPRESSED_IEEE_HASH_MACRO(ieee_compressed);
 }
 
-zb_ret_t zb_address_by_ieee(zb_ieee_addr_t ieee, zb_bool_t create, zb_bool_t lock, zb_address_ieee_ref_t *ref_p) ZB_CALLBACK
+zb_ret_t zb_address_by_ieee(zb_ieee_addr_t ieee, zb_bool_t create, zb_bool_t lock, zb_address_ieee_ref_t *ref_p) 
 {
   zb_ret_t ret = RET_OK;
   zb_ieee_addr_compressed_t ieee_compressed;
@@ -349,7 +349,7 @@ zb_ret_t zb_address_by_ieee(zb_ieee_addr_t ieee, zb_bool_t create, zb_bool_t loc
 }
 
 
-zb_ret_t zb_address_by_short(zb_uint16_t short_address, zb_bool_t create, zb_bool_t lock, zb_address_ieee_ref_t *ref_p) ZB_CALLBACK
+zb_ret_t zb_address_by_short(zb_uint16_t short_address, zb_bool_t create, zb_bool_t lock, zb_address_ieee_ref_t *ref_p) 
 {
   zb_ret_t ret = RET_OK;
   if (short_search(short_address, ref_p))
@@ -370,7 +370,7 @@ zb_ret_t zb_address_by_short(zb_uint16_t short_address, zb_bool_t create, zb_boo
 }
 
 
-zb_ret_t zb_address_update(zb_ieee_addr_t ieee_address, zb_uint16_t short_address, zb_bool_t lock, zb_address_ieee_ref_t *ref_p) ZB_CALLBACK
+zb_ret_t zb_address_update(zb_ieee_addr_t ieee_address, zb_uint16_t short_address, zb_bool_t lock, zb_address_ieee_ref_t *ref_p) 
 {
   zb_ret_t ret = RET_OK;
   zb_bool_t found_short;
@@ -448,7 +448,7 @@ zb_ret_t zb_address_update(zb_ieee_addr_t ieee_address, zb_uint16_t short_addres
 }
 
 
-void zb_address_by_ref(zb_ieee_addr_t ieee_address, zb_uint16_t *short_address_p, zb_address_ieee_ref_t ref) ZB_CALLBACK
+void zb_address_by_ref(zb_ieee_addr_t ieee_address, zb_uint16_t *short_address_p, zb_address_ieee_ref_t ref) 
 {
   zb_address_map_t *ent = &ZG->addr.addr_map[ref];
   *short_address_p = ent->addr;
@@ -456,21 +456,21 @@ void zb_address_by_ref(zb_ieee_addr_t ieee_address, zb_uint16_t *short_address_p
 }
 
 
-void zb_address_ieee_by_ref(zb_ieee_addr_t ieee_address, zb_address_ieee_ref_t ref) ZB_CALLBACK
+void zb_address_ieee_by_ref(zb_ieee_addr_t ieee_address, zb_address_ieee_ref_t ref) 
 {
   zb_address_map_t *ent = &ZG->addr.addr_map[ref];
   ZB_ADDRESS_DECOMPRESS(ieee_address, ent->ieee_addr);
 }
 
 
-void zb_address_short_by_ref(zb_uint16_t *short_address_p, zb_address_ieee_ref_t ref) ZB_CALLBACK
+void zb_address_short_by_ref(zb_uint16_t *short_address_p, zb_address_ieee_ref_t ref) 
 {
   zb_address_map_t *ent = &ZG->addr.addr_map[ref];
   *short_address_p = ent->addr;
 }
 
 
-zb_uint16_t zb_address_short_by_ieee(zb_ieee_addr_t ieee_address) ZB_CALLBACK
+zb_uint16_t zb_address_short_by_ieee(zb_ieee_addr_t ieee_address) 
 {
   zb_address_ieee_ref_t ref;
   if (zb_address_by_ieee(ieee_address, ZB_FALSE, ZB_FALSE, &ref) == RET_OK)
@@ -482,7 +482,7 @@ zb_uint16_t zb_address_short_by_ieee(zb_ieee_addr_t ieee_address) ZB_CALLBACK
 }
 
 
-zb_ret_t zb_address_ieee_by_short(zb_uint16_t short_addr, zb_ieee_addr_t ieee_address) ZB_CALLBACK
+zb_ret_t zb_address_ieee_by_short(zb_uint16_t short_addr, zb_ieee_addr_t ieee_address) 
 {
   zb_address_ieee_ref_t ref;
   if (zb_address_by_short(short_addr, ZB_FALSE, ZB_FALSE, &ref) == RET_OK)
@@ -495,7 +495,7 @@ zb_ret_t zb_address_ieee_by_short(zb_uint16_t short_addr, zb_ieee_addr_t ieee_ad
 }
 
 
-void zb_address_lock(zb_address_ieee_ref_t ref) ZB_CALLBACK
+void zb_address_lock(zb_address_ieee_ref_t ref) 
 {
 #ifndef ZB_LIMITED_FEATURES
   TRACE_MSG(TRACE_COMMON1, ">>zb_address_ieee_lock ref %d", (FMT__D,(int) ref));
@@ -509,7 +509,7 @@ void zb_address_lock(zb_address_ieee_ref_t ref) ZB_CALLBACK
 }
 
 
-void zb_address_unlock(zb_address_ieee_ref_t ref) ZB_CALLBACK
+void zb_address_unlock(zb_address_ieee_ref_t ref) 
 {
 #ifndef ZB_LIMITED_FEATURES
   TRACE_MSG(TRACE_COMMON1, ">>zb_address_ieee_unlock ref %d", (FMT__D, (int)ref));
@@ -532,7 +532,7 @@ void zb_address_unlock(zb_address_ieee_ref_t ref) ZB_CALLBACK
 
    @return ZB_TRUE if found, else ZB_FALSE
  */
-static zb_bool_t ieee_search(zb_ieee_addr_compressed_t *ieee_compressed, zb_address_ieee_ref_t *ref_p) ZB_SDCC_REENTRANT
+static zb_bool_t ieee_search(zb_ieee_addr_compressed_t *ieee_compressed, zb_address_ieee_ref_t *ref_p) 
 {
   zb_address_ieee_ref_t i = zb_address_compressed_ieee_hash(ieee_compressed);
   zb_address_ieee_ref_t cnt;
@@ -562,7 +562,7 @@ static zb_bool_t ieee_search(zb_ieee_addr_compressed_t *ieee_compressed, zb_addr
 
    @return ZB_TRUE if found, else ZB_FALSE
  */
-static zb_bool_t short_search(zb_uint16_t short_addr, zb_address_ieee_ref_t *ref_p) ZB_SDCC_REENTRANT
+static zb_bool_t short_search(zb_uint16_t short_addr, zb_address_ieee_ref_t *ref_p) 
 {
   zb_bool_t found = ZB_FALSE;
   zb_ushort_t l = 0;
@@ -617,7 +617,7 @@ static zb_bool_t short_search(zb_uint16_t short_addr, zb_address_ieee_ref_t *ref
 
  */
 static zb_ret_t addr_add(zb_ieee_addr_compressed_t *ieee_compressed,
-                         zb_uint16_t short_addr, zb_address_ieee_ref_t *ref_p) ZB_SDCC_REENTRANT
+                         zb_uint16_t short_addr, zb_address_ieee_ref_t *ref_p) 
 {
   zb_address_ieee_ref_t i = ieee_compressed ? zb_address_compressed_ieee_hash(ieee_compressed) : 0;
   zb_address_ieee_ref_t i_end = i;
@@ -680,7 +680,7 @@ static zb_ret_t addr_add(zb_ieee_addr_compressed_t *ieee_compressed,
 
    @param ref - address ref
  */
-void zb_address_delete(zb_address_ieee_ref_t ref) ZB_CALLBACK
+void zb_address_delete(zb_address_ieee_ref_t ref) 
 {
   del_short_sorted(ref);
   ZG->addr.addr_map[ref].used = 0;
@@ -693,7 +693,7 @@ void zb_address_delete(zb_address_ieee_ref_t ref) ZB_CALLBACK
 
    @param ref - address ref
  */
-static void del_short_sorted(zb_address_ieee_ref_t ref) ZB_SDCC_REENTRANT
+static void del_short_sorted(zb_address_ieee_ref_t ref) 
 {
   zb_address_ieee_ref_t i;
   zb_ushort_t dec = 0;
@@ -720,7 +720,7 @@ static void del_short_sorted(zb_address_ieee_ref_t ref) ZB_SDCC_REENTRANT
    @param ref - address ref
    @param short_addr - short address
  */
-static void add_short_sorted(zb_address_ieee_ref_t ref, zb_uint16_t short_addr) ZB_SDCC_REENTRANT
+static void add_short_sorted(zb_address_ieee_ref_t ref, zb_uint16_t short_addr) 
 {
   zb_ushort_t l = 0;
 
@@ -762,7 +762,7 @@ static void add_short_sorted(zb_address_ieee_ref_t ref, zb_uint16_t short_addr) 
    Find first non-locked used element and clear its 'clock' field so it could be
    reused later. Update clock pointer.
  */
-static void clock_tick() ZB_SDCC_REENTRANT
+static void clock_tick() 
 {
 #ifndef ZB_LIMITED_FEATURES
   zb_address_map_t *ent;
@@ -805,13 +805,13 @@ static void clock_tick() ZB_SDCC_REENTRANT
 #endif
 }
 
-zb_bool_t zb_address_compressed_cmp(zb_ieee_addr_compressed_t *one, zb_ieee_addr_compressed_t *two) ZB_CALLBACK
+zb_bool_t zb_address_compressed_cmp(zb_ieee_addr_compressed_t *one, zb_ieee_addr_compressed_t *two) 
 {
   return (zb_bool_t)((one)->dev_manufacturer == (two)->dev_manufacturer
           && !ZB_MEMCMP(&(one)->device_id[0], &(two)->device_id[0], 5));
 }
 
-zb_uint8_t magic_bitcount8(zb_uint8_t b) ZB_CALLBACK
+zb_uint8_t magic_bitcount8(zb_uint8_t b) 
 {
   b = (b & 0x55) + ((b >> 1) & 0x55);
   b = (b & 0x33) + ((b >> 2) & 0x33);

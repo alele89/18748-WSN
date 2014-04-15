@@ -89,7 +89,7 @@ typedef enum
 zb_ret_t zb_mac_check_ack();
 #endif
 zb_ret_t call_indirect_data_callback(zb_callback_type_t cb_type, zb_uint8_t cb_status, zb_buf_t *buf);
-void indirect_data_callback_caller(zb_uint8_t param) ZB_CALLBACK;
+void indirect_data_callback_caller(zb_uint8_t param) ;
 zb_ret_t zb_mac_check_security(zb_buf_t *data_buf);
 
 void zb_tx_total_inc();
@@ -97,7 +97,7 @@ void zb_tx_fail_inc();
 #define ZB_TX_TOTAL_INC() zb_tx_total_inc()
 #define ZB_TX_FAIL_INC() zb_tx_fail_inc()
 
-void zb_mac_put_request_to_queue(zb_buf_t *request, zb_mac_request_type_e req_type) ZB_CALLBACK;
+void zb_mac_put_request_to_queue(zb_buf_t *request, zb_mac_request_type_e req_type) ;
 void zb_mac_store_pan_desc(zb_buf_t *beacon_buf);
 
 /*! @} */

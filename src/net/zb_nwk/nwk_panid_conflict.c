@@ -93,7 +93,7 @@ void zb_panid_conflict_got_network_report(zb_uint8_t param, zb_uint16_t *panids,
 
    Need it to choose another panid
  */
-void zb_panid_conflict_remember_panid(zb_uint16_t panid) ZB_SDCC_REENTRANT
+void zb_panid_conflict_remember_panid(zb_uint16_t panid) 
 {
   zb_ushort_t i;
   for (i = 0 ; i < sizeof(ZG->nwk.handle.known_panids) / sizeof(ZG->nwk.handle.known_panids[0]) ; ++i)
@@ -119,7 +119,7 @@ void zb_panid_conflict_remember_panid(zb_uint16_t panid) ZB_SDCC_REENTRANT
  */
 /* No use for this function, because there's no active scan during pan_id conflict resolution */
 #if 0
-void zb_panid_conflict_scan_start(zb_uint8_t param) ZB_CALLBACK
+void zb_panid_conflict_scan_start(zb_uint8_t param) 
 {
   if (ZG->nwk.handle.state != (zb_uint8_t)ZB_NLME_STATE_IDLE)
   {
@@ -141,7 +141,7 @@ void zb_panid_conflict_scan_start(zb_uint8_t param) ZB_CALLBACK
 /**
    After active scan complete send network update command to entire net
  */
-void zb_panid_conflict_network_update(zb_uint8_t param) ZB_SDCC_REENTRANT
+void zb_panid_conflict_network_update(zb_uint8_t param) 
 {
   /* choose new panid */
   zb_ushort_t i;
@@ -169,7 +169,7 @@ void zb_panid_conflict_network_update(zb_uint8_t param) ZB_SDCC_REENTRANT
 }
 
 
-zb_uint8_t * zb_nwk_fill_out_command(zb_uint8_t param, zb_uint16_t dest, zb_uint8_t command_id, zb_uint8_t size) ZB_SDCC_REENTRANT
+zb_uint8_t * zb_nwk_fill_out_command(zb_uint8_t param, zb_uint16_t dest, zb_uint8_t command_id, zb_uint8_t size) 
 {
   zb_nwk_hdr_t *nwhdr;
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
@@ -267,7 +267,7 @@ void zb_panid_conflict_schedule_network_report(zb_uint8_t param, zb_uint16_t pan
 /**
    Sent network report command after panid conflict detect on ZR
  */
-void zb_panid_conflict_send_network_report(zb_uint8_t param) ZB_CALLBACK
+void zb_panid_conflict_send_network_report(zb_uint8_t param) 
 {
   zb_ushort_t i;
   zb_nwk_report_cmd_t *rep;
@@ -317,7 +317,7 @@ void zb_panid_conflict_send_network_report(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_panid_conflict_send_nwk_update(zb_uint8_t param) ZB_CALLBACK
+void zb_panid_conflict_send_nwk_update(zb_uint8_t param) 
 {
   zb_nwk_update_cmd_t *upd =
     (zb_nwk_update_cmd_t *)zb_nwk_fill_out_command(
@@ -345,7 +345,7 @@ void zb_panid_conflict_send_nwk_update(zb_uint8_t param) ZB_CALLBACK
 
 #ifndef ZB_LIMITED_FEATURES
 
-void zb_panid_conflict_send_status_ind(zb_uint8_t param) ZB_CALLBACK
+void zb_panid_conflict_send_status_ind(zb_uint8_t param) 
 {
   zb_nlme_status_indication_t *status =  ZB_GET_BUF_PARAM(ZB_BUF_FROM_REF(param), zb_nlme_status_indication_t);
 
@@ -385,7 +385,7 @@ void zb_panid_conflict_network_update_recv(zb_nwk_update_cmd_t *upd)
 /**
    Allocate buffer to set new panid
  */
-void zb_panid_conflict_set_panid_alarm(zb_uint8_t param) ZB_CALLBACK
+void zb_panid_conflict_set_panid_alarm(zb_uint8_t param) 
 {
   ZVUNUSED(param);
   zb_get_out_buf_delayed(zb_panid_conflict_set_panid);
@@ -395,7 +395,7 @@ void zb_panid_conflict_set_panid_alarm(zb_uint8_t param) ZB_CALLBACK
 /**
    Call MLME-START.request to set new panid
 */
-void zb_panid_conflict_set_panid(zb_uint8_t param) ZB_CALLBACK
+void zb_panid_conflict_set_panid(zb_uint8_t param) 
 {
   zb_mlme_start_req_t * req = ZB_GET_BUF_PARAM(ZB_BUF_FROM_REF(param), zb_mlme_start_req_t);
 

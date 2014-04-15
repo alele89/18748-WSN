@@ -74,9 +74,9 @@ typedef struct zb_aps_command_pkt_header_s
    @param aps_counter - aps_counter field from the packet
    @return 1 if this is a dup, 0 otherwhise.
  */
-zb_short_t aps_check_dups(zb_uint16_t src_addr, zb_uint8_t aps_counter) ZB_SDCC_REENTRANT;
+zb_short_t aps_check_dups(zb_uint16_t src_addr, zb_uint8_t aps_counter) ;
 
-void zb_aps_in_command_handle(zb_uint8_t param) ZB_CALLBACK;
+void zb_aps_in_command_handle(zb_uint8_t param) ;
 
 void zb_aps_in_transport_key(zb_uint8_t param);
 

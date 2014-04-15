@@ -63,22 +63,22 @@ PURPOSE: APS layer
    Access to this structure using macros.
  */
 
-static void aps_data_hdr_fill_datareq(zb_uint8_t fc, zb_apsde_data_req_t *req, zb_buf_t *apsdu) ZB_SDCC_REENTRANT;
-static void aps_ack_send_handle(zb_buf_t *packet, zb_aps_hdr_t *aps_hdr) ZB_SDCC_REENTRANT;
-static zb_uint8_t save_ack_data(zb_uint8_t param, zb_apsde_data_req_t *req, zb_uint8_t *ref) ZB_SDCC_REENTRANT;
-static void aps_ack_frame_handle(zb_aps_hdr_t *aps_hdr) ZB_SDCC_REENTRANT;
+static void aps_data_hdr_fill_datareq(zb_uint8_t fc, zb_apsde_data_req_t *req, zb_buf_t *apsdu) ;
+static void aps_ack_send_handle(zb_buf_t *packet, zb_aps_hdr_t *aps_hdr) ;
+static zb_uint8_t save_ack_data(zb_uint8_t param, zb_apsde_data_req_t *req, zb_uint8_t *ref) ;
+static void aps_ack_frame_handle(zb_aps_hdr_t *aps_hdr) ;
 #ifndef ZB_LIMITED_FEATURES
-static zb_ret_t zb_search_dst_in_binding_table(zb_apsde_data_req_t *apsreq, zb_address_ieee_ref_t *dst_ref) ZB_SDCC_REENTRANT;
+static zb_ret_t zb_search_dst_in_binding_table(zb_apsde_data_req_t *apsreq, zb_address_ieee_ref_t *dst_ref) ;
 #endif
-static void done_with_this_ack(zb_ushort_t i, zb_uint8_t fc, zb_uint8_t status) ZB_SDCC_REENTRANT;
-static void fill_nldereq(zb_uint8_t param, zb_uint16_t addr, zb_uint8_t secure) ZB_SDCC_REENTRANT;
+static void done_with_this_ack(zb_ushort_t i, zb_uint8_t fc, zb_uint8_t status) ;
+static void fill_nldereq(zb_uint8_t param, zb_uint16_t addr, zb_uint8_t secure) ;
 
-void zb_aps_ack_timer_cb(zb_uint8_t param) ZB_CALLBACK;
-void zb_aps_pass_group_msg_up(zb_uint8_t param) ZB_CALLBACK;
-void zb_aps_pass_local_group_pkt_up(zb_uint8_t param) ZB_CALLBACK;
-void zb_aps_pass_up_group_buf(zb_uint8_t param)  ZB_CALLBACK;
-void zb_aps_send_ack_and_continue(zb_uint8_t param) ZB_CALLBACK;
-void zb_nlde_data_indication_continue(zb_uint8_t param) ZB_CALLBACK;
+void zb_aps_ack_timer_cb(zb_uint8_t param) ;
+void zb_aps_pass_group_msg_up(zb_uint8_t param) ;
+void zb_aps_pass_local_group_pkt_up(zb_uint8_t param) ;
+void zb_aps_pass_up_group_buf(zb_uint8_t param)  ;
+void zb_aps_send_ack_and_continue(zb_uint8_t param) ;
+void zb_nlde_data_indication_continue(zb_uint8_t param) ;
 
 
 #define DUMP_TRAF(cmt, buf, len)
@@ -108,7 +108,7 @@ void zb_aps_init()
 }
 
 #ifndef ZB_LIMITED_FEATURES
-static zb_ret_t zb_search_dst_in_binding_table(zb_apsde_data_req_t *apsreq, zb_address_ieee_ref_t *dst_ref) ZB_SDCC_REENTRANT
+static zb_ret_t zb_search_dst_in_binding_table(zb_apsde_data_req_t *apsreq, zb_address_ieee_ref_t *dst_ref) 
 {
   zb_uint8_t ind_src;
   zb_address_ieee_ref_t addr_ref = 0;
@@ -155,7 +155,7 @@ static zb_ret_t zb_search_dst_in_binding_table(zb_apsde_data_req_t *apsreq, zb_a
 }
 #endif
 
-void zb_apsde_data_request(zb_uint8_t param) ZB_CALLBACK
+void zb_apsde_data_request(zb_uint8_t param) 
 {
   zb_uint8_t fc = 0;
   zb_nlde_data_req_t nldereq;
@@ -311,7 +311,7 @@ void zb_apsde_data_request(zb_uint8_t param) ZB_CALLBACK
 
 
 #ifndef ZB_LIMITED_FEATURES
-void zb_aps_pass_local_group_pkt_up(zb_uint8_t param) ZB_CALLBACK
+void zb_aps_pass_local_group_pkt_up(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_uint8_t out_param;
@@ -341,7 +341,7 @@ void zb_aps_pass_local_group_pkt_up(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_aps_pass_up_group_buf(zb_uint8_t param) ZB_CALLBACK
+void zb_aps_pass_up_group_buf(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   if (ZB_RING_BUFFER_IS_FULL(&ZG->aps.group.pass_up_q))
@@ -379,7 +379,7 @@ void zb_aps_pass_up_group_buf(zb_uint8_t param) ZB_CALLBACK
    @param fc - FC field (created at upper layer)
    @param req - APS data request
  */
-static void aps_data_hdr_fill_datareq(zb_uint8_t fc, zb_apsde_data_req_t *req, zb_buf_t *apsdu) ZB_SDCC_REENTRANT
+static void aps_data_hdr_fill_datareq(zb_uint8_t fc, zb_apsde_data_req_t *req, zb_buf_t *apsdu) 
 {
   zb_uint8_t *aps_hdr;
   zb_uint8_t is_group = (ZB_APS_FC_GET_DELIVERY_MODE(fc) == ZB_APS_DELIVERY_GROUP);
@@ -490,7 +490,7 @@ zb_ushort_t zb_aps_full_hdr_size(zb_uint8_t *pkt)
 }
 
 
-void zb_nlde_data_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_nlde_data_confirm(zb_uint8_t param) 
 {
   zb_buf_t *nsdu = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_uint8_t *fc_p;
@@ -562,7 +562,7 @@ void zb_nlde_data_confirm(zb_uint8_t param) ZB_CALLBACK
 /*
    This is APS handler for nlde-data.indication - receive path entry point
 */
-void zb_nlde_data_indication(zb_uint8_t param) ZB_CALLBACK
+void zb_nlde_data_indication(zb_uint8_t param) 
 {
   zb_buf_t *packet = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_uint8_t fc;
@@ -612,7 +612,7 @@ void zb_nlde_data_indication(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_aps_send_ack_and_continue(zb_uint8_t param) ZB_CALLBACK
+void zb_aps_send_ack_and_continue(zb_uint8_t param) 
 {
   zb_uint8_t in_pkt = *ZB_RING_BUFFER_GET(&ZG->aps.retrans.ack_q);
   ZB_RING_BUFFER_FLUSH_GET(&ZG->aps.retrans.ack_q);
@@ -621,7 +621,7 @@ void zb_aps_send_ack_and_continue(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_nlde_data_indication_continue(zb_uint8_t param) ZB_CALLBACK
+void zb_nlde_data_indication_continue(zb_uint8_t param) 
 {
   zb_buf_t *packet = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_aps_hdr_t aps_hdr;
@@ -685,7 +685,7 @@ void zb_nlde_data_indication_continue(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_aps_hdr_parse(zb_buf_t *packet, zb_aps_hdr_t *aps_hdr, zb_bool_t cut_nwk_hdr) ZB_SDCC_REENTRANT
+void zb_aps_hdr_parse(zb_buf_t *packet, zb_aps_hdr_t *aps_hdr, zb_bool_t cut_nwk_hdr) 
 {
   zb_nwk_hdr_t *nwk_hdr = (zb_nwk_hdr_t *)ZB_BUF_BEGIN(packet);
   zb_uint8_t *apshdr = NULL;
@@ -745,7 +745,7 @@ void zb_aps_hdr_parse(zb_buf_t *packet, zb_aps_hdr_t *aps_hdr, zb_bool_t cut_nwk
 
 
 #ifndef ZB_LIMITED_FEATURES
-void zb_aps_pass_group_msg_up(zb_uint8_t param) ZB_CALLBACK
+void zb_aps_pass_group_msg_up(zb_uint8_t param) 
 {
   /*
     handle - index in the endpoints array
@@ -887,7 +887,7 @@ void zb_aps_send_command(zb_uint8_t param, zb_uint16_t dest_addr, zb_uint8_t com
 }
 #endif
 
-static void fill_nldereq(zb_uint8_t param, zb_uint16_t addr, zb_uint8_t secure) ZB_SDCC_REENTRANT
+static void fill_nldereq(zb_uint8_t param, zb_uint16_t addr, zb_uint8_t secure) 
 {
   zb_nlde_data_req_t *nldereq = ZB_GET_BUF_TAIL(ZB_BUF_FROM_REF(param), sizeof(zb_nlde_data_req_t));
   ZB_BZERO(nldereq, sizeof(zb_nlde_data_req_t));
@@ -899,7 +899,7 @@ static void fill_nldereq(zb_uint8_t param, zb_uint16_t addr, zb_uint8_t secure) 
 }
 
 
-static void aps_ack_send_handle(zb_buf_t *packet, zb_aps_hdr_t *aps_hdr) ZB_SDCC_REENTRANT
+static void aps_ack_send_handle(zb_buf_t *packet, zb_aps_hdr_t *aps_hdr) 
 {
   zb_short_t aps_hdr_size;
   zb_uint8_t *apshdr = NULL;
@@ -969,7 +969,7 @@ static void aps_ack_send_handle(zb_buf_t *packet, zb_aps_hdr_t *aps_hdr) ZB_SDCC
 
 
 #ifndef ZB_LIMITED_FEATURES2
-static zb_uint8_t save_ack_data(zb_uint8_t param, zb_apsde_data_req_t *req, zb_uint8_t *ref) ZB_SDCC_REENTRANT
+static zb_uint8_t save_ack_data(zb_uint8_t param, zb_apsde_data_req_t *req, zb_uint8_t *ref) 
 {
   zb_uint8_t i = 0;
   zb_ret_t ret = RET_OK;
@@ -1021,7 +1021,7 @@ static zb_uint8_t save_ack_data(zb_uint8_t param, zb_apsde_data_req_t *req, zb_u
 }
 
 
-static void aps_ack_frame_handle(zb_aps_hdr_t *aps_hdr) ZB_SDCC_REENTRANT
+static void aps_ack_frame_handle(zb_aps_hdr_t *aps_hdr) 
 {
   zb_uint8_t i;
   zb_ushort_t is_command = ZB_APS_FC_GET_ACK_FORMAT(aps_hdr->fc);
@@ -1069,7 +1069,7 @@ static void aps_ack_frame_handle(zb_aps_hdr_t *aps_hdr) ZB_SDCC_REENTRANT
 }
 
 
-static void done_with_this_ack(zb_ushort_t i, zb_uint8_t fc, zb_uint8_t status) ZB_SDCC_REENTRANT
+static void done_with_this_ack(zb_ushort_t i, zb_uint8_t fc, zb_uint8_t status) 
 {
   ZB_BUF_FROM_REF(ZG->aps.retrans.hash[i].buf)->u.hdr.status = status;
   if (ZB_APS_FC_GET_ACK_FORMAT(fc))
@@ -1089,7 +1089,7 @@ static void done_with_this_ack(zb_ushort_t i, zb_uint8_t fc, zb_uint8_t status) 
 }
 
 
-void zb_aps_ack_timer_cb(zb_uint8_t param) ZB_CALLBACK
+void zb_aps_ack_timer_cb(zb_uint8_t param) 
 {
   TRACE_MSG(TRACE_APS2, "+zb_aps_ack_timer_cb %hd state %hd", (FMT__H_H, param, ZG->aps.retrans.hash[param].state));
 
@@ -1144,7 +1144,7 @@ void zb_aps_ack_timer_cb(zb_uint8_t param) ZB_CALLBACK
 
 #ifndef ZB_LIMITED_FEATURES
 
-void zb_apsme_get_request(zb_uint8_t param) ZB_CALLBACK
+void zb_apsme_get_request(zb_uint8_t param) 
 {
   zb_aps_status_t status = ZB_APS_STATUS_SUCCESS;
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
@@ -1196,7 +1196,7 @@ void zb_apsme_get_request(zb_uint8_t param) ZB_CALLBACK
   TRACE_MSG(TRACE_APS2, "<<zb_apsme_get_req %d", (FMT__D, param));
 }
 
-void zb_apsme_get_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_apsme_get_confirm(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_apsme_get_confirm_t *conf = NULL;
@@ -1217,7 +1217,7 @@ void zb_apsme_get_confirm(zb_uint8_t param) ZB_CALLBACK
   zb_free_buf(buf);
 }
 
-void zb_apsme_set_request(zb_uint8_t param) ZB_CALLBACK
+void zb_apsme_set_request(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_uint8_t *ptr = ZB_BUF_BEGIN(buf);
@@ -1257,7 +1257,7 @@ void zb_apsme_set_request(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void zb_apsme_set_confirm(zb_uint8_t param) ZB_CALLBACK
+void zb_apsme_set_confirm(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   TRACE_MSG(TRACE_APS2, ">>zb_apsme_set_confirm %d", (FMT__D, param));

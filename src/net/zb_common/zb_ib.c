@@ -62,7 +62,7 @@ PURPOSE: IB save/load/set defaults
 /*! @{ */
 
 
-void zb_ib_set_defaults(zb_char_t *rx_pipe) ZB_CALLBACK
+void zb_ib_set_defaults(zb_char_t *rx_pipe) 
 {
   ZVUNUSED(rx_pipe);
 #if (defined ZB_NS_BUILD && defined ZB8051) || (defined ZB8051 && defined NO_NVRAM) || defined ZB_PLATFORM_LINUX_ARM_2400
@@ -134,12 +134,12 @@ void zb_ib_set_defaults(zb_char_t *rx_pipe) ZB_CALLBACK
 }
 
 
-void zb_ib_load() ZB_CALLBACK
+void zb_ib_load() 
 {
 }
 
 
-void zb_ib_save() ZB_CALLBACK
+void zb_ib_save() 
 {
 }
 

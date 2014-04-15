@@ -62,8 +62,8 @@ PURPOSE: Test for ZC application written using ZDO.
 
 #define ZB_TEST_DUMMY_DATA_SIZE 10
 
-static void send_data(zb_uint8_t param) ZB_CALLBACK;
-void data_indication(zb_uint8_t param) ZB_CALLBACK;
+static void send_data(zb_uint8_t param) ;
+void data_indication(zb_uint8_t param) ;
 
 
 
@@ -111,7 +111,7 @@ MAIN()
 }
 
 
-void zb_zdo_startup_complete(zb_uint8_t param) ZB_CALLBACK
+void zb_zdo_startup_complete(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   if (buf->u.hdr.status == 0)
@@ -129,7 +129,7 @@ void zb_zdo_startup_complete(zb_uint8_t param) ZB_CALLBACK
 }
 
 
-void send_data(zb_uint8_t param) ZB_CALLBACK
+void send_data(zb_uint8_t param) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_apsde_data_req_t *req = ZB_GET_BUF_TAIL(buf, sizeof(zb_apsde_data_req_t));

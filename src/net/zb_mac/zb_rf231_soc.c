@@ -263,15 +263,15 @@ void zb_transceiver_set_coord_short_addr(zb_uint16_t coord_addr_short)
 }
 
 
-void zb_mac_short_write_reg(zb_uint8_t short_addr, zb_uint8_t byte_value) ZB_SDCC_REENTRANT
+void zb_mac_short_write_reg(zb_uint8_t short_addr, zb_uint8_t byte_value) 
 {
 }
 
-void zb_mac_long_write_reg(zb_uint16_t long_addr, zb_uint8_t byte_value) ZB_SDCC_REENTRANT
+void zb_mac_long_write_reg(zb_uint16_t long_addr, zb_uint8_t byte_value) 
 {
 }
 
-void zb_mac_short_read_reg(zb_uint8_t short_addr) ZB_SDCC_REENTRANT
+void zb_mac_short_read_reg(zb_uint8_t short_addr) 
 {
 }
 

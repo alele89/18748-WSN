@@ -83,7 +83,7 @@ static void sdcc_callf(zb_callback_t funcp, zb_uint8_t param)
 }
 #endif
 
-void zb_sched_loop_iteration() ZB_SDCC_REENTRANT/* ZB_KEIL_REENTRANT */
+void zb_sched_loop_iteration() /* ZB_KEIL_REENTRANT */
 {
   zb_uint8_t did_something;
   do
@@ -192,7 +192,7 @@ void zb_sched_loop_iteration() ZB_SDCC_REENTRANT/* ZB_KEIL_REENTRANT */
 }
 
 
-zb_ret_t zb_schedule_tx_cb(zb_callback_t func, zb_uint8_t param) ZB_SDCC_REENTRANT
+zb_ret_t zb_schedule_tx_cb(zb_callback_t func, zb_uint8_t param) 
 {
   zb_ret_t ret = RET_OK;
   zb_mac_cb_ent_t *ent = ZB_RING_BUFFER_PUT_RESERVE(&ZG->sched.mac_tx_q);
@@ -216,7 +216,7 @@ zb_ret_t zb_schedule_tx_cb(zb_callback_t func, zb_uint8_t param) ZB_SDCC_REENTRA
 
 
 #if 0 /* re-enable this, if planning to use mac layer queue, but better to make one scheduling routine for all cb's */
-zb_ret_t zb_schedule_mac_cb(zb_callback_t func, zb_uint8_t param) ZB_SDCC_REENTRANT
+zb_ret_t zb_schedule_mac_cb(zb_callback_t func, zb_uint8_t param) 
 {
   zb_ret_t ret = RET_OK;
   zb_mac_cb_ent_t *ent = ZB_RING_BUFFER_PUT_RESERVE(&ZG->sched.mac_cb_q);
@@ -238,7 +238,7 @@ zb_ret_t zb_schedule_mac_cb(zb_callback_t func, zb_uint8_t param) ZB_SDCC_REENTR
 }
 #endif
 
-zb_ret_t zb_schedule_callback(zb_callback_t func, zb_uint8_t param) ZB_SDCC_REENTRANT
+zb_ret_t zb_schedule_callback(zb_callback_t func, zb_uint8_t param) 
 {
   zb_ret_t ret = RET_OK;
   zb_cb_q_ent_t *ent = ZB_RING_BUFFER_PUT_RESERVE(&ZG->sched.cb_q);
@@ -268,7 +268,7 @@ static void insert_tmq_head(zb_tm_q_ent_t *nent)
 
 /* run_after time is specified in beacon intervals, convert it to
  * internal time representation: milliseconds for */
-zb_ret_t zb_schedule_alarm(zb_callback_t func, zb_uint8_t param, zb_time_t run_after) ZB_SDCC_REENTRANT /* __reentrant for sdcc, to save DSEG space */
+zb_ret_t zb_schedule_alarm(zb_callback_t func, zb_uint8_t param, zb_time_t run_after)  /* __reentrant for sdcc, to save DSEG space */
 {
   zb_ret_t ret = RET_OK;
   zb_tm_q_ent_t *nent;
@@ -359,7 +359,7 @@ zb_ret_t zb_schedule_alarm(zb_callback_t func, zb_uint8_t param, zb_time_t run_a
 }
 
 
-zb_ret_t zb_schedule_alarm_cancel(zb_callback_t func, zb_uint8_t param) ZB_SDCC_REENTRANT /* __reentrant for sdcc, to save DSEG space */
+zb_ret_t zb_schedule_alarm_cancel(zb_callback_t func, zb_uint8_t param)  /* __reentrant for sdcc, to save DSEG space */
 {
   zb_ret_t ret = RET_NOT_FOUND;
   zb_tm_q_ent_t *ent;

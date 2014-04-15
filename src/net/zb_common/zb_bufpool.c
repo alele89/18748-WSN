@@ -272,7 +272,7 @@ zb_void_t *zb_buf_initial_alloc(zb_buf_t *zbbuf, zb_uint8_t size)
    @param size  - size to allocate
    @param ptr   - (out) pointer to the buffer begin
  */
-zb_void_t *zb_buf_smart_alloc_left(zb_buf_t *zbbuf, zb_uint8_t size) ZB_SDCC_REENTRANT
+zb_void_t *zb_buf_smart_alloc_left(zb_buf_t *zbbuf, zb_uint8_t size) 
 {
   ZB_ASSERT(size + ZB_BUF_LEN(zbbuf) < ZB_IO_BUF_SIZE);
   if (zbbuf->u.hdr.data_offset < size)
@@ -287,7 +287,7 @@ zb_void_t *zb_buf_smart_alloc_left(zb_buf_t *zbbuf, zb_uint8_t size) ZB_SDCC_REE
   return ZB_BUF_BEGIN(zbbuf);
 }
 
-zb_void_t *zb_buf_smart_alloc_right(zb_buf_t *zbbuf, zb_uint8_t size) ZB_SDCC_REENTRANT
+zb_void_t *zb_buf_smart_alloc_right(zb_buf_t *zbbuf, zb_uint8_t size) 
 {
   void *ptr;
   ZB_ASSERT((size) + ZB_BUF_LEN(zbbuf) < ZB_IO_BUF_SIZE);
@@ -296,7 +296,7 @@ zb_void_t *zb_buf_smart_alloc_right(zb_buf_t *zbbuf, zb_uint8_t size) ZB_SDCC_RE
   return ptr;
 }
 
-void zb_buf_assign_param(zb_buf_t *zbbuf, zb_uint8_t *param, zb_uint8_t size) ZB_SDCC_REENTRANT
+void zb_buf_assign_param(zb_buf_t *zbbuf, zb_uint8_t *param, zb_uint8_t size) 
 {
   ZB_ASSERT(zbbuf && (zbbuf->u.hdr.len + size <= ZB_IO_BUF_SIZE));
   if (ZB_IO_BUF_SIZE - (zbbuf->u.hdr.data_offset + zbbuf->u.hdr.len) < size)

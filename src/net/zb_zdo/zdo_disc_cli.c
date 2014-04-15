@@ -60,7 +60,7 @@ Mandatory calls onnly. Other calls will be implemented in some other project sco
 /*! \addtogroup ZB_ZDO */
 /*! @{ */
 
-void zb_zdo_nwk_addr_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT
+void zb_zdo_nwk_addr_req(zb_uint8_t param, zb_callback_t cb) 
 {
   zb_buf_t *buf = ZB_BUF_FROM_REF(param);
   zb_zdo_nwk_addr_req_param_t *req_param = ZB_GET_BUF_PARAM(buf, zb_zdo_nwk_addr_req_param_t);
@@ -121,7 +121,7 @@ void zb_zdo_active_ep_req(zb_uint8_t param, zb_callback_t cb)
 }
 
 
-void zb_zdo_match_desc_req(zb_uint8_t param, zb_callback_t cb) ZB_SDCC_REENTRANT
+void zb_zdo_match_desc_req(zb_uint8_t param, zb_callback_t cb) 
 {
   zb_zdo_match_desc_req_head_t *req_head;
   zb_zdo_match_desc_req_tail_t *req_tail;
