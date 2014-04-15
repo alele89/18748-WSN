@@ -143,14 +143,19 @@ zb_transceiver_ctx_t;
 
 
 /* set up/down pending bit */
-#define ZB_SET_PENDING_BIT() \
+#define ZB_SET_PENDING_BIT() 
+#if 0
+  /* TODO: wsn gr12 */
   ZB_READ_SHORT_REG(ZB_SREG_ACKTMOUT),                                  \
     ZB_WRITE_SHORT_REG(ZB_SREG_ACKTMOUT, ZB_MAC_GET_BYTE_VALUE()|0x80)
+#endif
 
-#define ZB_CLEAR_PENDING_BIT() \
+#define ZB_CLEAR_PENDING_BIT()
+#if 0
+  /* TODO: wsn gr12 */
 ZB_READ_SHORT_REG(ZB_SREG_ACKTMOUT),\
 ZB_WRITE_SHORT_REG(ZB_SREG_ACKTMOUT, ZB_MAC_GET_BYTE_VALUE()&0x7F)
-
+#endif
 
 #define ZB_TRANS_CHECK_CHANNEL_BUSY_ERROR() ZB_IS_TX_CHANNEL_BUSY() /* not 0 means channel busy error */
 #define ZB_TRANS_CHECK_TX_RETRY_COUNT_EXCEEDED_ERROR() ZB_IS_TX_RETRY_COUNT_EXCEEDED() /* not 0 means cca fail error */

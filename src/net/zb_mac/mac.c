@@ -133,10 +133,6 @@ void zb_mac_init() /* __reentrant for sdcc, to save DSEG space */
 #ifdef ZB_SECURITY
   MAC_CTX().encryption_buf = zb_get_out_buf();
 #endif
-#ifndef ZB_NS_BUILD
-  /* TODO: move HW init to the mcps.start */
-  init_zu2400();
-#endif
   MAC_PIB().mac_dsn = ZB_RANDOM();
   MAC_PIB().mac_bsn = ZB_RANDOM();
 #ifdef ZB_USE_RX_QUEUE
@@ -275,8 +271,11 @@ void zb_mac_main_loop()
       else
       {
         ZB_MAC_START_ACK_WAITING();
+#if 0
+        /* TODO wsn gr12: will nano rk radio take care of retransmission? */
         /* retransmit */
         RFST = 0xE3; /* rx on    */
+#endif
       }
     }
   }
