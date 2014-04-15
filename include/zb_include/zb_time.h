@@ -81,6 +81,8 @@ PURPOSE: Common definitions for time functionality
 typedef zb_uint16_t zb_time_t;
 
 
+zb_time_t zb_timer_get();
+
 /**
    Get current timer value (beacon intervals)
    The zb

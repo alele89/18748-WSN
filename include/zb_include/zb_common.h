@@ -84,13 +84,8 @@ PURPOSE: Common include file for ZigBee
 @endcode
  */
 
-#ifdef ZB_INIT_HAS_ARGS
-void zb_init(zb_char_t *trace_comment, zb_char_t *rx_pipe, zb_char_t *tx_pipe) ;
-#define ZB_INIT(a,b,c) zb_init((zb_char_t *)a, (zb_char_t *)b, (zb_char_t *)c)
-#else
 void zb_init();
 #define ZB_INIT(a,b,c) zb_init()
-#endif
 
 void zb_handle_parms_before_start();
 

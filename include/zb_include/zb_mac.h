@@ -1849,7 +1849,7 @@ zb_mac_device_table_t;
  */
 typedef struct
 {
-#if defined(ZB_CONFIGURABLE_MAC_PIB) || defined(ZB_NS_BUILD) || defined(ZB_CC25XX)
+#if defined(ZB_CONFIGURABLE_MAC_PIB) || defined(ZBFIREFLY3) 
   zb_uint16_t             mac_ack_wait_duration;         /*!< The maximum number of symbols to wait for an
                                                            acknowledgment frame to arrive following a
                                                            transmitted data frame.
@@ -1886,7 +1886,7 @@ typedef struct
                                                            to communicate in the PAN. */
   zb_uint16_t             mac_superframe_order;          /*!< The length of the active portion of the outgoing
                                                            superframe, including the beacon frame. */
-#if defined(ZB_CONFIGURABLE_MAC_PIB) || defined(ZB_NS_BUILD) || defined(ZB_CC25XX)
+#if defined(ZB_CONFIGURABLE_MAC_PIB) || defined(ZBFIREFLY3) 
   zb_uint8_t              mac_max_frame_retries;         /*!< The maximum number of retries allowed after a
                                                            transmission failure. */
 #endif

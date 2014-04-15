@@ -74,8 +74,12 @@
 void rf_auto_ack_enable();
 void rf_auto_ack_disable();
 void rf_addr_decode_set_my_mac(uint16_t my_mac);
+void rf_addr_decode_clear_my_mac();
+void rf_addr_decode_set_panid(uint16_t panid);
 void rf_addr_decode_enable();
 void rf_addr_decode_disable();
+
+extern uint8_t rx_buf_empty;
 
 /* NOT IMPLEMENTED
 void halRfWaitForCrystalOscillator(void);

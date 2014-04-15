@@ -204,6 +204,21 @@ void rf_addr_decode_set_my_mac(uint16_t my_mac)
 	rfSettings.myAddr = my_mac;
 }
 
+void rf_addr_decode_clear_my_mac()
+{
+	/* Set short MAC address to -1 */
+	SHORT_ADDR_0 = 0xFF; 
+	SHORT_ADDR_1 = 0xFF;
+	rfSettings.myAddr = 0xFFFF;
+}
+
+void rf_addr_decode_set_my_panid(uint16_t panid)
+{
+	/* Set short PAN ID*/
+	PAN_ID_0 = (panid & 0xFF); 
+	PAN_ID_1 = (panid >> 8);
+	rfSettings.panId = panid;
+}
 
 void rf_set_rx(RF_RX_INFO *pRRI, uint8_t channel )
 {

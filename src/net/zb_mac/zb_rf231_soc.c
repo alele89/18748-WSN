@@ -87,7 +87,6 @@ static nrk_task_type zb_task;
 static NRK_STK zb_task_stack[zb_STACKSIZE];
 
 static uint8_t tx_data_ready;
-static uint8_t rx_buf_empty;
 static uint8_t zb_running;
 static uint8_t pkt_got_ack; // wsn gr12 needed??
 static uint8_t g_chan;
@@ -98,6 +97,7 @@ static nrk_time_t _zb_check_period;
 RF_RX_INFO zb_rfRxInfo;
 RF_TX_INFO zb_rfTxInfo;
 
+uint8_t rx_buf_empty;
 uint8_t rx_buf[RF_IO_BUF_SIZE];
 uint8_t tx_buf[RF_IO_BUF_SIZE];
 
@@ -248,12 +248,6 @@ void zb_transceiver_set_channel(zb_uint8_t channel_number)
   rf_set_rx(&zb_rfRxInfo, channel_number);
 }
 
-void zb_uz_short_reg_write_2b(zb_uint8_t reg, zb_uint16_t v)
-{
-  *(zb_uint16_t ZB_XDATA *)(reg) = v;
-
-}
-
 void zb_transceiver_set_coord_ext_addr(zb_ieee_addr_t coord_addr_long)
 {
 }
@@ -286,13 +280,6 @@ void zb_transceiver_update_long_mac()
   IEEE_ADDR_5 = ZB_PIB_EXTENDED_ADDRESS()[5];
   IEEE_ADDR_6 = ZB_PIB_EXTENDED_ADDRESS()[6];
   IEEE_ADDR_7 = ZB_PIB_EXTENDED_ADDRESS()[7];
-}
-
-void zb_set_pan_id(zb_uint16_t pan_id)
-{
-/* TODO wsn g12: Reference Atmega128RFA1 datasheet , needs verification*/
-   PAN_ID_0 = (pan_id & 0xFF);
-   PAN_ID_1 = ((pan_id>>8) & 0xFF);
 }
 
 void zb_transceiver_get_rssi(zb_uint8_t *rssi_value)

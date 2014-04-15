@@ -96,8 +96,8 @@ void zb_trace_msg_firefly3(zb_char_t *format, zb_char_t *file_name, zb_int_t lin
   }
 
 
-  {
 #if 0
+  {
     time_t    t;
     struct tm *tm;
     zb_uint_t msec = 0;
@@ -118,7 +118,7 @@ void zb_trace_msg_firefly3(zb_char_t *format, zb_char_t *file_name, zb_int_t lin
       );
   }
 #endif
-  ZB_LOG_PRINTF("%s:%d\t", file_name, line_number)
+  ZB_LOG_PRINTF("%s:%d\t", file_name, line_number);
   va_start(arglist, args_size);
   ZB_LOG_VPRINTF(format, arglist);
   va_end(arglist);

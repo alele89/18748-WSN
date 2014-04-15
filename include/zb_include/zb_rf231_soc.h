@@ -48,6 +48,8 @@ PURPOSE: rf231_soc specific code
 #ifndef ZB_RF231SOC_H
 #define ZB_RF231SOC_H 1
 
+#include <basic_rf.h>
+
 /**
    Min channel # of RF231 SOC 
  */
@@ -197,6 +199,11 @@ void zb_transceiver_set_channel(zb_uint8_t channel_number);
  */
 void zb_transceiver_get_rssi(zb_uint8_t *rssi_value);
 
+/**
+ * Update RF231 SOC PAN ID
+ */
+#define ZB_UPDATE_PAN_ID() \
+  (ZB_TRANSCEIVER_SET_PAN_ID(MAC_PIB().mac_pan_id))
 
 /**
    Assign short pan ID in RF231 SOC 
@@ -204,7 +211,14 @@ void zb_transceiver_get_rssi(zb_uint8_t *rssi_value);
    @param pan_id - new pan id
  */
 
-#define ZB_TRANSCEIVER_SET_PAN_ID(pan_id) zb_uz_short_reg_write_2b(ZB_SREG_PANIDL, (pan_id))
+#define ZB_TRANSCEIVER_SET_PAN_ID(pan_id) rf_addr_decode_set_my_panid(pan_id)
+
+
+/**
+ * Assign short mac addr in RF231 SOC to value in PIB
+ */
+#define ZB_UPDATE_SHORT_ADDR() rf_addr_decode_set_my_mac(MAC_PIB().mac_short_address)
+#define ZB_CLEAR_SHORT_ADDR() rf_addr_decode_clear_my_mac()
 
 
 /**
@@ -237,14 +251,6 @@ void zb_transceiver_set_coord_short_addr(zb_uint16_t coord_addr_short);
 void zb_transceiver_update_long_mac();
 #define ZB_UPDATE_LONGMAC() \
   zb_transceiver_update_long_mac()
-
-
-/**
-   Update UZ2400 pan id: copu PIB value to the transiver
- */
-
-#define ZB_UPDATE_PAN_ID() \
- (ZB_TRANSCEIVER_SET_PAN_ID(MAC_PIB().mac_pan_id))
 
 #define ZB_TRANS_GO_IDLE()
 
