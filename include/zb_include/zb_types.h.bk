@@ -53,12 +53,6 @@ PURPOSE: general-purpose typedefs
    @{
 */
 
-#ifdef ZBFIREFLY3
-#define ZB_8BIT_WORD
-#else
-#define ZB_32BIT_WORD
-#endif
-
 /* Really need xdata declaration here, not in osif: don't want to include osig
  * .h here */
 #ifdef ZB_IAR
@@ -111,9 +105,6 @@ typedef enum zb_bool_e
 }
 zb_bool_t;
 
-
-#ifndef UNIX
-
 /* base types */
 
 /**
@@ -140,7 +131,6 @@ typedef unsigned short     zb_uint16_t;
    project-local 2-byte signed int type
 */
 typedef signed short       zb_int16_t;
-#ifdef ZBFIREFLY3
 /**
    project-local 4-byte unsigned int type
 */
@@ -166,60 +156,6 @@ typedef zb_int16_t         zb_sbitfield_t;
 typedef zb_uint16_t        zb_size_t;
 
 
-#else
-/**
-   project-local 4-byte unsigned int type
-*/
-typedef unsigned int       zb_uint32_t;
-/**
-   project-local 4-byte signed int type
-*/
-typedef signed int         zb_int32_t;
-/**
-   type to be used for unsigned bit fields inside structure
-*/
-typedef zb_uint32_t        zb_bitfield_t;
-/**
-   type to be used for signed bit fields inside structure
-*/
-typedef zb_int32_t         zb_sbitfield_t;
-
-
-#endif  /* ZBFIREFLY3 */
-
-
-#else  /* ifndef UNIX */
-/* Unix */
-
-#include <inttypes.h>
-
-typedef uint8_t            zb_uint8_t;
-typedef int8_t             zb_int8_t;
-typedef uint16_t           zb_uint16_t;
-typedef int16_t            zb_int16_t;
-typedef uint32_t           zb_uint32_t;
-typedef int32_t            zb_int32_t;
-
-typedef char               zb_char_t;
-typedef unsigned char      zb_uchar_t;
-
-typedef unsigned           zb_bitfield_t;
-typedef signed             zb_sbitfield_t;
-
-/* Integer with size equal to the pointer size. */
-typedef zb_uint32_t        zb_size_t;
-typedef zb_size_t          zb_ptrsize_uint_t;
-
-
-#endif  /* UNIX */
-
-
-/*
-  Our short and int definition.
-  Short size == 8051 register size, int size is 2 bytes.
- */
-#ifdef ZB_8BIT_WORD
-
 /**
     short int (can fit into single CPU register)
  */
@@ -244,32 +180,7 @@ typedef zb_int32_t         zb_long_t;
     unsigned long int (at least 4 bytes)
  */
 typedef zb_uint32_t        zb_ulong_t;
-#else
-/**
-    short int (can fit into single CPU register)
- */
-typedef int                zb_short_t;
-/**
-    unsigned short int (can fit into single CPU register)
- */
-typedef unsigned int       zb_ushort_t;
-/**
-    int (at least 2 bytes)
- */
-typedef int                zb_int_t;
-/**
-    unsigned int (at least 2 bytes)
- */
-typedef unsigned int       zb_uint_t;
-/**
-    long int (at least 4 bytes)
- */
-typedef zb_int_t           zb_long_t;
-/**
-    unsigned long int (at least 4 bytes)
- */
-typedef zb_uint_t          zb_ulong_t;
-#endif
+
 
 /**
    ptr to void
@@ -305,19 +216,6 @@ typedef void               zb_void_t;
 /**
   Max value constants per type
  */
-#ifdef ZB_32BIT_WORD
-
-#define ZB_SHORT_MIN       ZB_INT32_MIN
-#define ZB_SHORT_MAX       ZB_INT32_MAX
-#define ZB_USHORT_MAX      ZB_UINT32_MAX
-
-#define ZB_INT_MIN       ZB_INT32_MIN
-#define ZB_INT_MAX       ZB_INT32_MAX
-#define ZB_UINT_MAX      ZB_UINT32_MAX
-
-#define ZB_INT_MASK      0x7fffffff
-
-#elif defined ZB_8BIT_WORD
 
 #define ZB_SHORT_MIN       ZB_INT8_MIN
 #define ZB_SHORT_MAX       ZB_INT8_MAX
@@ -328,10 +226,6 @@ typedef void               zb_void_t;
 #define ZB_UINT_MAX      ZB_UINT16_MAX
 
 #define ZB_INT_MASK      0x7fff
-
-#else
-#error Portme
-#endif
 
 /**
    8-bytes address (xpanid or long device address) base type
@@ -423,9 +317,9 @@ union zb_addr_u
 #define ZB_SIGNED_SHIFT(v, s) ((zb_int_t)(v) >> (s))
 
 #ifdef __GNUC__
-  #define ZB_PACKED_STRUCT __attribute__ ((packed))
+  #define  __attribute__ ((packed))
 #else
-  #define ZB_PACKED_STRUCT
+  #define 
 #endif
 
 /**

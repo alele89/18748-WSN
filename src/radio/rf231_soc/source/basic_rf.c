@@ -538,7 +538,7 @@ uint8_t rf_tx_packet_repeat(RF_TX_INFO *pRTI, uint16_t ms)
 	return trx_error;
 }
 
-uint8_t zb_rf_tx_packet(zb_buf_t *buf, uint8_t frame_len)
+uint8_t zb_rf_tx_packet(uint8_t *buf, uint8_t frame_len)
 {
 	uint8_t trx_status, trx_error, *frame_start = &TRXFBST;
 	uint16_t i;
@@ -572,6 +572,8 @@ uint8_t zb_rf_tx_packet(zb_buf_t *buf, uint8_t frame_len)
 
 	rf_cmd(RX_AACK_ON);
 
+#if 0
+    /* TODO: wsn gr12 bmac sets pRTI->cca to 0 */
 	/* Perform CCA if requested */
 	if(pRTI->cca){
 		PHY_CC_CCA |= (1 << CCA_REQUEST);
@@ -580,6 +582,7 @@ uint8_t zb_rf_tx_packet(zb_buf_t *buf, uint8_t frame_len)
 		if(!(TRX_STATUS & (1 << CCA_STATUS)))
 			return NRK_ERROR;
 	}
+#endif
 
 	rf_cmd(PLL_ON);
 	if(need_ack)
