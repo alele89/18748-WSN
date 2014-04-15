@@ -62,7 +62,7 @@ PURPOSE: Roitines specific to coordinator role
 
 zb_ret_t  zb_realign_pan();
 
-zb_ret_t zb_mac_process_mlme_start() ZB_SDCC_BANKED
+zb_ret_t zb_mac_process_mlme_start() 
 {
   zb_ret_t ret = RET_OK;
   zb_mlme_start_req_t *params = NULL;
@@ -366,7 +366,7 @@ void zb_mac_pending_data_timeout(zb_uint8_t param)
   transmission. Coordinator side
   return RET_PENDING on success, RET_ERROR on error
 */
-zb_ret_t zb_mac_put_data_to_pending_queue(zb_mac_pending_data_t *pend_data) ZB_SDCC_BANKED
+zb_ret_t zb_mac_put_data_to_pending_queue(zb_mac_pending_data_t *pend_data) 
 {
   zb_ret_t ret = RET_PENDING;
   zb_uint8_t i;
