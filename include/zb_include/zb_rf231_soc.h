@@ -95,7 +95,7 @@ typedef struct zb_ubec_fifo_header_s
 {
   zb_uint8_t header_length;
   zb_uint8_t frame_length;
-} ZB_PACKED_STRUCT
+} 
 zb_ubec_fifo_header_t;
 
 /*

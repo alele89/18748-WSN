@@ -208,7 +208,7 @@ typedef struct zb_zcl_frame_ctrl_s
   zb_bitfield_t direction:1;        /*!< Direction */
   zb_bitfield_t disable_def_resp:1; /*!< Disable default response */
   zb_bitfield_t reserved:3;
-} ZB_PACKED_STRUCT
+} 
 zb_zcl_frame_ctrl_t;
 
 /**
@@ -220,7 +220,7 @@ typedef struct zb_zcl_frame_header_full_s
   zb_uint16_t manufacturer_code; /*!< Manufacturer Code */
   zb_uint8_t seq_number; /*!< Transaction Sequence Number */
   zb_uint8_t command_id; /*!< Command Identifier Field */
-} ZB_PACKED_STRUCT
+} 
 zb_zcl_frame_full_t;
 
 /**
@@ -231,7 +231,7 @@ typedef struct zb_zcl_frame_header_short_s
   zb_zcl_frame_ctrl_t frame_ctrl; /*!< Frame control filed @see zb_zcl_frame_ctrl_t */
   zb_uint8_t seq_number; /*!< Transaction Sequence Number */
   zb_uint8_t command_id; /*!< Command Identifier Field */
-} ZB_PACKED_STRUCT
+} 
 zb_zcl_frame_short_t;
 
 /**

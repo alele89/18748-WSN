@@ -73,7 +73,7 @@ typedef enum zb_nlme_state_e
   ZB_NLME_STATE_ORPHAN_SCAN,
   ZB_NLME_STATE_RESET,
   ZB_NLME_STATE_PANID_CONFLICT_RESOLUTION
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_state_t;
 
 /**
@@ -85,7 +85,7 @@ typedef enum zb_nwk_device_type_e
   ZB_NWK_DEVICE_TYPE_ROUTER,
   ZB_NWK_DEVICE_TYPE_COORDINATOR,
   ZB_NWK_DEVICE_TYPE_NONE
-} ZB_PACKED_STRUCT
+} 
 zb_nwk_device_type_t;
 
 /* Broadcast transaction record */
@@ -95,7 +95,7 @@ typedef struct zb_nwk_btr_s
   zb_bitfield_t expiration_time:7;
   zb_uint16_t   source_addr;
   zb_uint8_t    sequence_number;
-} ZB_PACKED_STRUCT
+} 
 zb_nwk_btr_t;
 
 /* Wait for buffer allocation reasons */
@@ -104,7 +104,7 @@ typedef enum zb_nwk_wait_reason_e
   ZB_NWK_WAIT_REASON_IND_AND_RETRANSMIT, /* waitong for a new buffer to call
                                           * indicate data and retransmit it */
   ZB_NWK_WAIT_NUM
-} ZB_PACKED_STRUCT
+} 
 zb_nwk_wait_reason_t;
 
 /* List of buffers waiting to be duplicated  */
@@ -144,7 +144,7 @@ typedef struct zb_leave_pending_list_s
   zb_uint8_t             buf_ref;
   zb_uint8_t             tsn;
   zb_uint16_t            src_addr;
-} ZB_PACKED_STRUCT zb_leave_pending_list_t;
+}  zb_leave_pending_list_t;
 
 
 typedef struct zb_leave_ind_prnt_s
@@ -243,7 +243,7 @@ typedef struct zb_nwk_handle_s
   zb_uint8_t  panid_conflict;
   /* For indicating we're joined to PRO as end device */
   zb_uint8_t joined_pro;
-} ZB_PACKED_STRUCT zb_nwk_handle_t;
+}  zb_nwk_handle_t;
 
 
 /**
@@ -291,7 +291,7 @@ typedef struct zb_nwk_routing_s
   zb_uint16_t dest_addr; /*!< 16-bit network address or Group ID of this route */
   zb_uint16_t next_hop_addr; /*!< The 16 bit network address of the next
                                  * hop on the way to the destination */
-} ZB_PACKED_STRUCT
+} 
 zb_nwk_routing_t;
 
 /**
@@ -314,7 +314,7 @@ typedef struct zb_nwk_route_discovery_s
                              * device */
   zb_uint16_t expiration_time; /*!< Countdown timer indicating when route
                                 * discovery expires */
-} ZB_PACKED_STRUCT
+} 
 zb_nwk_route_discovery_t;
 
 /**
@@ -331,7 +331,7 @@ typedef struct zb_nwk_pend_s
   zb_bitfield_t waiting_buf:1; /*!< if pending buffer waits new buffer to
                                  * start route discovery */
 
-} ZB_PACKED_STRUCT
+} 
 zb_nwk_pend_t;
 
 /**
@@ -342,7 +342,7 @@ typedef enum zb_nwk_address_alloc_method_e
   ZB_NWK_ADDRESS_ALLOC_METHOD_DISTRIBUTED,
   ZB_NWK_ADDRESS_ALLOC_METHOD_RESERVER,
   ZB_NWK_ADDRESS_ALLOC_METHOD_STOCHASTIC
-} ZB_PACKED_STRUCT
+} 
 zb_nwk_address_alloc_method_t;
 
 #if 0
@@ -356,7 +356,7 @@ typedef struct zb_nwk_route_request_s
   zb_uint8_t radius; /*!< Radius for the route request */
   zb_uint16_t originator; /*!< Originator of the route request */
   zb_nwk_cmd_rreq_t cmd; /*!< Command data for the route request */
-} ZB_PACKED_STRUCT
+} 
 zb_nwk_rreq_t;
 #endif
 

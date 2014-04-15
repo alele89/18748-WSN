@@ -57,14 +57,14 @@ typedef struct zb_aps_command_header_s
   zb_uint8_t fc;
   zb_uint8_t aps_counter;
   zb_uint8_t aps_command_id;
-} ZB_PACKED_STRUCT zb_aps_command_header_t;
+}  zb_aps_command_header_t;
 
 
 typedef struct zb_aps_command_pkt_header_s
 {
   zb_uint8_t fc;
   zb_uint8_t aps_counter;
-} ZB_PACKED_STRUCT zb_aps_command_pkt_header_t;
+}  zb_aps_command_pkt_header_t;
 
 
 /**

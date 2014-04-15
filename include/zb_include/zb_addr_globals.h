@@ -103,7 +103,7 @@ typedef struct zb_address_map_s
   zb_bitfield_t              lock_cnt:4; /*!< lock counter. not locked if 0  */
   zb_bitfield_t              clock:1;    /*!< clock value for the clock usage algorithm  */
   zb_bitfield_t              aps_dup_clock:2;
-} ZB_PACKED_STRUCT zb_address_map_t;
+}  zb_address_map_t;
 
 
 /**
@@ -113,7 +113,7 @@ typedef struct zb_pan_id_map_s
 {
   zb_ext_pan_id_t long_panid;
   zb_uint16_t     short_panid;
-} ZB_PACKED_STRUCT zb_pan_id_map_t;
+}  zb_pan_id_map_t;
 
 /**
    Global address context

@@ -192,7 +192,7 @@ typedef struct  zb_aps_hdr_s
   zb_uint16_t clusterid;
   zb_uint16_t profileid;
   zb_uint8_t  aps_counter;
-} ZB_PACKED_STRUCT zb_aps_hdr_t;
+}  zb_aps_hdr_t;
 
 
 /**
@@ -390,7 +390,7 @@ typedef struct zb_apsme_get_confirm_s
   zb_aps_aib_attr_id_t aib_attr;  /*!< The identifier of the AIB attribute that was read.*/
   zb_uint8_t aib_length;          /*!< The length, in octets, of the attribute value being returned.*/
   /* Various */                   /*!< The value of the AIB attribute that was read.*/
-} ZB_PACKED_STRUCT zb_apsme_get_confirm_t;
+}  zb_apsme_get_confirm_t;
 
 /**
   APSME SET request structure
@@ -400,7 +400,7 @@ typedef struct zb_apsme_set_request_s
   zb_aps_aib_attr_id_t aib_attr;  /*!< The identifier of the AIB attribute to be written. */
   zb_uint8_t aib_length;          /*!< The length, in octets, of the attribute value being set. */
   /* Various */                   /*!< The value of the AIB attribute that should be written. */
-} ZB_PACKED_STRUCT zb_apsme_set_request_t;
+}  zb_apsme_set_request_t;
 
 /**
   APSME SET confirm structure
@@ -409,7 +409,7 @@ typedef struct zb_apsme_set_confirm_s
 {
   zb_aps_status_t   status;       /*!< The result of the request to write the AIB Attribute. */
   zb_aps_aib_attr_id_t aib_attr;  /*!< The identifier of the AIB attribute that was written. */
-} ZB_PACKED_STRUCT zb_apsme_set_confirm_t;
+}  zb_apsme_set_confirm_t;
 
 
 /**

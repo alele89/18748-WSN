@@ -68,7 +68,7 @@ typedef struct zb_tp_transmit_counted_packets_req_s
   zb_uint8_t len;      /*!< Length (in bytes) of the packet */
   zb_uint16_t counter; /*!< Octet sequence counter  */
 }
-ZB_PACKED_STRUCT
+
 zb_tp_transmit_counted_packets_req_t;
 
 /**
@@ -90,7 +90,7 @@ typedef struct zb_buffer_test_req_s
 {
   zb_uint8_t len;  /*!< Length (in bytes) of the packet */
 }
-ZB_PACKED_STRUCT
+
 zb_buffer_test_req_t;
 
 /**
@@ -128,7 +128,7 @@ typedef struct zb_buffer_test_response_s
   zb_uint8_t len;     /*!< Length (in bytes) of the packet */
   zb_uint8_t status;  /*!< Status of the response */
 }
-ZB_PACKED_STRUCT
+
 zb_buffer_test_response_t;
 
 /**
@@ -142,7 +142,7 @@ typedef struct zb_buffer_test_response_param_s
   zb_uint8_t src_ep;
   zb_uint8_t dst_ep;
 }
-ZB_PACKED_STRUCT
+
 zb_buffer_test_response_param_t;
 
 void zb_test_profile_indication(zb_uint8_t param) ;

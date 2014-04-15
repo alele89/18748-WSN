@@ -128,7 +128,7 @@ typedef struct zb_ext_neighbor_tbl_ent_s
   zb_bitfield_t             reserved:2;
   /* 14 */
   /* 16 bytes total */
-} ZB_PACKED_STRUCT
+} 
 zb_ext_neighbor_tbl_ent_t;
 
 
@@ -199,7 +199,7 @@ typedef struct zb_neighbor_tbl_ent_s
 #endif
   /* 5 bytes total without security, 10 bytes with security */
 
-} ZB_PACKED_STRUCT
+} 
 zb_neighbor_tbl_ent_t;
 
 

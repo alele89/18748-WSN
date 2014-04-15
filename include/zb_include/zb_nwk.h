@@ -65,7 +65,7 @@ typedef enum zb_nwk_broadcast_address_e
   ZB_NWK_BROADCAST_RX_ON_WHEN_IDLE    = 0xFFFD, /*!< macRxOnWhenIdle = TRUE */
   ZB_NWK_BROADCAST_ROUTER_COORDINATOR = 0xFFFC, /*!< All routers and coordinator */
   ZB_NWK_BROADCAST_LOW_POWER_ROUTER   = 0xFFFB /*!< Low power routers only */
-} ZB_PACKED_STRUCT
+} 
 zb_nwk_broadcast_address_t;
 
 /**
@@ -303,7 +303,7 @@ typedef struct zb_nlme_status_indication_s
   zb_nwk_command_status_t status; /*!< Error code associated with the failure */
   zb_uint16_t network_addr;  /*!< The network device address associated with the
                               * status information */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_status_indication_t;
 
 
@@ -317,7 +317,7 @@ typedef struct zb_nlme_send_status_s
                                        * zb_nlme_status_indication_t */
   zb_uint8_t ndsu_handle; /*!< The handle associated with the NSDU to be
                            * transmitted by the NWK layer entity. */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_send_status_t;
 
 
@@ -362,7 +362,7 @@ typedef struct zb_nlme_get_request_s
 {
   zb_nib_attribute_t nib_attribute; /*!< Attribute value, @see
                                      * zb_nib_attribute_t */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_get_request_t;
 
 
@@ -388,7 +388,7 @@ typedef struct zb_nlme_get_confirm_s
                                       * zb_nib_attribute_t */
   zb_uint16_t attribute_length; /*!< Length attribute value */
   /* next is attribute value */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_get_confirm_t;
 
 
@@ -411,7 +411,7 @@ typedef struct zb_nlme_set_request_s
 {
   zb_nib_attribute_t nib_attribute; /*!< Attribute value, @see zb_nib_attribute_t */
   zb_uint16_t attr_length; /*!<  */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_set_request_t;
 
 
@@ -436,7 +436,7 @@ typedef struct zb_nlme_set_confirm_s
   zb_nwk_status_t status;           /*!< The result of the operation */
   zb_nib_attribute_t nib_attribute; /*!< Attribute value, @see
                                      * zb_nib_attribute_t */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_set_confirm_t;
 
 
@@ -585,7 +585,7 @@ typedef struct zb_nwk_hdr_s
   zb_ieee_addr_t dst_ieee_addr;
   zb_ieee_addr_t src_ieee_addr;
   zb_uint8_t     mcast_control;
-} ZB_PACKED_STRUCT zb_nwk_hdr_t;
+}  zb_nwk_hdr_t;
 
 
 /**
@@ -839,7 +839,7 @@ typedef enum zb_nwk_cmd_e
   ZB_NWK_CMD_LINK_STATUS     = 0x08,
   ZB_NWK_CMD_NETWORK_REPORT  = 0x09,
   ZB_NWK_CMD_NETWORK_UPDATE  = 0x0a
-} ZB_PACKED_STRUCT
+} 
 zb_nwk_cmd_t;
 
 /**
@@ -867,7 +867,7 @@ typedef struct zb_nwk_cmd_rreq_s
   zb_uint8_t rreq_id; /*!< Route request id */
   zb_uint16_t dest_addr; /*!< Final destination address */
   zb_int8_t path_cost; /*!< Route request total path cost */
-} ZB_PACKED_STRUCT
+} 
 zb_nwk_cmd_rreq_t;
 
 /**
@@ -880,7 +880,7 @@ typedef struct zb_nwk_cmd_rrep_s
   zb_uint16_t originator; /*!< Originator address */
   zb_uint16_t responder; /*!< Responder address */
   zb_uint8_t path_cost; /*!< Path cost */
-} ZB_PACKED_STRUCT
+} 
 zb_nwk_cmd_rrep_t;
 
 /**
@@ -890,7 +890,7 @@ typedef struct zb_nwk_rejoin_request_s
 {
   zb_mac_capability_info_t capability_information; /*!< The operating capabilities of the
                                                     * device */
-} ZB_PACKED_STRUCT
+} 
 zb_nwk_rejoin_request_t;
 
 /**
@@ -900,7 +900,7 @@ typedef struct zb_nwk_rejoin_response_s
 {
   zb_uint16_t network_addr; /*!< network address */
   zb_uint8_t rejoin_status; /*!< rejoin status */
-} ZB_PACKED_STRUCT
+} 
 zb_nwk_rejoin_response_t;
 
 #define ZB_NWK_COMMAND_SIZE(payload_size) (1 + payload_size)
@@ -921,7 +921,7 @@ typedef struct zb_nlme_network_discovery_request_s
 {
   zb_uint32_t scan_channels; /*!< Bit mask indicates channels to scan */
   zb_uint8_t scan_duration; /*!< Time to spend scanning each channel */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_network_discovery_request_t;
 
 
@@ -962,7 +962,7 @@ typedef struct zb_nlme_network_descriptor_s
   zb_bitfield_t end_device_capacity:1; /*!< True if device is capable of accepting
                                     * join requests from end devices */
   zb_bitfield_t reserved:5;
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_network_descriptor_t;
 
 
@@ -974,7 +974,7 @@ typedef struct zb_nlme_network_discovery_confirm_s
   zb_mac_status_t status; /*!< MAC status codes */
   zb_uint8_t network_count; /*!< Number of discovered networks */
   /* next here is an array of zb_nlme_network_descriptor_t */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_network_discovery_confirm_t;
 
 
@@ -1005,7 +1005,7 @@ typedef struct zb_nlme_network_formation_request_s
   zb_uint8_t battery_life_extension; /*!< If true - start support battery
                                            * life extension */
 #endif
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_network_formation_request_t;
 
 
@@ -1028,7 +1028,7 @@ void zb_nlme_network_formation_request(zb_uint8_t param) ;
 typedef struct zb_nlme_network_formation_confirm_s
 {
   zb_nwk_status_t status; /*!< MAC status codes */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_network_formation_confirm_t;
 
 
@@ -1051,7 +1051,7 @@ typedef struct zb_nlme_permit_joining_request_s
 {
   zb_uint8_t permit_duration; /*!< Time in seconds during which the coordinator
                                * or router will allow associations */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_permit_joining_request_t;
 
 
@@ -1073,7 +1073,7 @@ void zb_nlme_permit_joining_request(zb_uint8_t param) ;
 typedef struct zb_nlme_permit_joining_confirm_s
 {
   zb_mac_status_t status; /*!< MAC status codes */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_permit_joining_confirm_t;
 
 
@@ -1101,7 +1101,7 @@ typedef struct zb_nlme_start_router_request_s
 #ifdef SDCC
   zb_uint8_t align_to_4;
 #endif
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_start_router_request_t;
 
 
@@ -1123,7 +1123,7 @@ void zb_nlme_start_router_request(zb_uint8_t param) ;
 typedef struct zb_nlme_start_router_confirm_s
 {
   zb_mac_status_t status; /*!< MAC status codes */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_start_router_confirm_t;
 
 
@@ -1147,7 +1147,7 @@ typedef struct zb_nlme_ed_scan_request_s
 {
   zb_uint32_t scan_channels; /*!< Bit mask indicates channels to scan */
   zb_uint8_t scan_duration; /*!< Time to spend scanning each channel */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_ed_scan_request_t;
 
 
@@ -1171,7 +1171,7 @@ typedef struct zb_nlme_ed_scan_confirm_s
   zb_mac_status_t status; /*!< MAC status codes */
   zb_uint32_t unscanned_channels; /*!< Indicate not scanned channels */
   /* next is the list of zb_uint8_t describes energy measurements */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_ed_scan_confirm_t;
 
 
@@ -1188,7 +1188,7 @@ typedef enum zb_nlme_rejoin_method_e
                                                 * procedure */
   ZB_NLME_REJOIN_METHOD_CHANGE_CHANNEL = 0x03  /*!< Changing the network
                                                 * channel  */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_rejoin_method_t;
 
 
@@ -1217,7 +1217,7 @@ typedef struct zb_nlme_join_request_s
   zb_nlme_rejoin_method_t rejoin_network; /*!< Join network method @see zb_nlme_rejoin_method_t */
   zb_uint8_t scan_duration; /*!< Time to spend scanning each channel */
   zb_uint8_t security_enabled; /*!< Use security rejoing */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_join_request_t;
 
 
@@ -1245,7 +1245,7 @@ typedef struct zb_nlme_join_indication_s
   zb_nlme_rejoin_method_t rejoin_network; /*!< Join network method @see
                                            * zb_nlme_rejoin_method_t */
   zb_uint8_t secure_rejoin; /*!< Secure joining */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_join_indication_t;
 
 
@@ -1271,7 +1271,7 @@ typedef struct zb_nlme_join_confirm_s
   zb_ext_pan_id_t extended_pan_id; /*!< Extended PAN ID
                                                         * of the network */
   zb_uint8_t active_channel; /*!< Current network channel */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_join_confirm_t;
 
 
@@ -1295,7 +1295,7 @@ typedef struct zb_nlme_direct_join_request_s
   zb_ieee_addr_t device_address; /*!< 64 bit IEEE address of the device to be directly joined */
   zb_mac_capability_info_t capability_information; /*!< The operating capabilities of the
                                       * device */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_direct_join_request_t;
 
 
@@ -1318,7 +1318,7 @@ typedef struct zb_nlme_direct_join_confirm_s
 {
   zb_nwk_status_t status; /*!< MAC status codes */
   zb_ieee_addr_t device_address; /*!< 64 bit IEEE address */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_direct_join_confirm_t;
 
 
@@ -1343,7 +1343,7 @@ typedef struct zb_nwk_leave_payload_s
   zb_bitfield_t request:1;         /* Request */
   zb_bitfield_t rejoin:1;          /* Rejoin */
   zb_bitfield_t reserved:5;        /* Reserved */
-} ZB_PACKED_STRUCT
+} 
 zb_nwk_leave_payload_priv_t;
 
 #define ZB_LEAVE_PL_SET_REQUEST(pl)  (pl) |= (1 << 6)
@@ -1364,7 +1364,7 @@ typedef struct zb_nlme_leave_request_s
   zb_uint8_t remove_children; /*!< If true - remove child devices from the
                                     * network */
   zb_uint8_t rejoin; /*!< If true - Join after leave */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_leave_request_t;
 
 
@@ -1388,7 +1388,7 @@ typedef struct zb_nlme_leave_indication_s
   zb_ieee_addr_t device_address; /*!< 64 bit IEEE address of the device to romove, zero fill if device
                                   * itself */
   zb_uint8_t rejoin; /*!< Join after leave */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_leave_indication_t;
 
 
@@ -1411,7 +1411,7 @@ typedef struct zb_nlme_leave_confirm_s
 {
   zb_nwk_status_t status; /*!< MAC status codes */
   zb_ieee_addr_t device_address; /*!< 64 bit IEEE address */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_leave_confirm_t;
 
 
@@ -1438,7 +1438,7 @@ void zb_nwk_forget_device(zb_address_ieee_ref_t addr_ref);
 typedef struct zb_nlme_reset_request_s
 {
   zb_uint8_t warm_start; /*!< if false - reset all stack values */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_reset_request_t;
 
 
@@ -1460,7 +1460,7 @@ void zb_nlme_reset_request(zb_uint8_t param) ;
 typedef struct zb_nlme_reset_confirm_s
 {
   zb_nwk_status_t status; /*!< The result of the operation */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_reset_confirm_t;
 
 
@@ -1483,7 +1483,7 @@ typedef struct zb_nlme_sync_request_s
 {
   zb_uint8_t track; /*!< Whether ot not the sync should be maintained for
                      * future beacons */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_sync_request_t;
 
 
@@ -1516,7 +1516,7 @@ void zb_nlme_sync_loss_indication(zb_uint8_t param) ;
 typedef struct zb_nlme_sync_confirm_s
 {
   zb_nwk_status_t status; /*!< The result of the operation */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_sync_confirm_t;
 
 
@@ -1555,7 +1555,7 @@ typedef struct zb_nlme_route_discovery_request_s
   zb_bitfield_t no_route_cache; /*!< True - no route table should be
                                  * established */
   zb_bitfield_t reserved:7;
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_route_discovery_request_t;
 
 
@@ -1577,7 +1577,7 @@ void zb_nlme_route_discovery_request(zb_uint8_t param) ;
 typedef struct zb_nlme_route_discovery_confirm_s
 {
   zb_uint8_t status;            /*!< @see zb_nwk_status_t indeed  */
-} ZB_PACKED_STRUCT
+} 
 zb_nlme_route_discovery_confirm_t;
 
 
@@ -1616,7 +1616,7 @@ typedef struct zb_nwk_report_cmd_s
   zb_uint8_t command_options;
   zb_ext_pan_id_t epid;
   zb_uint16_t panids[1];
-} ZB_PACKED_STRUCT zb_nwk_report_cmd_t;
+}  zb_nwk_report_cmd_t;
 
 #define ZB_NWK_REPORT_INFO_COUNT(options) ((options) & 0xf)
 #define ZB_NWK_REPORT_COMMAND_ID(options) (((options >> 4)) & 0xf)
@@ -1632,7 +1632,7 @@ typedef struct zb_nwk_update_cmd_s
   zb_ext_pan_id_t epid;
   zb_uint8_t update_id;
   zb_uint16_t new_panid;
-} ZB_PACKED_STRUCT zb_nwk_update_cmd_t;
+}  zb_nwk_update_cmd_t;
 
 /*! @} */
 /*! \endcond */

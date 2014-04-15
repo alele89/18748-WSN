@@ -125,7 +125,7 @@ typedef struct zb_nwk_aux_frame_hdr_s
   zb_uint32_t    frame_counter;
   zb_ieee_addr_t source_address;
   zb_uint8_t     key_seq_number;
-} ZB_PACKED_STRUCT zb_nwk_aux_frame_hdr_t;
+}  zb_nwk_aux_frame_hdr_t;
 
 
 /**
@@ -139,7 +139,7 @@ typedef struct zb_aps_nwk_aux_frame_hdr_s
   zb_uint8_t     secur_control;
   zb_uint32_t    frame_counter;
   zb_uint8_t     key_seq_number;
-} ZB_PACKED_STRUCT zb_aps_nwk_aux_frame_hdr_t;
+}  zb_aps_nwk_aux_frame_hdr_t;
 
 /**
    Auxiliary frame header (4.5.1) for APS frame encrypted by Data key
@@ -151,7 +151,7 @@ typedef struct zb_aps_data_aux_frame_hdr_s
 {
   zb_uint8_t     secur_control;
   zb_uint32_t    frame_counter;
-} ZB_PACKED_STRUCT zb_aps_data_aux_frame_hdr_t;
+}  zb_aps_data_aux_frame_hdr_t;
 
 
 /**
@@ -162,7 +162,7 @@ typedef struct zb_secur_ccm_nonce_s
   zb_ieee_addr_t source_address;
   zb_uint32_t    frame_counter;
   zb_uint8_t     secur_control;
-} ZB_PACKED_STRUCT zb_secur_ccm_nonce_t;
+}  zb_secur_ccm_nonce_t;
 
 
 #define ZB_NWK_STD_SECUR_CONTROL \
@@ -381,7 +381,7 @@ typedef struct zb_transport_key_nwk_key_dsc_pkt_s
   zb_uint8_t     seq_number;
   zb_ieee_addr_t dest_address;
   zb_ieee_addr_t source_address;
-} ZB_PACKED_STRUCT zb_transport_key_nwk_key_dsc_pkt_t;
+}  zb_transport_key_nwk_key_dsc_pkt_t;
 
 
 typedef struct zb_apsme_update_device_pkt_s
@@ -389,7 +389,7 @@ typedef struct zb_apsme_update_device_pkt_s
   zb_ieee_addr_t device_address;
   zb_uint16_t    device_short_address;
   zb_uint8_t     status;        /*!< \see zb_secur_upd_device_status_e  */
-} ZB_PACKED_STRUCT zb_apsme_update_device_pkt_t;
+}  zb_apsme_update_device_pkt_t;
 
 
 void zb_apsme_transport_key_request(zb_uint8_t param) ;
@@ -454,7 +454,7 @@ void zb_apsme_switch_key_request(zb_uint8_t param) ;
 typedef struct zb_apsme_switch_key_pkt_s
 {
   zb_uint8_t key_seq_number;
-} ZB_PACKED_STRUCT zb_apsme_switch_key_pkt_t;
+}  zb_apsme_switch_key_pkt_t;
 
 
 /**
@@ -476,13 +476,13 @@ typedef struct zb_apsme_remove_device_req_s
 {
   zb_ieee_addr_t parent_address;
   zb_ieee_addr_t child_address;
-} ZB_PACKED_STRUCT zb_apsme_remove_device_req_t;
+}  zb_apsme_remove_device_req_t;
 
 
 typedef struct zb_apsme_remove_device_pkt_s
 {
   zb_ieee_addr_t child_address;
-} ZB_PACKED_STRUCT zb_apsme_remove_device_pkt_t;
+}  zb_apsme_remove_device_pkt_t;
 
 
 /**
@@ -492,7 +492,7 @@ typedef struct zb_apsme_remove_device_ind_s
 {
   zb_ieee_addr_t src_address;
   zb_ieee_addr_t child_address;
-} ZB_PACKED_STRUCT zb_apsme_remove_device_ind_t;
+}  zb_apsme_remove_device_ind_t;
 
 void zb_secur_apsme_remove_device(zb_uint8_t param) ;
 void zb_aps_in_remove_device(zb_uint8_t param);
@@ -506,13 +506,13 @@ typedef struct zb_apsme_request_key_req_s
   zb_ieee_addr_t dest_address;
   zb_uint8_t     key_type;      /*<! \see zb_secur_key_types_e  */
   zb_ieee_addr_t partner_address;
-} ZB_PACKED_STRUCT zb_apsme_request_key_req_t;
+}  zb_apsme_request_key_req_t;
 
 
 typedef struct zb_apsme_request_nwk_key_pkt_s
 {
   zb_uint8_t     key_type;      /*<! \see zb_secur_key_types_e  */
-} ZB_PACKED_STRUCT zb_apsme_request_nwk_key_pkt_t;
+}  zb_apsme_request_nwk_key_pkt_t;
 
 /**
    APSME-REQUEST-KEY.indication primitive parameters structure
@@ -522,7 +522,7 @@ typedef struct zb_apsme_request_key_ind_s
   zb_ieee_addr_t src_address;
   zb_uint8_t     key_type;      /*<! \see zb_secur_key_types_e  */
   zb_ieee_addr_t partner_address;
-} ZB_PACKED_STRUCT zb_apsme_request_key_ind_t;
+}  zb_apsme_request_key_ind_t;
 
 void zb_secur_apsme_request_key(zb_uint8_t param) ;
 void zb_aps_in_request_key(zb_uint8_t param);

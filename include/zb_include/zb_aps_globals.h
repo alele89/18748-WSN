@@ -61,13 +61,13 @@ typedef struct zb_aps_bind_src_table_s
   zb_address_ieee_ref_t src_addr;   /*!< source address as ref from nwkAddressMap */
   zb_uint8_t            src_end;    /*!< source endpoint */
   zb_uint16_t           cluster_id; /*!< cluster id */
-} ZB_PACKED_STRUCT zb_aps_bind_src_table_t;
+}  zb_aps_bind_src_table_t;
 
 typedef struct zb_aps_bind_long_dst_addr_s
 {
   zb_address_ieee_ref_t dst_addr;        /*!< destination address as ref from nwkAddressMap */
   zb_uint8_t            dst_end;         /*!< destination endpoint */
-} ZB_PACKED_STRUCT zb_aps_bind_long_dst_addr_t;
+}  zb_aps_bind_long_dst_addr_t;
 
 #define ZB_APS_BIND_DST_ADDR_GROUP 0
 #define ZB_APS_BIND_DST_ADDR_LONG  1
@@ -82,7 +82,7 @@ typedef struct zb_aps_bind_dst_table_s
     zb_aps_bind_long_dst_addr_t long_addr; /*!< @see zb_asp_long_dst_addr_t */
   } u;
   zb_uint8_t            src_table_index; /*!< index from zb_asp_src_table_t */
-} ZB_PACKED_STRUCT zb_aps_bind_dst_table_t;
+}  zb_aps_bind_dst_table_t;
 
 typedef struct zb_aps_binding_table_s
 {
@@ -90,7 +90,7 @@ typedef struct zb_aps_binding_table_s
   zb_aps_bind_dst_table_t dst_table[ZB_APS_DST_BINDING_TABLE_SIZE];
   zb_uint8_t              src_n_elements;
   zb_uint8_t              dst_n_elements;
-} ZB_PACKED_STRUCT zb_aps_binding_table_t;
+}  zb_aps_binding_table_t;
 
 /**
   Group table entry
@@ -100,7 +100,7 @@ typedef struct zb_aps_group_table_ent_s
   zb_uint16_t    group_addr;
   zb_uint8_t     endpoints[ZB_APS_ENDPOINTS_IN_GROUP_TABLE];
   zb_ushort_t    n_endpoints;
-} ZB_PACKED_STRUCT zb_aps_group_table_ent_t;
+}  zb_aps_group_table_ent_t;
 
 
 ZB_RING_BUFFER_DECLARE(zb_aps_grp_up_q, zb_uint8_t, ZB_APS_GROUP_UP_Q_SIZE);
@@ -171,7 +171,7 @@ typedef struct zb_aps_retrans_ent_s
   zb_bitfield_t aps_retries:5;
   zb_bitfield_t nwk_insecure:1;
   zb_bitfield_t state:2;        /* \see zb_aps_retrans_ent_state_e */
-} ZB_PACKED_STRUCT zb_aps_retrans_ent_t;
+}  zb_aps_retrans_ent_t;
 
 
 ZB_RING_BUFFER_DECLARE(zb_ack_q, zb_uint8_t, ZB_APS_RETRANS_ACK_Q_SIZE);

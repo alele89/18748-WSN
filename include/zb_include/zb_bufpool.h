@@ -85,7 +85,7 @@ typedef struct zb_buf_hdr_s
 #endif
 #endif 
   zb_uint8_t    mhr_len;          /* used for TRANS_SEND_COMMAND */
-} ZB_PACKED_STRUCT zb_buf_hdr_t;
+}  zb_buf_hdr_t;
 
 
 /**

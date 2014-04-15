@@ -76,7 +76,7 @@ typedef enum zb_mac_transport_type_e
   ZB_MAC_TRANSPORT_TYPE_TRACE = 0x02, /*!< Trace packet type */
 
   ZB_MAC_TRANSPORT_TYPE_NUM
-} ZB_PACKED_STRUCT
+} 
 zb_mac_transport_type_t;
 
 
@@ -96,7 +96,7 @@ typedef struct zb_mac_transport_hdr_s
   zb_uint8_t len;  /*!< Packet length, including hdr */
   zb_uint8_t type; /*!< Packet type, @see zb_mac_transport_type_t */
   zb_uint16_t time;             /* time label */
-} ZB_PACKED_STRUCT
+} 
 zb_mac_transport_hdr_t;
 
 #define ZB_NO_IO            0

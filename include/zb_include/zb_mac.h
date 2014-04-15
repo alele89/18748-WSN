@@ -104,7 +104,7 @@ typedef enum zb_addr_mode_e
                                       */
 
   ZB_ADDR_64BIT_DEV = 3         /*!< 802.15: 0x03 = 64-bit extended address.  */
-} ZB_PACKED_STRUCT
+} 
 zb_addr_mode_t;
 
 /**
@@ -768,7 +768,7 @@ do                                                                \
 typedef struct zb_mac_purge_confirm_s
 {
   zb_uint8_t status;
-} ZB_PACKED_STRUCT
+} 
 zb_mac_purge_confirm_t;
 
 /**
@@ -935,7 +935,7 @@ typedef struct zb_mlme_associate_indication_s
   zb_mac_capability_info_t capability;
   zb_uint8_t               lqi; /* non-standard, but MAC has it and we really
                                  * need it */
-} ZB_PACKED_STRUCT
+} 
 zb_mlme_associate_indication_t;
 
 
@@ -970,7 +970,7 @@ typedef struct zb_mlme_comm_status_indication_s
                                   UNSUPPORTED_SECURITY or
                                   INVALID_PARAMETER
                                  */
-} ZB_PACKED_STRUCT
+} 
 zb_mlme_comm_status_indication_t;
 
 
@@ -988,7 +988,7 @@ typedef struct zb_mlme_associate_response_s
   zb_ieee_addr_t device_address;
   zb_uint16_t    short_address;
   zb_uint8_t     status;
-} ZB_PACKED_STRUCT
+} 
 zb_mlme_associate_response_t;
 
 
@@ -1049,7 +1049,7 @@ typedef struct zb_mlme_associate_confirm_s
      KeyIndex
    */
   zb_ieee_addr_t parent_address; /* non-standard field, but we really need it */
-} ZB_PACKED_STRUCT
+} 
  zb_mlme_associate_confirm_t;
 
 /**
@@ -1117,7 +1117,7 @@ typedef struct zb_mac_disassociate_indication_s
 {
   zb_ieee_addr_t device_address;
   zb_uint8_t     disassociate_reason;
-} ZB_PACKED_STRUCT
+} 
  zb_mac_disassociate_indication_t;
 
 /**
@@ -1158,7 +1158,7 @@ typedef struct zb_mac_disassociate_confirm_s
   zb_uint8_t      device_addr_mode;
   zb_uint16_t     device_pan_id;
   union zb_addr_u device_addr;
-} ZB_PACKED_STRUCT
+} 
 zb_mac_disassociate_confirm_t;
 
 
@@ -1238,7 +1238,7 @@ typedef struct zb_super_frame_spec_s
   zb_bitfield_t beacon_order:4;
   zb_bitfield_t superframe_order:4;
 #endif
-} ZB_PACKED_STRUCT
+} 
 zb_super_frame_spec_t;
 
 /* zb_super_frame_spec_t structure is MSBF/LSBF specific, use the
@@ -1398,7 +1398,7 @@ typedef struct  zb_mac_beacon_payload_s
                                   a beaconless networks.  */
   zb_uint8_t nwk_update_id;       /*<! This field reflects the value of
                                   nwkUpdateId from the NIB. */
-} ZB_PACKED_STRUCT
+} 
 zb_mac_beacon_payload_t;
 
 
@@ -1539,7 +1539,7 @@ typedef struct zb_mac_pan_descriptor_s    // 7.1.5.1.1 table-41
   zb_uint8_t            link_quality;
   /* zigbee does not use security and uses beaconless mode, so skip other pan descriptor
      fields - for timestamp and security  */
-} ZB_PACKED_STRUCT
+} 
 zb_pan_descriptor_t;
 
 /**
@@ -1559,7 +1559,7 @@ typedef struct  zb_pending_address_spec_s
   zb_bitfield_t rvd0:1;
   zb_bitfield_t num_of_long_addr:3;
   zb_bitfield_t rvd1:1;
-} ZB_PACKED_STRUCT
+} 
 zb_pending_address_spec_t;
 
 /**
@@ -1681,7 +1681,7 @@ typedef struct zb_mac_scan_confirm_s
   {
     zb_uint8_t           energy_detect[ ZB_MAC_SUPPORTED_CHANNELS ];
   } list;
-} ZB_PACKED_STRUCT
+} 
 zb_mac_scan_confirm_t;
 
 /**
@@ -1723,7 +1723,7 @@ typedef struct zb_mac_beacon_notify_indication_s
   union zb_addr_u           addr_list[ MAX_PENDING_ADDRESSES ];
   zb_uint8_t                sdu_length;
   zb_uint8_t                sdu[ MAX_BCN_PAYLOAD ];
-} ZB_PACKED_STRUCT
+} 
 zb_mac_beacon_notify_indication_t;
 
 /**
@@ -1783,7 +1783,7 @@ typedef enum zb_mac_status_e
     MAC_UNSUPPORTED_ATTRIBUTE       = 0xf4,     ///< Requested PIB attribute is not supported
     MAC_UNSUPPORTED_LEGACY          = 0xde,     ///< 802.15.4 2003 security on frame, but not supported by device
     MAC_UNSUPPORTED_SECURITY        = 0xdf      ///< Security on received frame is not supported
-} ZB_PACKED_STRUCT
+} 
 zb_mac_status_t;
 
 
@@ -1930,7 +1930,7 @@ typedef struct
   zb_uint8_t            mac_key[16];
 #endif
 
-} ZB_PACKED_STRUCT
+} 
  zb_mac_pib_t;
 
 
@@ -1999,7 +1999,7 @@ typedef struct zb_mlme_get_request_s
 {
   zb_mac_pib_attr_t  pib_attr;
   zb_uint8_t          pib_index;
-} ZB_PACKED_STRUCT
+} 
 zb_mlme_get_request_t;
 
 /**
@@ -2011,7 +2011,7 @@ typedef struct zb_mlme_get_confirm_s
   zb_mac_pib_attr_t  pib_attr;
   zb_uint8_t         pib_index;
   zb_uint8_t         pib_length;
-} ZB_PACKED_STRUCT
+} 
 zb_mlme_get_confirm_t;
 
 /**
@@ -2022,7 +2022,7 @@ typedef struct zb_mlme_set_request_s
   zb_mac_pib_attr_t  pib_attr;
   zb_uint8_t         pib_index;
   zb_uint8_t         pib_length;
-} ZB_PACKED_STRUCT
+} 
 zb_mlme_set_request_t;
 
 /**
@@ -2033,7 +2033,7 @@ typedef struct zb_mlme_set_confirm_s
   zb_mac_status_t    status;
   zb_mac_pib_attr_t  pib_attr;
   zb_uint8_t         pib_index;
-} ZB_PACKED_STRUCT
+} 
 zb_mlme_set_confirm_t;
 
 /**
@@ -2079,7 +2079,7 @@ typedef struct zb_mlme_start_req_s
   zb_bitfield_t  battery_life_extension:1;
   zb_bitfield_t  coord_realignment:1;
   zb_bitfield_t  reserved:5;
-} ZB_PACKED_STRUCT
+} 
 zb_mlme_start_req_t;
 
 /* mlme_start_confirm - status only - in the buffer header */
@@ -2096,7 +2096,7 @@ typedef struct zb_coord_realignment_cmd_s
   zb_int8_t logical_channel;    /* Logical Channel */
   zb_uint16_t short_addr;   /* Short Address */
   zb_uint8_t  channel_page; /* Channel page, may be omitted */
-} ZB_PACKED_STRUCT
+} 
 zb_coord_realignment_cmd_t;
 
 /**
@@ -2281,7 +2281,7 @@ typedef struct zb_mlme_reset_request_s
                                           FALSE, the MAC sublayer is reset, but all MAC PIB
                                           attributes retain their values prior to the generation of
                                           the MLME-RESET.request primitive.  */
-} ZB_PACKED_STRUCT
+} 
 zb_mlme_reset_request_t;
 
 /**

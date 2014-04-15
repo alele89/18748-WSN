@@ -114,7 +114,7 @@ typedef struct zb_af_node_desc_s
   zb_uint16_t          max_outgoing_transfer_size; /* Maximum outgoing transfer size */
   zb_uint8_t           desc_capability_field;      /* Descriptor capability field */
 }
-ZB_PACKED_STRUCT
+
 zb_af_node_desc_t;
 
 #define ZB_NODE_DESC_LOGICAL_TYPE_MASK 0x7       /* 0000.0000 0000.0111 */
@@ -200,7 +200,7 @@ typedef enum zb_current_power_mode_e
   ZB_POWER_MODE_SYNC_ON_WHEN_IDLE = 0,
   ZB_POWER_MODE_COME_ON_PERIODICALLY = 1,
   ZB_POWER_MODE_COME_ON_WHEN_STIMULATED = 2
-} ZB_PACKED_STRUCT
+} 
 zb_current_power_mode_t;
 
 typedef enum zb_power_src_e
@@ -208,7 +208,7 @@ typedef enum zb_power_src_e
   ZB_POWER_SRC_CONSTATNT = 1,
   ZB_POWER_SRC_RECHARGEABLE_BATTERY = 1 << 1,
   ZB_POWER_SRC_DISPOSABLE_BATTERY = 1 << 2
-} ZB_PACKED_STRUCT
+} 
 zb_power_src_t;
 
 typedef enum zb_power_source_level_e
@@ -217,7 +217,7 @@ typedef enum zb_power_source_level_e
   ZB_POWER_LEVEL_33 = 4,       /* 0100 */
   ZB_POWER_LEVEL_66 = 8,       /* 1000 */
   ZB_POWER_LEVEL_100 = 12      /* 1100 */
-} ZB_PACKED_STRUCT
+} 
 zb_power_source_level_t;
 
 
@@ -243,7 +243,7 @@ typedef struct zb_af_node_power_desc_s
   u;
 #endif
   zb_uint16_t power_desc_flags;
-} ZB_PACKED_STRUCT zb_af_node_power_desc_t;
+}  zb_af_node_power_desc_t;
 
 #define ZB_POWER_DESC_CUR_POWER_MODE_MASK     0x000F /* 0000.0000 0000.1111 */
 #define ZB_POWER_DESC_AVAIL_POWER_SOURCES_MASK 0x00F0 /* 0000.0000 1111.0000 */
@@ -293,7 +293,7 @@ typedef struct zb_af_node_power_desc_s
     zb_uint8_t    app_input_cluster_count;  /* Application input cluster count */ \
     zb_uint8_t    app_output_cluster_count; /* Application output cluster count */ \
     zb_uint16_t   app_cluster_list[in_clusters_count + out_clusters_count]; /* Application input and output cluster list */ \
-  } ZB_PACKED_STRUCT                                                    \
+  }                                                     \
   zb_af_simple_desc_ ## in_clusters_count ## _ ## out_clusters_count ## _t
 
 ZB_DECLARE_SIMPLE_DESC(1,1); /* General descriptor type */
