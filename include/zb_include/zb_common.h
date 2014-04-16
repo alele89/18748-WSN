@@ -59,6 +59,23 @@ PURPOSE: Common include file for ZigBee
 //#include "zb_osif.h"
 #include "zb_trace.h"
 
+/**
+   Return random value
+ */
+zb_uint16_t zb_random();
+#define ZB_RANDOM() zb_random()
+
+/* use macros to be able to redefine */
+#define ZB_MEMCPY memcpy
+#define ZB_MEMMOVE memmove
+#define ZB_MEMSET memset
+#define ZB_MEMCMP memcmp
+
+#define ZVUNUSED(v) (void)v
+
+#define ZB_BZERO(s,l) ZB_MEMSET((char*)(s), 0, (l))
+#define ZB_BZERO2(s) ZB_BZERO(s, 2)
+
 /*! \addtogroup init_api */
 /*! @{ */
 

@@ -75,10 +75,12 @@ void zb_init()
 {
   ZB_MEMSET(&g_zb, 0, sizeof(zb_globals_t));
   ZB_MEMSET((void*)&g_izb, 0, sizeof(zb_intr_globals_t));
+#if 0
   /* some init of 8051 HW moved to zb_low_level_init() */
   ZB_START_DEVICE();
 
   TRACE_INIT("");
+#endif
   /* special trick for ns build run on 8051 simulator: get node number from the
    * rx pipe name  */
   /* set defaults, then update it from nvram */

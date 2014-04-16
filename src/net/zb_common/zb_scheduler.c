@@ -92,7 +92,7 @@ void zb_sched_loop_iteration() /* ZB_KEIL_REENTRANT */
     did_something = 0;
 
     /* checking interrupt and processing all mac related routines */
-    CHECK_INT_N_TIMER(); 
+    //CHECK_INT_N_TIMER(); 
     zb_mac_main_loop();
 
     /* First execute regular (immediate) callbacks */

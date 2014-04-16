@@ -54,6 +54,13 @@ PURPOSE: Test for ZC application written using ZDO.
 #include <hal.h>
 #include <nrk_error.h>
 
+#include <nrk_driver_list.h>
+#include <nrk_driver.h>
+#include <ff_basic_sensor.h>
+
+#include <stdlib.h>
+
+
 /* ZBOSS includes */
 #include "zb_common.h"
 #include "zb_scheduler.h"
@@ -62,12 +69,14 @@ PURPOSE: Test for ZC application written using ZDO.
 #include "zb_aps.h"
 #include "zb_zdo.h"
 #include "zb_types.h"
+#include "zb_rf231_soc.h"
 
 NRK_STK Stack1[NRK_APP_STACKSIZE];
 nrk_task_type TaskOne;
 void zc_task(void);
 
 void nrk_create_taskset();
+void nrk_register_drivers();
 
 #define ZB_TEST_DUMMY_DATA_SIZE 10
 
@@ -163,9 +172,12 @@ void zc_task()
         zdo_main_loop();
     }
 
+#if 0
     TRACE_DEINIT();
 
     MAIN_RETURN(0);
+#endif
+    return 0;
 }
 
 void zb_zdo_startup_complete(zb_uint8_t param) 
@@ -228,6 +240,14 @@ static void zc_send_data(zb_buf_t *buf, zb_uint16_t addr)
     }
     TRACE_MSG(TRACE_APS3, "Sending apsde_data.request", (FMT__0));
     ZB_SCHEDULE_CALLBACK(zb_apsde_data_request, ZB_REF_FROM_BUF(buf));
+}
+
+void nrk_register_drivers()
+{
+    int8_t val;
+    val = nrk_register_driver(&dev_manager_ff3_sensors, FIREFLY_3_SENSOR_BASIC);
+    if (val == NRK_ERROR)
+        nrk_kprintf(PSTR("Failed to load ADC driver\r\n"));
 }
 
 /*! @} */

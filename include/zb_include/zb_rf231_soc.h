@@ -161,6 +161,10 @@ ZB_WRITE_SHORT_REG(ZB_SREG_ACKTMOUT, ZB_MAC_GET_BYTE_VALUE()&0x7F)
 #define ZB_TRANS_CHECK_TX_RETRY_COUNT_EXCEEDED_ERROR() ZB_IS_TX_RETRY_COUNT_EXCEEDED() /* not 0 means cca fail error */
 #define ZB_TRANS_CHECK_CHANNEL_ERROR() (ZB_IS_TX_CHANNEL_BUSY() || ZB_IS_TX_RETRY_COUNT_EXCEEDED())
 
+/**
+ * Initialization routine for zboss task for polling radio
+ */
+void zb_task_config();
 
 /**
    Fill FIFO
