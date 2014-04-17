@@ -489,7 +489,9 @@ void zb_nwk_mesh_rreq_handler(zb_buf_t *buf, zb_nwk_hdr_t *nwk_hdr, zb_nwk_cmd_r
     if ( ZG->nwk.nib.aps_rreq_addr
          && ZG->nwk.nib.aps_rreq_addr == nwk_cmd_rreq->dest_addr )
     {
+#ifndef ZB_LIMITED_FEATURES
       NWK_ROUTE_DISCOVERY_CONFIRM(buf, ZB_NWK_STATUS_ROUTE_ERROR, ZB_NWK_COMMAND_STATUS_NO_ROUTE_AVAILABLE);
+#endif
       /* prevent buffer from being free */
       buf = NULL;
     }
@@ -595,7 +597,9 @@ void zb_nwk_mesh_rrep_handler(zb_buf_t *buf, zb_nwk_hdr_t *nwk_hdr, zb_nwk_cmd_r
     TRACE_MSG(TRACE_NWK1, "aps_rreq_addr %d  dst_addr %d", (FMT__D_D, ZG->nwk.nib.aps_rreq_addr, routing_ent->dest_addr));
     if ( ZG->nwk.nib.aps_rreq_addr == routing_ent->dest_addr )
     {
+#ifndef ZB_LIMITED_FEATURES
       NWK_ROUTE_DISCOVERY_CONFIRM(buf, ZB_NWK_STATUS_SUCCESS, 0xff);
+#endif
       ZG->nwk.nib.aps_rreq_addr = -1;
     }
   }

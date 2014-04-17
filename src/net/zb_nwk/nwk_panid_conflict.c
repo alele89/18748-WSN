@@ -165,7 +165,9 @@ void zb_panid_conflict_network_update(zb_uint8_t param)
    * after actual PANID change */
   zb_nwk_update_beacon_payload();
   ZB_SCHEDULE_CALLBACK(zb_panid_conflict_send_nwk_update, param);
+#ifndef ZB_LIMITED_FEATURES
   ZB_SCHEDULE_ALARM(zb_panid_conflict_set_panid_alarm, 0, ZB_NWK_BROADCAST_DELIVERY_TIME());
+#endif
 }
 
 
@@ -334,7 +336,9 @@ void zb_panid_conflict_send_nwk_update(zb_uint8_t param)
   ZB_SET_BUF_PARAM(ZB_BUF_FROM_REF(param), ZB_NWK_INTERNAL_NSDU_HANDLE, zb_uint8_t);
   ZB_SCHEDULE_CALLBACK(zb_nwk_forward, param);
 
+#ifndef ZB_LIMITED_FEATURES
   zb_get_out_buf_delayed(zb_panid_conflict_send_status_ind);
+#endif
 
   TRACE_MSG(TRACE_NWK1, "<< zb_panid_conflict_send_network_update", (FMT__0));
 }
@@ -376,9 +380,10 @@ void zb_panid_conflict_network_update_recv(zb_nwk_update_cmd_t *upd)
   ZB_LETOH16(&ZG->nwk.handle.new_panid, &upd->new_panid);
   TRACE_MSG(TRACE_NWK1, "zb_panid_conflict_network_update_recv update_id %hd panid %d",
             (FMT__H_D, upd->update_id, ZG->nwk.handle.new_panid));
+#ifndef ZB_LIMITED_FEATURES
   ZB_SCHEDULE_ALARM(zb_panid_conflict_set_panid_alarm, 0, ZB_NWK_BROADCAST_DELIVERY_TIME());
-
   zb_get_out_buf_delayed(zb_panid_conflict_send_status_ind);
+#endif
 }
 
 

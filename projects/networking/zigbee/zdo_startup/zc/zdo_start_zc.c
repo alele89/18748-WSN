@@ -117,6 +117,7 @@ int main ()
     nrk_time_set (0, 0);
 
     zb_task_config ();
+    zb_nrk_init();
     zb_init();
 
     nrk_create_taskset ();
@@ -244,10 +245,12 @@ static void zc_send_data(zb_buf_t *buf, zb_uint16_t addr)
 
 void nrk_register_drivers()
 {
+/*
     int8_t val;
     val = nrk_register_driver(&dev_manager_ff3_sensors, FIREFLY_3_SENSOR_BASIC);
     if (val == NRK_ERROR)
         nrk_kprintf(PSTR("Failed to load ADC driver\r\n"));
+*/
 }
 
 /*! @} */

@@ -73,7 +73,9 @@ void zb_nlme_route_discovery_request(zb_uint8_t param)
        && !(ZB_NIB_DEVICE_TYPE() == ZB_NWK_DEVICE_TYPE_COORDINATOR
             || ZB_NIB_DEVICE_TYPE() == ZB_NWK_DEVICE_TYPE_ROUTER ))
   {
+#ifndef ZB_LIMITED_FEATURES
     NWK_ROUTE_DISCOVERY_CONFIRM(buf, ZB_NWK_STATUS_INVALID_REQUEST, ZB_NWK_COMMAND_STATUS_NO_ROUTE_AVAILABLE);
+#endif
     ret = RET_ERROR;
     TRACE_MSG(TRACE_NWK1, "no routing capacity available, ret error", (FMT__0));
     goto done;
@@ -85,7 +87,9 @@ void zb_nlme_route_discovery_request(zb_uint8_t param)
        && request->address_mode != ZB_ADDR_NO_ADDR
        && ZB_NWK_IS_ADDRESS_BROADCAST(request->network_addr) )
   {
+#ifndef ZB_LIMITED_FEATURES
     NWK_ROUTE_DISCOVERY_CONFIRM(buf, ZB_NWK_STATUS_INVALID_REQUEST, ZB_NWK_COMMAND_STATUS_NO_ROUTE_AVAILABLE);
+#endif
     TRACE_MSG(TRACE_NWK1, "got broadcast address, ret error", (FMT__0));
     goto done;
   }
@@ -95,7 +99,9 @@ void zb_nlme_route_discovery_request(zb_uint8_t param)
        && request->address_mode == ZB_ADDR_16BIT_DEV_OR_BROADCAST
        && request->network_addr == ZB_NIB_NETWORK_ADDRESS() )
   {
+#ifndef ZB_LIMITED_FEATURES
     NWK_ROUTE_DISCOVERY_CONFIRM(buf, ZB_NWK_STATUS_SUCCESS, 0xff);
+#endif
     TRACE_MSG(TRACE_NWK1, "truing to discover our own address, send success", (FMT__0));
     goto done;
   }
@@ -107,7 +113,9 @@ void zb_nlme_route_discovery_request(zb_uint8_t param)
     if ( ret == RET_OK
          && zb_nwk_neighbor_get_by_short(request->network_addr, &nbt) == RET_OK )
     {
+#ifndef ZB_LIMITED_FEATURES
       NWK_ROUTE_DISCOVERY_CONFIRM(buf, ZB_NWK_STATUS_SUCCESS, 0xff);
+#endif
       TRACE_MSG(TRACE_NWK1, "discovery device found in neighbour table, ret success", (FMT__0));
       goto done;
     }
@@ -124,17 +132,23 @@ void zb_nlme_route_discovery_request(zb_uint8_t param)
     }
     else if ( request->address_mode == ZB_ADDR_16BIT_MULTICAST )
     {
+#ifndef ZB_LIMITED_FEATURES
       /* TODO: Implement */
       NWK_ROUTE_DISCOVERY_CONFIRM(buf, ZB_NWK_STATUS_INVALID_REQUEST, ZB_NWK_COMMAND_STATUS_NO_ROUTE_AVAILABLE);
+#endif
     }
     else
     {
+#ifndef ZB_LIMITED_FEATURES
       /* TODO: Implement */
       NWK_ROUTE_DISCOVERY_CONFIRM(buf, ZB_NWK_STATUS_INVALID_REQUEST, ZB_NWK_COMMAND_STATUS_NO_ROUTE_AVAILABLE);
+#endif
     }
   }
 #else
+#ifndef ZB_LIMITED_FEATURES
   NWK_ROUTE_DISCOVERY_CONFIRM(buf, ZB_NWK_STATUS_ROUTE_ERROR, ZB_NWK_COMMAND_STATUS_NO_ROUTING_CAPACITY);
+#endif
 #endif
 
   done:

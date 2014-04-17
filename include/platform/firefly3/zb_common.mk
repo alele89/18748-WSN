@@ -51,6 +51,7 @@ SRC += $(ROOT_DIR)/src/net/zb_mac/mac_cr_data.c
 SRC += $(ROOT_DIR)/src/net/zb_mac/mac_common.c
 SRC += $(ROOT_DIR)/src/net/zb_mac/mac_routines.c
 #SRC += $(ROOT_DIR)/src/net/zb_mac/zb_uz2x_common.c
+SRC += $(ROOT_DIR)/src/net/zb_mac/zb_rf231_soc.c
 
 # nwk sources
 SRC += $(ROOT_DIR)/src/net/zb_nwk/nwk_main.c

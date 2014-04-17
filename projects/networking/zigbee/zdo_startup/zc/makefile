@@ -20,6 +20,8 @@ include $(ROOT_DIR)/include/platform.mk
 
 
 SRC = $(TARGET).c
+SRC += $(ROOT_DIR)/src/drivers/platform/$(PLATFORM_TYPE)/source/ff_basic_sensor.c
+SRC += $(ROOT_DIR)/src/drivers/platform/$(PLATFORM_TYPE)/source/twi_base_calls.c
 
 # Add extra source files. 
 # For example:
@@ -33,7 +35,7 @@ EXTRAINCDIRS =
 #EXTRAINCDIRS += $(ROOT_DIR)/include/zb_include
 
 # The following defines are for ZBOSS stack compilation
-ZB_PLATFORM_DEFINES=  -DZB_PLATFORM_FIREFLY3 -DZB_LIMITED_FEATURES  -DZB_LIMITED_FEATURES2
+ZB_PLATFORM_DEFINES=  -DZB_PLATFORM_FIREFLY3 -DZB_LIMITED_FEATURES -DZB_LIMITED_FEATURES2 
 
 # This is where the ZBOSS sources and include directories are added
 include $(ROOT_DIR)/include/platform/$(PLATFORM)/zb_common.mk

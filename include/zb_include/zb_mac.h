@@ -2724,7 +2724,7 @@ void mac_add_invisible_short(zb_uint16_t addr);
 /* like it's needed for zb_realign_pan, coz it should not */
 /* be interrupted */
 #if !defined(ZB_TRANSPORT_8051_DATA_SPI) && !defined(ZB_TRANSPORT_LINUX_SPIDEV)
-#define ZB_WAIT_FOR_TX() while (!MAC_CTX().tx_cnt) ZB_GO_IDLE()
+#define ZB_WAIT_FOR_TX() while (!MAC_CTX().tx_cnt) 
 #else
 #define ZB_WAIT_FOR_TX()                  \
   while(!MAC_CTX().tx_cnt)          \

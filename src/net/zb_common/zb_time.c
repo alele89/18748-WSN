@@ -62,7 +62,6 @@ void zb_timer_start(zb_time_t timeout)
   zb_time_t t_cur = ZB_TIMER_GET();
   zb_time_t t = ZB_TIME_ADD(t_cur, timeout);
 
-  ZB_DISABLE_ALL_INTER();
   if (!ZB_TIMER_CTX().started
 #ifdef ZB8051
       || ZB_TIME_GE(t, ZB_TIMER_CTX().timer_stop)
@@ -75,13 +74,14 @@ void zb_timer_start(zb_time_t timeout)
     ZB_TIMER_CTX().timer_stop = t;
     ZB_TIMER_CTX().started = 1;
   }
-  ZB_ENABLE_ALL_INTER();
-
+#if 0
   if (!ZB_CHECK_TIMER_IS_ON())
   {
     /* timer is stopped - start it */
     ZB_START_HW_TIMER();
   }
+#endif
+
 #if 0
 #ifdef ZB8051
   TRACE_MSG(TRACE_OSIF3, "tmo %d, stop at %d; t 0x%x hi 0x%x lo 0x%x freq %d",

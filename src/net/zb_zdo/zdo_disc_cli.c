@@ -71,8 +71,9 @@ void zb_zdo_nwk_addr_req(zb_uint8_t param, zb_callback_t cb)
   ZB_HTOLE64(req->ieee_addr, req_param->ieee_addr);
   req->request_type = req_param->request_type;
   req->start_index = req_param->start_index;
-
+#ifndef ZB_LIMITED_FEATURES2
   zdo_send_req_by_short(ZDO_NWK_ADDR_REQ_CLID, param, cb, req_param->dst_addr, 1);
+#endif
 }
 
 
@@ -81,7 +82,9 @@ void zb_zdo_ieee_addr_req(zb_uint8_t param, zb_callback_t cb)
   zb_zdo_ieee_addr_req_t *req = (zb_zdo_ieee_addr_req_t *)ZB_BUF_BEGIN(ZB_BUF_FROM_REF(param));
   zb_uint16_t addr = req->nwk_addr;
   ZB_HTOLE16(&req->nwk_addr, &addr);
+#ifndef ZB_LIMITED_FEATURES2
   zdo_send_req_by_short(ZDO_IEEE_ADDR_REQ_CLID, param, cb, addr, 1);
+#endif
 }
 
 
@@ -90,7 +93,9 @@ void zb_zdo_node_desc_req(zb_uint8_t param, zb_callback_t cb)
   zb_zdo_node_desc_req_t *req = (zb_zdo_node_desc_req_t *)ZB_BUF_BEGIN(ZB_BUF_FROM_REF(param));
   zb_uint16_t addr = req->nwk_addr;
   ZB_HTOLE16(&req->nwk_addr, &addr);
+#ifndef ZB_LIMITED_FEATURES2
   zdo_send_req_by_short(ZDO_NODE_DESC_REQ_CLID, param, cb, addr, 1);
+#endif
 }
 
 
@@ -99,7 +104,9 @@ void zb_zdo_power_desc_req(zb_uint8_t param, zb_callback_t cb)
   zb_zdo_power_desc_req_t *req = (zb_zdo_power_desc_req_t *)ZB_BUF_BEGIN(ZB_BUF_FROM_REF(param));
   zb_uint16_t addr = req->nwk_addr;
   ZB_HTOLE16(&req->nwk_addr, &addr);
+#ifndef ZB_LIMITED_FEATURES2
   zdo_send_req_by_short(ZDO_POWER_DESC_REQ_CLID, param, cb, addr, 1);
+#endif
 }
 
 
@@ -108,7 +115,9 @@ void zb_zdo_simple_desc_req(zb_uint8_t param, zb_callback_t cb)
   zb_zdo_simple_desc_req_t *req = (zb_zdo_simple_desc_req_t *)ZB_BUF_BEGIN(ZB_BUF_FROM_REF(param));
   zb_uint16_t addr = req->nwk_addr;
   ZB_HTOLE16(&req->nwk_addr, &addr);
+#ifndef ZB_LIMITED_FEATURES2
   zdo_send_req_by_short(ZDO_SIMPLE_DESC_REQ_CLID, param, cb, addr, 1);
+#endif
 }
 
 
@@ -117,7 +126,9 @@ void zb_zdo_active_ep_req(zb_uint8_t param, zb_callback_t cb)
   zb_zdo_active_ep_req_t *req = (zb_zdo_active_ep_req_t *)ZB_BUF_BEGIN(ZB_BUF_FROM_REF(param));
   zb_uint16_t addr = req->nwk_addr;
   ZB_HTOLE16(&req->nwk_addr, &addr);
+#ifndef ZB_LIMITED_FEATURES2
   zdo_send_req_by_short(ZDO_ACTIVE_EP_REQ_CLID, param, cb, addr, 1);
+#endif
 }
 
 
@@ -173,7 +184,9 @@ void zb_zdo_match_desc_req(zb_uint8_t param, zb_callback_t cb)
   TRACE_MSG(TRACE_ZDO3, "addr %d, profile id %d, num in cl %hd, num out cl %hd",
     (FMT__D_D_H_H, req_head->nwk_addr, req_head->profile_id, req_head->num_in_clusters, req_tail->num_out_clusters));
 
+#ifndef ZB_LIMITED_FEATURES2
   zdo_send_req_by_short(ZDO_MATCH_DESC_REQ_CLID, param, cb, match_param->nwk_addr, 1);
+#endif
   TRACE_MSG(TRACE_ZDO3, "<<zb_zdo_match_desc_req", (FMT__0));
 }
 

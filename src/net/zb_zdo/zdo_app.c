@@ -854,7 +854,9 @@ void zb_zdo_force_child_leave(zb_uint8_t param, zb_uint16_t child_addr)
     ZB_MEMCPY(lr->device_address, ieee_addr, sizeof(zb_ieee_addr_t));
     lr->remove_children = ZB_FALSE;
     lr->rejoin = ZB_TRUE;
+#ifndef ZB_LIMITED_FEATURES
     ZB_SCHEDULE_CALLBACK(zb_nlme_leave_request, param);
+#endif  
   }
   TRACE_MSG(TRACE_NWK1, "<<zb_zdo_force_child_leave status %d", (FMT__D, ret));
 }

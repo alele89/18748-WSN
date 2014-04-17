@@ -50,6 +50,8 @@ PURPOSE: rf231_soc specific code
 
 #include <basic_rf.h>
 
+#define ZB_TASK_PRIORITY 20
+
 /**
    Min channel # of RF231 SOC 
  */
@@ -165,6 +167,7 @@ ZB_WRITE_SHORT_REG(ZB_SREG_ACKTMOUT, ZB_MAC_GET_BYTE_VALUE()&0x7F)
  * Initialization routine for zboss task for polling radio
  */
 void zb_task_config();
+void zb_nw_task();
 
 /**
    Fill FIFO

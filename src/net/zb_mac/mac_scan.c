@@ -267,8 +267,10 @@ void zb_mlme_scan_step(zb_uint8_t param)
       }
       else if (scan_params->scan_type == ORPHAN_SCAN)
       {
+#ifndef ZB_LIMITED_FEATURES
         ret = zb_orphan_notification_command();
         ZB_WAIT_FOR_TX();
+#endif
       }
       ZB_SCHEDULE_ALARM_CANCEL(zb_mlme_scan_step, 0);
       ret = ZB_SCHEDULE_ALARM(zb_mlme_scan_step, 0, timeout);

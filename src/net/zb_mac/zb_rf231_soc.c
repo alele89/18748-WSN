@@ -81,10 +81,12 @@ PURPOSE: to port ZBOSS v1 onto Firefly3.
 #define ZB_DEFAULT_CHECK_RATE_MS  100
 #define ZB_TASK_PRIORITY 20
 #define ZB_MIN_CHECK_RATE_MS 20
-#define ZB_DEFAULT_CHECK_RATE_MS 100
+#define ZB_DEFAULT_CHECK_RATE_MS 1000
+#define RF_IO_BUF_SIZE 148
 
 static nrk_task_type zb_task;
-static NRK_STK zb_task_stack[zb_STACKSIZE];
+static NRK_STK zb_task_stack[ZB_STACKSIZE];
+static uint32_t rx_failure_cnt;
 
 static uint8_t tx_data_ready;
 static uint8_t zb_running;
@@ -101,7 +103,7 @@ uint8_t rx_buf_empty;
 uint8_t rx_buf[RF_IO_BUF_SIZE];
 uint8_t tx_buf[RF_IO_BUF_SIZE];
 
-int8_t zb_init()
+int8_t zb_nrk_init()
 {
     tx_data_ready = 0;
     // Set the one main rx buffer
@@ -130,7 +132,7 @@ void zb_task_config ()
 {
   nrk_task_set_entry_function (&zb_task, zb_nw_task);
   nrk_task_set_stk (&zb_task, zb_task_stack, ZB_STACKSIZE);
-  zb_task.prio = BMAC_TASK_PRIORITY;
+  zb_task.prio = ZB_TASK_PRIORITY;
   zb_task.FirstActivation = TRUE;
   zb_task.Type = BASIC_TASK;
   zb_task.SchType = PREEMPTIVE;
@@ -189,6 +191,19 @@ int8_t _zb_rx ()
 #endif
   rf_rx_off ();
   return 1;
+}
+
+int8_t _zb_channel_check()
+{
+    int8_t val = 0;
+    rf_rx_on();
+    val += rf_cca_check();
+    val += rf_cca_check();
+    val += rf_cca_check();
+    if (val > 1)
+        val = 1;
+    rf_rx_off();
+    return val;
 }
 
 void zb_nw_task ()
@@ -293,8 +308,11 @@ zb_ret_t zb_transceiver_send_fifo_packet(zb_uint8_t header_length,
   zb_uint8_t *fc = ZB_BUF_BEGIN(buf);
   zb_uint8_t frame_len = ZB_BUF_LEN(buf);
 
+  TRACE_MSG(TRACE_MAC1, ">> zb_transceiver_send_fifo_packet ", (FMT__0));
+/*
   TRACE_MSG(TRACE_MAC1, ">> zb_transceiver_send_fifo_packet, %d, addr %x, buf %p, state %hd", (FMT__D_D_P,
                         (zb_uint16_t)header_length, fifo_addr, buf));
+*/
   /* TODO: if acknowledgement is required for normal fifo, set ackreq
    * bit (SREG0x1B[2]) */
   /* we need to determine if our frame broadcast or not */
