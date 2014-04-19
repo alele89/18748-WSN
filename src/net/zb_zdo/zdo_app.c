@@ -104,9 +104,22 @@ static void init_config_attr()
 
 void zdo_main_loop()
 {
+  nrk_led_set(0);
+  nrk_led_set(1);
+
   while (1)
   {
+    nrk_led_toggle(0);
+    nrk_led_toggle(1);
+    nrk_led_toggle(2);
+    nrk_led_toggle(3);
+    
     zb_sched_loop_iteration();
+
+    nrk_led_toggle(0);
+    nrk_led_toggle(1);
+    nrk_led_toggle(2);
+    nrk_led_toggle(3);
   }
 }
 

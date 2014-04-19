@@ -73,14 +73,11 @@ void zb_zdo_init() ;
 
 void zb_init() 
 {
-  ZB_MEMSET(&g_zb, 0, sizeof(zb_globals_t));
+#if 0  
+  memset((void*)&g_zb, 0, sizeof(zb_globals_t));
   ZB_MEMSET((void*)&g_izb, 0, sizeof(zb_intr_globals_t));
-#if 0
-  /* some init of 8051 HW moved to zb_low_level_init() */
-  ZB_START_DEVICE();
-
-  TRACE_INIT("");
-#endif
+#endif 
+  
   /* special trick for ns build run on 8051 simulator: get node number from the
    * rx pipe name  */
   /* set defaults, then update it from nvram */
@@ -88,35 +85,19 @@ void zb_init()
   zb_ib_load();
 
   zb_sched_init();
+  
   zb_init_buffers();
 
   zb_mac_init();
 
   zb_nwk_init();
 
-#if defined ZB_NVRAM_WRITE_CFG && defined ZB_USE_NVRAM && defined C8051F120
-/* Write config to nvram. Think there's no any reason to invoke this second time*/
-/*
-  zb_uint8_t aps_designated_coord
-  zb_uint8_t aps_use_insecure_join
-  zb_uint8_t aps_use_extended_pan_id
-  zb_ieee_addr_t mac_extended_address
-*/
-  {
-    zb_uint8_t addr[8]={0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x0B};
-    zb_write_nvram_config(0, 1, 1, addr);
-  }
-#endif
-
-#ifdef ZB_USE_NVRAM
-/*  zb_config_from_nvram();
-  zb_read_up_counter();
-  zb_read_security_key();
-  zb_read_formdesc_data();*/
-#endif
-
   zb_aps_init();
+  
   zb_zdo_init();
+#if 0  
+#endif 
+
 }
 
 

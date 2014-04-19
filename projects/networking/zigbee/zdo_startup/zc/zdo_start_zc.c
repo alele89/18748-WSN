@@ -1,4 +1,4 @@
-/***************************************************************************
+/*************************************************************************
  *                      ZBOSS ZigBee Pro 2007 stack                         *
  *                                                                          *
  *          Copyright (c) 2012 DSR Corporation Denver CO, USA.              *
@@ -73,7 +73,9 @@ PURPOSE: Test for ZC application written using ZDO.
 
 NRK_STK Stack1[NRK_APP_STACKSIZE];
 nrk_task_type TaskOne;
+
 void zc_task(void);
+void task1_workload();
 
 void nrk_create_taskset();
 void nrk_register_drivers();
@@ -101,7 +103,6 @@ void data_indication(zb_uint8_t param) ;
 
 int main ()
 {
-    uint16_t div;
     nrk_setup_ports ();
     nrk_setup_uart (UART_BAUDRATE_115K2);
 
@@ -118,7 +119,6 @@ int main ()
 
     zb_task_config ();
     zb_nrk_init();
-    zb_init();
 
     nrk_create_taskset ();
     nrk_start ();
@@ -128,7 +128,7 @@ int main ()
 
 void nrk_create_taskset()
 {
-	nrk_task_set_entry_function( &TaskOne, zc_task);
+	TaskOne.task =  zc_task;
 	nrk_task_set_stk( &TaskOne, Stack1, NRK_APP_STACKSIZE);
 	TaskOne.prio = 1;
 	TaskOne.FirstActivation = TRUE;
@@ -142,11 +142,45 @@ void nrk_create_taskset()
 	TaskOne.offset.secs = 0;
 	TaskOne.offset.nano_secs= 0;
 
-	nrk_activate_task (&zc_task);
+	nrk_activate_task (&TaskOne);
 }
+
+#if 0
+void task1_workload()
+{
+	int count = 0;
+	while (1) {
+		printf("Count: %d\r\n", count++);
+		nrk_led_toggle(0);
+		nrk_led_toggle(1);
+		nrk_led_toggle(2);
+		nrk_led_toggle(3);
+
+		nrk_wait_until_next_period();
+	}
+}
+
+void nrk_create_taskset ()
+{
+	TaskOne.task = task1_workload;
+	nrk_task_set_stk( &TaskOne, Stack1, NRK_APP_STACKSIZE);
+	TaskOne.prio = 1;
+	TaskOne.FirstActivation = TRUE;
+	TaskOne.Type = BASIC_TASK;
+	TaskOne.SchType = PREEMPTIVE;
+	TaskOne.period.secs = 1;
+	TaskOne.period.nano_secs = 0;
+	TaskOne.cpu_reserve.secs = 1;
+	TaskOne.cpu_reserve.nano_secs = 0;
+	TaskOne.offset.secs = 0;
+	TaskOne.offset.nano_secs = 0;
+	nrk_activate_task (&TaskOne);
+}
+#endif
 
 void zc_task()
 {
+    
     /* 
      * Init device, load IB values from nvram or set it to default 
      * Resets g_zb and g_izb.
@@ -160,16 +194,24 @@ void zc_task()
 
     ZB_IEEE_ADDR_COPY(ZB_PIB_EXTENDED_ADDRESS(), &g_zc_addr);
     MAC_PIB().mac_pan_id = 0x1aaa;
-
+    
     /* let's always be coordinator */
     ZB_AIB().aps_designated_coordinator = 1;
-
+     
     if (zdo_dev_start() != RET_OK)
     {
         TRACE_MSG(TRACE_ERROR, "zdo_dev_start failed", (FMT__0));
     }
     else
     {
+        while (1) {
+		nrk_led_set(0);
+		nrk_led_set(1);
+		nrk_led_set(2);
+		nrk_led_set(3);
+
+		//nrk_wait_until_next_period();
+	}
         zdo_main_loop();
     }
 
@@ -178,7 +220,6 @@ void zc_task()
 
     MAIN_RETURN(0);
 #endif
-    return 0;
 }
 
 void zb_zdo_startup_complete(zb_uint8_t param) 

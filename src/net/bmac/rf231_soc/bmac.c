@@ -54,7 +54,7 @@ static NRK_STK bmac_task_stack[BMAC_STACKSIZE];
 static uint32_t rx_failure_cnt;
 
 static uint8_t tx_data_ready;
-static uint8_t rx_buf_empty;
+static uint8_t rx_buf_empty_bmac;
 static uint8_t bmac_running;
 static uint8_t pkt_got_ack;
 static uint8_t g_chan;
@@ -228,7 +228,7 @@ int8_t bmac_rx_pkt_set_buffer (uint8_t * buf, uint8_t size)
     return NRK_ERROR;
   bmac_rfRxInfo.pPayload = buf;
   bmac_rfRxInfo.max_length = size;
-  rx_buf_empty = 1;
+  rx_buf_empty_bmac = 1;
   return NRK_OK;
 }
 
@@ -274,7 +274,7 @@ int8_t bmac_init (uint8_t chan)
 
   tx_data_ready = 0;
   // Set the one main rx buffer
-  rx_buf_empty = 0;
+  rx_buf_empty_bmac = 0;
   bmac_rfRxInfo.pPayload = NULL;
   bmac_rfRxInfo.max_length = 0;
 
@@ -363,12 +363,12 @@ uint8_t *bmac_rx_pkt_get (uint8_t * len, int8_t * rssi)
 
 int8_t bmac_rx_pkt_ready (void)
 {
-  return (!rx_buf_empty);
+  return (!rx_buf_empty_bmac);
 }
 
 int8_t bmac_rx_pkt_release (void)
 {
-  rx_buf_empty = 1;
+  rx_buf_empty_bmac = 1;
   return NRK_OK;
 }
 
@@ -412,14 +412,14 @@ void bmac_nw_task ()
       v = 1;
 
 #ifdef BMAC_MOD_CCA
-      if (rx_buf_empty == 1)
+      if (rx_buf_empty_bmac == 1)
       {
 	 if (_bmac_rx () == 1) e = nrk_event_signal (bmac_rx_pkt_signal);
       }
       else
       e = nrk_event_signal (bmac_rx_pkt_signal);
 #else
-      if (rx_buf_empty == 1)
+      if (rx_buf_empty_bmac == 1)
         v = _bmac_channel_check ();
       // If the buffer is full, signal the receiving task again.
       else
@@ -448,8 +448,8 @@ void bmac_nw_task ()
 
       //do {
       nrk_wait (_bmac_check_period);
-      //      if(rx_buf_empty!=1)  nrk_event_signal (bmac_rx_pkt_signal);
-      //} while(rx_buf_empty!=1);
+      //      if(rx_buf_empty_bmac!=1)  nrk_event_signal (bmac_rx_pkt_signal);
+      //} while(rx_buf_empty_bmac!=1);
     }
     else {
       event = 0;
@@ -533,7 +533,7 @@ int8_t _bmac_rx ()
 */
 
 
-  rx_buf_empty = 0;
+  rx_buf_empty_bmac = 0;
 #ifdef DEBUG
   printf ("BMAC: SNR= %d [", bmac_rfRxInfo.rssi);
   for (uint8_t i = 0; i < bmac_rfRxInfo.length; i++)
