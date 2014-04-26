@@ -546,6 +546,7 @@ uint8_t zb_rf_tx_packet(uint8_t *buf, uint8_t frame_len)
     /* Disable auto ack for ZBOSS zigbee transmit using rf_auto_ack_disable */
     uint8_t need_ack = 0;
 
+
 	if(!rf_ready) 
 		return NRK_ERROR;
 	
@@ -555,7 +556,7 @@ uint8_t zb_rf_tx_packet(uint8_t *buf, uint8_t frame_len)
     /* add 2 for FCS */
 	*frame_start = frame_len + 2;
 	
-	vprintf("packet length: %d bytes\r\n", *frame_start);
+	printf("packet length: %d bytes\r\n", *frame_start);
 
 	/* Wait for radio to be in a ready state */
 	do{

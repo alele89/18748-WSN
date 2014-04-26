@@ -307,12 +307,13 @@ zb_ret_t zb_transceiver_send_fifo_packet(zb_uint8_t header_length,
 {
   zb_uint8_t *fc = ZB_BUF_BEGIN(buf);
   zb_uint8_t frame_len = ZB_BUF_LEN(buf);
+  zb_uint8_t retval = 10;
 
   TRACE_MSG(TRACE_MAC1, ">> zb_transceiver_send_fifo_packet ", (FMT__0));
-/*
-  TRACE_MSG(TRACE_MAC1, ">> zb_transceiver_send_fifo_packet, %d, addr %x, buf %p, state %hd", (FMT__D_D_P,
-                        (zb_uint16_t)header_length, fifo_addr, buf));
-*/
+
+  TRACE_MSG(TRACE_MAC1, ">> zb_transceiver_send_fifo_packet, %d, buf %p, state %hd", (FMT__D_P,
+                        (zb_uint16_t)header_length, buf));
+
   /* TODO: if acknowledgement is required for normal fifo, set ackreq
    * bit (SREG0x1B[2]) */
   /* we need to determine if our frame broadcast or not */
@@ -327,8 +328,10 @@ zb_ret_t zb_transceiver_send_fifo_packet(zb_uint8_t header_length,
                          && ZB_FCF_GET_ACK_REQUEST_BIT(fc));
 
 
-  if(zb_rf_tx_packet(buf, frame_len) != NRK_OK)
+  if( (retval = zb_rf_tx_packet(buf, frame_len)) != NRK_OK)
       TRACE_MSG(TRACE_MAC1, "--- RF_TX ERROR ---", (FMT__0));
+
+  //printf("send_fifo_packet:: retval %d\r\n", retval);
 
     /* The same bit is used to start normal and beacon fifio.
        If not joined yet (pac_pan_id is not set), do not request acks.

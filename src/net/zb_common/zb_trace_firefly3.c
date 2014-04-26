@@ -124,7 +124,7 @@ void zb_trace_msg_firefly3(zb_char_t *format, zb_char_t *file_name, zb_int_t lin
   va_end(arglist);
   if (format[strlen(format) - 1] != '\n')
   {
-    ZB_LOG_PRINTF("\n");
+    ZB_LOG_PRINTF("\r\n");
   }
 #else
   (void)file_name;
