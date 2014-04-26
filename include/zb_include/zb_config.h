@@ -600,8 +600,8 @@ If defined, platform is some 8051 clone
 /**
  NWK: if defined, implement tree routing
 */
-#define ZB_NWK_TREE_ROUTING
-#define ZB_NWK_MESH_ROUTING
+//#define ZB_NWK_TREE_ROUTING
+//#define ZB_NWK_MESH_ROUTING
 /**
  NWK: if defined, implement mesh routing
 */
@@ -690,37 +690,13 @@ If defined, platform is some 8051 clone
 /* C51 dosn't like long shifts, it just cut last two bytes. */
 #define ZB_TRANSCEIVER_ALL_CHANNELS_MASK   0x07FFF800 /* 0000.0111 1111.1111 1111.1000 0000.0000*/
 
-#ifndef ZB_NS_BUILD
-
-#if defined ZB_UZ2410 || defined ZB_CC25XX
-#define ZB_USE_RX_QUEUE
-/*this is currently unused and broken feature, we need to dump saver registers from queue, when entering */
-/* traffic dump function */
-/* #define ZB_RESERVED_REGS_DUMP              */
-#endif
-
-#if 0
-/**
- If defined, do not compile some features, even Mandatory, to fir into 64k ROM at 2410/64k device in Keil debug build.
-*/
-#define ZB_LIMITED_FEATURES
-#endif
-
-#ifndef ZB_PLATFORM_LINUX_ARM_2400
 /* #define ZB_DEFAULT_APS_CHANNEL_MASK ZB_TRANSCEIVER_ALL_CHANNELS_MASK */
-#define ZB_DEFAULT_APS_CHANNEL_MASK (1l<<14)
-#else
 /**
  Default value of ZB_AIB().aps_channel_mask
  Channels to be used for discovery and join. If here is single channel, not need to do energy scan.
  This definition often
 */
 #define ZB_DEFAULT_APS_CHANNEL_MASK ((1l<<15))
-#endif
-
-#else
-#define ZB_DEFAULT_APS_CHANNEL_MASK ((1l<<11)|(1l<<12))
-#endif
 
 /**
  Default duration to permit joining (currently infinite)
@@ -904,11 +880,11 @@ If defined, platform is some 8051 clone
 /**
  Disabling of processing of bind_req and end_device_bind_req for certification purposes
 */
-#define ZB_DISABLE_BIND_REQ
+//#define ZB_DISABLE_BIND_REQ
 //#define ZB_DISABLE_ED_BIND_REQ
 
 /*PRO STACK COMPATIBILITY, it's better to turn it on only when needed */
-#define ZB_PRO_COMPATIBLE
+//#define ZB_PRO_COMPATIBLE
 
 /**
  Default value for mac frame version subfield

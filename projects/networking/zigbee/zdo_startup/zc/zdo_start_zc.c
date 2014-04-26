@@ -108,6 +108,8 @@ int main ()
 
     nrk_init ();
 
+    printf("Hello world, from ZBOSS!!....\r\n");
+
     nrk_register_drivers();
 
     nrk_led_clr (0);
@@ -145,52 +147,14 @@ void nrk_create_taskset()
 	nrk_activate_task (&TaskOne);
 }
 
-#if 0
-void task1_workload()
-{
-	int count = 0;
-	while (1) {
-		printf("Count: %d\r\n", count++);
-		nrk_led_toggle(0);
-		nrk_led_toggle(1);
-		nrk_led_toggle(2);
-		nrk_led_toggle(3);
-
-		nrk_wait_until_next_period();
-	}
-}
-
-void nrk_create_taskset ()
-{
-	TaskOne.task = task1_workload;
-	nrk_task_set_stk( &TaskOne, Stack1, NRK_APP_STACKSIZE);
-	TaskOne.prio = 1;
-	TaskOne.FirstActivation = TRUE;
-	TaskOne.Type = BASIC_TASK;
-	TaskOne.SchType = PREEMPTIVE;
-	TaskOne.period.secs = 1;
-	TaskOne.period.nano_secs = 0;
-	TaskOne.cpu_reserve.secs = 1;
-	TaskOne.cpu_reserve.nano_secs = 0;
-	TaskOne.offset.secs = 0;
-	TaskOne.offset.nano_secs = 0;
-	nrk_activate_task (&TaskOne);
-}
-#endif
-
 void zc_task()
 {
-    
     /* 
      * Init device, load IB values from nvram or set it to default 
      * Resets g_zb and g_izb.
      * Initializes TRACE, sched, buffers, mac, nwk, aps, zdo
      * */
     zb_init();
-
-#ifdef ZB_SECURITY
-    ZG->nwk.nib.security_level = 0;
-#endif
 
     ZB_IEEE_ADDR_COPY(ZB_PIB_EXTENDED_ADDRESS(), &g_zc_addr);
     MAC_PIB().mac_pan_id = 0x1aaa;
@@ -203,23 +167,7 @@ void zc_task()
         TRACE_MSG(TRACE_ERROR, "zdo_dev_start failed", (FMT__0));
     }
     else
-    {
-        while (1) {
-		nrk_led_set(0);
-		nrk_led_set(1);
-		nrk_led_set(2);
-		nrk_led_set(3);
-
-		//nrk_wait_until_next_period();
-	}
         zdo_main_loop();
-    }
-
-#if 0
-    TRACE_DEINIT();
-
-    MAIN_RETURN(0);
-#endif
 }
 
 void zb_zdo_startup_complete(zb_uint8_t param) 
@@ -242,8 +190,6 @@ void zb_zdo_startup_complete(zb_uint8_t param)
 /*
    Trivial test: dump all APS data received
  */
-
-
 void data_indication(zb_uint8_t param) 
 {
     zb_uint8_t *ptr;
@@ -287,6 +233,7 @@ static void zc_send_data(zb_buf_t *buf, zb_uint16_t addr)
 void nrk_register_drivers()
 {
 /*
+ * TODO: wsn gr12 Need to fix this
     int8_t val;
     val = nrk_register_driver(&dev_manager_ff3_sensors, FIREFLY_3_SENSOR_BASIC);
     if (val == NRK_ERROR)

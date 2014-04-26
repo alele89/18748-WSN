@@ -260,14 +260,14 @@ void zb_nwk_neighbor_init() ;
 /**
    Start work with extended neighbor table: cut space from the base neighbor table
  */
-void zb_nwk_exneighbor_start() ;
+//void zb_nwk_exneighbor_start() ;
 #endif
 
 /**
    Stop work with extended neighbor table: move some entries to the base table,
    give all memory to the base
  */
-void zb_nwk_exneighbor_stop(zb_uint16_t parent_short_addr) ;
+//void zb_nwk_exneighbor_stop(zb_uint16_t parent_short_addr) ;
 
 /**
    Get extended neighbor table entry by short address
@@ -278,7 +278,7 @@ void zb_nwk_exneighbor_stop(zb_uint16_t parent_short_addr) ;
 
    @return RET_OK if success, error code if error
  */
-zb_ret_t zb_nwk_exneighbor_by_short(zb_address_pan_id_ref_t panid_ref, zb_uint16_t short_addr, zb_ext_neighbor_tbl_ent_t **enbt) ;
+//zb_ret_t zb_nwk_exneighbor_by_short(zb_address_pan_id_ref_t panid_ref, zb_uint16_t short_addr, zb_ext_neighbor_tbl_ent_t **enbt) ;
 
 /**
    Get extended neighbor table entry by long address

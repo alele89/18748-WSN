@@ -65,7 +65,7 @@ typedef struct zb_zcl_globals_s
   zb_zcl_cluster_t cluster[ZB_ZCL_CLUSTER_NUM]; /*!< Cluster array */
 } zb_zcl_globals_t;
 
-#define ZCL_CTX() ZG->zcl
+//#define ZCL_CTX() ZG->zcl
 
 /*! @} */
 

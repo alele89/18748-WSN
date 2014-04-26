@@ -112,13 +112,8 @@ void zb_sched_loop_iteration() /* ZB_KEIL_REENTRANT */
                    ent->param ? ZB_BUF_FROM_REF(ent->param)->u.hdr.len : -1
                     ));
 
-#ifndef SDCC
         (*ent->func)(ent->param);
-#else
-        /* SDCC wants reentrant functions when called via pointer here, but not
-         * need it when called using third function! */
-        sdcc_callf(ent->func, ent->param);
-#endif
+
         ZB_RING_BUFFER_FLUSH_GET(&ZG->sched.cb_q);
       }
     }
@@ -182,11 +177,6 @@ void zb_sched_loop_iteration() /* ZB_KEIL_REENTRANT */
   {
     ZB_TRANS_GO_IDLE();
     ZB_GO_IDLE();
-  }
-#endif
-#ifdef ZB_NS_BUILD
-  {
-    ZB_TRY_IO();
   }
 #endif
 }

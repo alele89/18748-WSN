@@ -104,23 +104,8 @@ static void init_config_attr()
 
 void zdo_main_loop()
 {
-  nrk_led_set(0);
-  nrk_led_set(1);
-
   while (1)
-  {
-    nrk_led_toggle(0);
-    nrk_led_toggle(1);
-    nrk_led_toggle(2);
-    nrk_led_toggle(3);
-    
     zb_sched_loop_iteration();
-
-    nrk_led_toggle(0);
-    nrk_led_toggle(1);
-    nrk_led_toggle(2);
-    nrk_led_toggle(3);
-  }
 }
 
 zb_ret_t zdo_dev_start() 
@@ -131,9 +116,6 @@ zb_ret_t zdo_dev_start()
 
   /* Startup procedure as defined in 2.5.5.5.6.2    Startup Procedure */
 
-#ifdef ZB_USE_NVRAM
-  zb_read_formdesc_data();
-#endif
   if (ZB_EXTPANID_IS_ZERO(ZB_NIB_EXT_PAN_ID()))
   {
     /* This call is here to take into account parameters changed after
@@ -296,6 +278,7 @@ void zb_nlme_join_indication(zb_uint8_t param)
 {
 #ifdef ZB_TRACE_LEVEL
   zb_nlme_join_indication_t *ind = ZB_GET_BUF_PARAM(ZB_BUF_FROM_REF(param), zb_nlme_join_indication_t);
+/*
   TRACE_MSG(TRACE_NWK1, "JOINED (st %hd) dev 0x%x/" TRACE_FORMAT_64 " cap: dev type %hd rx.w.i. %hd rejoin %hd secur %hd",
             (FMT__H_D_A_H_H_H_H,
              (zb_uint8_t)(((zb_buf_t *)ZB_BUF_FROM_REF(param))->u.hdr.status),
@@ -304,6 +287,7 @@ void zb_nlme_join_indication(zb_uint8_t param)
               ZB_MAC_CAP_GET_DEVICE_TYPE(ind->capability_information),
               ZB_MAC_CAP_GET_RX_ON_WHEN_IDLE(ind->capability_information),
               ind->rejoin_network, ind->secure_rejoin, ZB_NIB_SECURITY_LEVEL()));
+*/
 #endif
 
 #if defined ZB_SECURITY && defined ZB_COORDINATOR_ROLE
@@ -338,6 +322,7 @@ void zb_nlme_network_discovery_confirm(zb_uint8_t param)
 #ifdef ZB_TRACE_LEVEL
   for (i = 0 ; i < cnf->network_count ; ++i)
   {
+/*
     TRACE_MSG(TRACE_NWK1,
               "net %hd: xpanid " TRACE_FORMAT_64 ", ch %hd, s.prof %hd, zb v %hd, beacon_ord %hd, superf_ord %hd, permit_j %hd, rtr_cap %hd, ed_cap %hd", (FMT__H_A_H_H_H_H_H_H_H_H,
               i, TRACE_ARG_64(dsc->extended_pan_id),
@@ -346,6 +331,7 @@ void zb_nlme_network_discovery_confirm(zb_uint8_t param)
               (int)dsc->superframe_order, (int)dsc->permit_joining,
               (int)dsc->router_capacity, (int)dsc->end_device_capacity));
     dsc++;
+*/
   }
 #endif
 
@@ -445,12 +431,13 @@ void zb_nlme_join_confirm(zb_uint8_t param)
 
   if (confirm->status == 0)
   {
+/*
     TRACE_MSG(TRACE_COMMON1, "CONGRATULATIONS! joined status %hd, addr %d, xpanid " TRACE_FORMAT_64 ", ch %hd, addr 0x%x", (FMT__H_D_A_H_D,
                            confirm->status, confirm->network_address,
                            TRACE_ARG_64(confirm->extended_pan_id),
                            confirm->active_channel,
                            ZB_PIB_SHORT_ADDRESS()));
-
+*/
     ZG->zdo.handle.started = 0;
 
 #ifdef ZB_ROUTER_ROLE

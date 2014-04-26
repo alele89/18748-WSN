@@ -79,7 +79,7 @@ void zb_mlme_start_confirm(zb_uint8_t param)
      * Note that it is safe to call zb_nwk_exneighbor_stop() even if ext neighbor
      * was not started before.
      */
-    zb_nwk_exneighbor_stop(-1);
+    //zb_nwk_exneighbor_stop(-1);
 
     switch ( ZG->nwk.handle.state )
     {

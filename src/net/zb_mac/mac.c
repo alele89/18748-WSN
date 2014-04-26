@@ -285,9 +285,6 @@ void zb_mac_main_loop()
       zb_buf_t *buf = zb_get_in_buf();
       if (buf)
       {
-        /* We could call it directly */
-        /* ZB_SCHEDULE_MAC_CB(zb_mac_recv_data, ZB_REF_FROM_BUF(buf));*/
-        ZB_UBEC_CLEAR_RX_DATA_STATUS();
         zb_mac_recv_data(ZB_REF_FROM_BUF(buf));
         MAC_CTX().rx_need_buf = 0;
       }

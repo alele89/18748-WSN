@@ -283,7 +283,7 @@ zb_zcl_frame_short_t;
 /**
    Return next sequence number for ZCL frame
 */
-#define ZB_ZCL_GET_SEQ_NUM() (ZCL_CTX()->seq_number++)
+//#define ZB_ZCL_GET_SEQ_NUM() (ZCL_CTX()->seq_number++)
 
 
 /**

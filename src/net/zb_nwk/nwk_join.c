@@ -340,7 +340,7 @@ void zb_mlme_associate_confirm(zb_uint8_t param)
 #endif
 
       /* stop ext neighbor table - convert it to the normal neighbor. */
-      zb_nwk_exneighbor_stop(short_addr);
+      //zb_nwk_exneighbor_stop(short_addr);
 
       /*
        * 'parent' pointed to the ext neighbor and now is invalid.
@@ -462,7 +462,7 @@ static void zb_nlme_rejoin(zb_uint8_t param)
 
     /* Extend neighor table. */
 #ifndef ZB_ED_ROLE
-    zb_nwk_exneighbor_start();
+    //zb_nwk_exneighbor_start();
 #endif
 
     /* start active scan */
@@ -633,7 +633,7 @@ void zb_nlme_rejoin_scan_confirm(zb_uint8_t param)
   if ( ret != RET_OK )
   {
     ZG->nwk.handle.state = ZB_NLME_STATE_IDLE;
-    zb_nwk_exneighbor_stop(0);
+    //zb_nwk_exneighbor_stop(0);
     nwk_join_failure_confirm(param, ret);
   }
 
@@ -749,7 +749,7 @@ void zb_nlme_rejoin_response(zb_uint8_t param)
       ZB_EXTPANID_COPY(ZB_NIB_EXT_PAN_ID(), ZG->nwk.handle.tmp.rejoin.extended_pan_id);
 
       /* extended neighbor table is useless now */
-      zb_nwk_exneighbor_stop(ZG->nwk.handle.tmp.rejoin.parent->short_addr);
+      //zb_nwk_exneighbor_stop(ZG->nwk.handle.tmp.rejoin.parent->short_addr);
       ZG->nwk.handle.state = ZB_NLME_STATE_IDLE;
 
       {

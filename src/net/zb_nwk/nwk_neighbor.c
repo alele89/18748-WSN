@@ -71,6 +71,7 @@ void zb_nwk_neighbor_init()
 }
 
 #ifndef ZB_ED_ROLE
+#if 0
 void zb_nwk_exneighbor_start() 
 {
   zb_uint8_t cut;
@@ -156,7 +157,9 @@ void zb_nwk_exneighbor_start()
 
   TRACE_MSG(TRACE_NWK1, "<<exnb_start", (FMT__0));
 }
+#endif
 
+#if 0
 void zb_nwk_exneighbor_stop(zb_uint16_t parent_short_addr) 
 {
   zb_ret_t ret = RET_OK;
@@ -298,9 +301,11 @@ void zb_nwk_exneighbor_stop(zb_uint16_t parent_short_addr)
 
   TRACE_MSG(TRACE_NWK1, "<<exneighbor_stop", (FMT__0));
 }
+#endif
 #endif /* ZB_ED_ROLE */
 
 #ifdef ZB_ED_ROLE
+#if 0
 void zb_nwk_exneighbor_stop(zb_uint16_t parent_short_addr) 
 {
   zb_address_ieee_ref_t addr_ref;
@@ -359,8 +364,9 @@ void zb_nwk_exneighbor_stop(zb_uint16_t parent_short_addr)
   TRACE_MSG(TRACE_NWK1, "<<exneighbor_stop", (FMT__0));
 }
 #endif
+#endif
 
-
+#if 0
 zb_ret_t zb_nwk_exneighbor_by_short(zb_address_pan_id_ref_t panid_ref, zb_uint16_t short_addr,
                                     zb_ext_neighbor_tbl_ent_t **enbt) 
 {
@@ -389,7 +395,7 @@ fin:
 
   return ret;
 }
-
+#endif
 
 #ifndef ZB_LIMITED_FEATURES
 zb_ret_t zb_nwk_exneighbor_by_ieee(zb_address_pan_id_ref_t panid_ref, zb_ieee_addr_t long_addr, zb_ext_neighbor_tbl_ent_t **enbt) 

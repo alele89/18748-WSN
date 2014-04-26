@@ -34,6 +34,11 @@ SRC = $(TARGET).c
 # EXTRAINCDIRS += $(ROOT_DIR)/src/platform/include
 EXTRAINCDIRS =
 
+# The following defines are for ZBOSS stack compilation
+ZB_PLATFORM_DEFINES=  -DZB_PLATFORM_FIREFLY3 -DZB_LIMITED_FEATURES -DZB_LIMITED_FEATURES2 
+
+# This is where the ZBOSS sources and include directories are added
+include $(ROOT_DIR)/include/platform/$(PLATFORM)/zb_common.mk
 
 #  This is where the final compile and download happens
 include $(ROOT_DIR)/include/platform/$(PLATFORM)/common.mk

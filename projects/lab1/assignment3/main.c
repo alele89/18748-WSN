@@ -146,4 +146,6 @@ uint8_t kill_stack(uint8_t val)
 	return 0;
 }
 
-
+void zb_zdo_startup_complete(uint8_t param)
+{
+}

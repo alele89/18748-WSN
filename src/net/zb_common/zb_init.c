@@ -95,9 +95,6 @@ void zb_init()
   zb_aps_init();
   
   zb_zdo_init();
-#if 0  
-#endif 
-
 }
 
 

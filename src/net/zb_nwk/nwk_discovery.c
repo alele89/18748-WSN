@@ -86,7 +86,7 @@ void zb_nlme_network_discovery_request(zb_uint8_t param)
      * neighbor table */
     /* For ED neighbor table has size 1 for parent entrie only, and ext table has fixed size */
 #ifndef ZB_ED_ROLE
-    zb_nwk_exneighbor_start();
+    //zb_nwk_exneighbor_start();
 #endif
     /* Don't forget to call zb_nwk_exneighbor_stop() after successful join (not
      * discovery! ext neighbor used for potential parent search). */
@@ -223,7 +223,7 @@ void zb_mlme_beacon_notify_indication(zb_uint8_t param)
           if (ZB_FCF_GET_SRC_ADDRESSING_MODE(&mhr.frame_control) == ZB_ADDR_16BIT_DEV_OR_BROADCAST)
           {
             /* 16 bit address. */
-            ret = zb_nwk_exneighbor_by_short(panid_ref, mhr.src_addr.addr_short, &enbt);
+            //ret = zb_nwk_exneighbor_by_short(panid_ref, mhr.src_addr.addr_short, &enbt);
           }
 #ifndef ZB_LIMITED_FEATURES
           else
@@ -436,6 +436,7 @@ void zb_mlme_scan_confirm(zb_uint8_t param)
             {
               /* This ext pan id not found - add this PAN */
               zb_address_get_pan_id(ZG->nwk.neighbor.ext_neighbor[i].panid_ref, network_descriptor[j].extended_pan_id);
+              /*
               network_descriptor[j].logical_channel = ZG->nwk.neighbor.ext_neighbor[i].logical_channel;
               network_descriptor[j].stack_profile = ZG->nwk.neighbor.ext_neighbor[i].stack_profile;
               network_descriptor[j].zigbee_version = ZB_PROTOCOL_VERSION;
@@ -444,6 +445,7 @@ void zb_mlme_scan_confirm(zb_uint8_t param)
               network_descriptor[j].permit_joining = ZG->nwk.neighbor.ext_neighbor[i].permit_joining;
               network_descriptor[j].router_capacity = ZG->nwk.neighbor.ext_neighbor[i].router_capacity;
               network_descriptor[j].end_device_capacity = ZG->nwk.neighbor.ext_neighbor[i].end_device_capacity;
+              */
               n_nwk_dsc++;
             }
           }

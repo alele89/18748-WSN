@@ -161,7 +161,7 @@ void nwk_formation_ed_scan_confirm(zb_buf_t *buf)
   if ( ZG->nwk.handle.saved_req.formation.scan_channels )
   {
     /* Starn ext neighbor: will remember information about pan ids there */
-    zb_nwk_exneighbor_start();
+    //zb_nwk_exneighbor_start();
 
     /* call mac to make an active scan */
     ZB_MLME_BUILD_SCAN_REQUEST(buf, ZG->nwk.handle.saved_req.formation.scan_channels,

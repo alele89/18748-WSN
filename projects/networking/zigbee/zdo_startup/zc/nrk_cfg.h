@@ -51,7 +51,7 @@
 // is both RAM and ROM...
 #define NRK_MAX_TASKS       		4   
                            
-#define NRK_TASK_IDLE_STK_SIZE         256 // Idle task stack size min=32 
+#define NRK_TASK_IDLE_STK_SIZE         32 // Idle task stack size min=32 
 #define NRK_APP_STACKSIZE              256 
 #define BMAC_STACKSIZE                 256 
 #define NRK_KERNEL_STACKSIZE           256 

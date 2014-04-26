@@ -223,35 +223,6 @@ void zb_mlme_scan_step(zb_uint8_t param)
   {
     if (*unscanned_channels & 1l<<channel_number)
     {
-      if (scan_params->scan_type == ED_SCAN)
-      {
-        if (MAC_CTX().ed_scan_step_passed)
-        {
-#ifndef ZB_NS_BUILD
-          zb_uint8_t rssi_value;
-#endif
-          /* 11/23/11 CR:1855:MAJOR not sure: is it ok to get
-             rssi only once per channel? */
-          /* 11/23/11 CR:1855:MAJOR:DISCUSS Seems like it's ok.
-             We're using RSSI mode 1. Check zb_transceiver_get_rssi()
-             implementation for details. But I've moved it, and now
-             rssi is got right before next channel switching.
-          */
-#ifndef ZB_NS_BUILD
-          zb_transceiver_get_rssi(&rssi_value);
-          if (rssi_value > MAC_CTX().rt_ctx.ed_scan.max_rssi_value)
-          {
-            MAC_CTX().rt_ctx.ed_scan.max_rssi_value = rssi_value;
-          }
-#endif
-        }
-        else
-        {
-          MAC_CTX().ed_scan_step_passed = 1;
-        }
-
-        ret = ZB_SCHEDULE_ALARM(zb_mlme_scan_step, 0, timeout);
-      }
       TRACE_MSG(TRACE_MAC2, "set channel %hd", (FMT__H, channel_number));
       ZB_TRANSCEIVER_SET_CHANNEL(channel_number);
       *unscanned_channels &=~(1l<<channel_number);
@@ -265,13 +236,7 @@ void zb_mlme_scan_step(zb_uint8_t param)
           ret = zb_check_cmd_tx_status();
         }
       }
-      else if (scan_params->scan_type == ORPHAN_SCAN)
-      {
-#ifndef ZB_LIMITED_FEATURES
-        ret = zb_orphan_notification_command();
-        ZB_WAIT_FOR_TX();
-#endif
-      }
+      
       ZB_SCHEDULE_ALARM_CANCEL(zb_mlme_scan_step, 0);
       ret = ZB_SCHEDULE_ALARM(zb_mlme_scan_step, 0, timeout);
       break;
@@ -280,28 +245,6 @@ void zb_mlme_scan_step(zb_uint8_t param)
   if (channel_number == (ZB_MAC_START_CHANNEL_NUMBER + ZB_MAC_MAX_CHANNEL_NUMBER))
   {
     zb_mac_scan_confirm_t *scan_confirm;
-#ifdef ZB_MAC_TESTING_MODE
-    zb_buf_t *desc_list_buf;
-    zb_uint8_t desc_count = 0;
-    if (scan_type == ACTIVE_SCAN)
-    {
-      /* copy list of pan descriptors if it was formed. macAutoRequest case */
-      if (MAC_CTX().rt_ctx.active_scan.pan_desc_buf_param != ZB_UNDEFINED_BUFFER)
-      {
-        desc_list_buf = ZB_BUF_FROM_REF(MAC_CTX().rt_ctx.active_scan.pan_desc_buf_param);
-        ZB_BUF_COPY(MAC_CTX().pending_buf, desc_list_buf);
-        desc_count = ZB_BUF_LEN(desc_list_buf) / sizeof(zb_pan_descriptor_t);
-        TRACE_MSG(TRACE_MAC3, "copied %hd pan desc", (FMT__H, desc_count));
-        zb_free_buf(desc_list_buf);
-        MAC_CTX().rt_ctx.active_scan.pan_desc_buf_param = ZB_UNDEFINED_BUFFER;
-      }
-    }
-#endif /* ZB_MAC_TESTING_MODE */
-    if (scan_params->scan_type == ED_SCAN)
-    {
-      TRACE_MSG(TRACE_MAC1, "restoring original channel after ed_scan", (FMT__0));
-      ZB_TRANSCEIVER_SET_CHANNEL(MAC_CTX().rt_ctx.ed_scan.save_channel);
-    }
     /* There's no need to restore channel
        after active or orphan scan, because we will choose
        new channel, according to scan results.

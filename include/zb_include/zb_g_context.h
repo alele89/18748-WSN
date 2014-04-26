@@ -122,7 +122,7 @@ struct zb_globals_s
   zb_aps_globals_t        aps;
   zb_addr_globals_t       addr;
   zb_zdo_globals_t        zdo;
-  zb_zcl_globals_t        zcl;
+  //zb_zcl_globals_t        zcl;
 };
 
 /**
