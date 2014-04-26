@@ -45,14 +45,30 @@
 ****************************************************************************
 PURPOSE: Test for ZC application written using ZDO.
 */
+/* NanoRK includes */
+#include <nrk.h>
+#include <include.h>
+#include <ulib.h>
+#include <stdio.h>
+#include <avr/sleep.h>
+#include <hal.h>
+#include <nrk_error.h>
 
+#include <nrk_driver_list.h>
+#include <nrk_driver.h>
+#include <ff_basic_sensor.h>
 
+#include <stdlib.h>
+
+/* ZBOSS includes */
 #include "zb_common.h"
 #include "zb_scheduler.h"
 #include "zb_bufpool.h"
 #include "zb_nwk.h"
 #include "zb_aps.h"
 #include "zb_zdo.h"
+#include "zb_types.h"
+#include "zb_rf231_soc.h"
 
 #ifndef ZB_ED_ROLE
 #error define ZB_ED_ROLE to compile ze tests
@@ -60,11 +76,64 @@ PURPOSE: Test for ZC application written using ZDO.
 /*! \addtogroup ZB_TESTS */
 /*! @{ */
 
+NRK_STK Stack1[NRK_APP_STACKSIZE];
+nrk_task_type TaskOne;
+
+void ze_task(void);
+
+void nrk_create_taskset();
+void nrk_register_drivers();
+
 #define ZB_TEST_DUMMY_DATA_SIZE 10
 
 static void send_data(zb_uint8_t param) ;
 void data_indication(zb_uint8_t param) ;
 
+int main ()
+{
+    nrk_setup_ports ();
+    nrk_setup_uart (UART_BAUDRATE_115K2);
+
+    nrk_init ();
+
+    printf("Hello world, from ZBOSS!!....\r\n");
+
+    nrk_register_drivers();
+
+    nrk_led_clr (0);
+    nrk_led_clr (1);
+    nrk_led_clr (2);
+    nrk_led_clr (3);
+
+    nrk_time_set (0, 0);
+
+    zb_task_config ();
+    zb_nrk_init();
+
+    nrk_create_taskset ();
+    nrk_start ();
+
+    return 0;
+}
+
+void nrk_create_taskset()
+{
+	TaskOne.task =  ze_task;
+	nrk_task_set_stk( &TaskOne, Stack1, NRK_APP_STACKSIZE);
+	TaskOne.prio = 1;
+	TaskOne.FirstActivation = TRUE;
+	TaskOne.Type = BASIC_TASK;
+	TaskOne.SchType = PREEMPTIVE;
+    // wsn gr12 TODO: check the period. may need to change.
+	TaskOne.period.secs = 1;
+	TaskOne.period.nano_secs = 0;//0*NANOS_PER_MS;
+	TaskOne.cpu_reserve.secs = 0;
+	TaskOne.cpu_reserve.nano_secs = 0;//0*NANOS_PER_MS;
+	TaskOne.offset.secs = 0;
+	TaskOne.offset.nano_secs= 0;
+
+	nrk_activate_task (&TaskOne);
+}
 
 
 /*
@@ -72,27 +141,14 @@ void data_indication(zb_uint8_t param) ;
 */
 
 
-MAIN()
+void ze_task()
 {
-  ARGV_UNUSED;
-
-#if !(defined KEIL || defined SDCC || defined ZB_IAR )
-  if ( argc < 3 )
-  {
-    printf("%s <read pipe path> <write pipe path>\n", argv[0]);
-    return 0;
-  }
-#endif
-
-  /* Init device, load IB values from nvram or set it to default */
-#ifndef ZB8051
-  ZB_INIT("zdo_ze", argv[1], argv[2]);
-#else
-  ZB_INIT((char*)"zdo_ze", (char*)"3", (char*)"3");
-#endif
-#ifdef ZB_SECURITY
-  ZG->nwk.nib.security_level = 0;
-#endif
+   /* 
+     * Init device, load IB values from nvram or set it to default 
+     * Resets g_zb and g_izb.
+     * Initializes TRACE, sched, buffers, mac, nwk, aps, zdo
+     * */
+  zb_init();
   
   ZB_PIB_RX_ON_WHEN_IDLE() = ZB_TRUE;
 
@@ -105,9 +161,6 @@ MAIN()
     zdo_main_loop();
   }
 
-  TRACE_DEINIT();
-
-  MAIN_RETURN(0);
 }
 
 
@@ -172,6 +225,15 @@ void data_indication(zb_uint8_t param)
 }
 
 
-
+void nrk_register_drivers()
+{
+/*
+ * TODO: wsn gr12 Need to fix this
+    int8_t val;
+    val = nrk_register_driver(&dev_manager_ff3_sensors, FIREFLY_3_SENSOR_BASIC);
+    if (val == NRK_ERROR)
+        nrk_kprintf(PSTR("Failed to load ADC driver\r\n"));
+*/
+}
 
 /*! @} */

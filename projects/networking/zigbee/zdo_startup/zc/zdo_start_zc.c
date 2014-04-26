@@ -75,7 +75,6 @@ NRK_STK Stack1[NRK_APP_STACKSIZE];
 nrk_task_type TaskOne;
 
 void zc_task(void);
-void task1_workload();
 
 void nrk_create_taskset();
 void nrk_register_drivers();

@@ -3,13 +3,13 @@ PLATFORM = firefly3
 
 
 # Target file name (without extension).
-TARGET = main
+TARGET = zdo_start_ze
 
 # Set the Port that you programmer is connected to 
 PROGRAMMING_PORT = /dev/ttyUSB0 # programmer connected to serial device
 
 # Set this such that the nano-RK directory is the base path
-ROOT_DIR = ../../..
+ROOT_DIR = ../../../../../
 
 # Set platform specific defines 
 # The following will be defined based on the PLATFORM variable:
@@ -20,17 +20,25 @@ include $(ROOT_DIR)/include/platform.mk
 
 
 SRC = $(TARGET).c
+SRC += $(ROOT_DIR)/src/drivers/platform/$(PLATFORM_TYPE)/source/ff_basic_sensor.c
+SRC += $(ROOT_DIR)/src/drivers/platform/$(PLATFORM_TYPE)/source/twi_base_calls.c
 
 # Add extra source files. 
 # For example:
-SRC += $(ROOT_DIR)/src/net/bmac/$(RADIO)/bmac.c
+#SRC += $(ROOT_DIR)/src/net/bmac/$(RADIO)/bmac.c
 
 
 # Add extra includes files. 
 # For example:
 EXTRAINCDIRS =
-EXTRAINCDIRS += $(ROOT_DIR)/src/net/bmac
+#EXTRAINCDIRS += $(ROOT_DIR)/src/net/bmac
+#EXTRAINCDIRS += $(ROOT_DIR)/include/zb_include
 
+# The following defines are for ZBOSS stack compilation
+ZB_PLATFORM_DEFINES=  -DZB_ED_ROLE -DZB_PLATFORM_FIREFLY3 -DZB_LIMITED_FEATURES -DZB_LIMITED_FEATURES2 
+
+# This is where the ZBOSS sources and include directories are added
+include $(ROOT_DIR)/include/platform/$(PLATFORM)/zb_common.mk
 
 #  This is where the final compile and download happens
 include $(ROOT_DIR)/include/platform/$(PLATFORM)/common.mk
