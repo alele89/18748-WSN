@@ -89,7 +89,6 @@ void zb_aps_init()
 {
   zb_ushort_t i;
 
-  TRACE_MSG(TRACE_APS1, "+zb_aps_init", (FMT__0));
   /* Initialize APSIB */
   ZG->aps.aib.aps_counter = ZB_RANDOM();
 #ifdef APS_RETRANSMIT_TEST
@@ -103,8 +102,6 @@ void zb_aps_init()
   }
   ZG->aps.retrans.ack_buf = (zb_uint8_t)-1;
 
-
-  TRACE_MSG(TRACE_APS1, "-zb_aps_init", (FMT__0));
 }
 
 #ifndef ZB_LIMITED_FEATURES

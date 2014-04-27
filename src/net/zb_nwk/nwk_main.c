@@ -88,8 +88,6 @@ while(0)
 
 void zb_nwk_init()
 {
-  TRACE_MSG(TRACE_NWK1, "+nwk_init", (FMT__0));
-
   /* Initialize internal structures */
   zb_nwk_set_device_type((zb_nwk_device_type_t)ZB_NIB_DEVICE_TYPE());
 
@@ -105,12 +103,10 @@ void zb_nwk_init()
   zb_nwk_mesh_routing_init();
 #endif
 
-  TRACE_MSG(TRACE_NWK1, "-nwk_init", (FMT__0));
 }
 
 void zb_nwk_nib_init()
 {
-  TRACE_MSG(TRACE_NWK1, ">>nib_init", (FMT__0));
 
   ZG->nwk.nib.passive_ack_timeout = ZB_NWK_PASSIVE_ACK_TIMEOUT;
   ZG->nwk.nib.max_broadcast_retries = ZB_NWK_MAX_BROADCAST_RETRIES;
@@ -123,7 +119,6 @@ void zb_nwk_nib_init()
   ZG->nwk.nib.aps_rreq_addr = -1;
 #endif
 
-  TRACE_MSG(TRACE_NWK1, "<<nib_init", (FMT__0));
 }
 
 /*

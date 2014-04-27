@@ -267,7 +267,7 @@ zb_ret_t zb_beacon_request_command()
 
   ret = ZB_TRANS_SEND_COMMAND(mhr_len, MAC_CTX().operation_buf);
 
-  TRACE_MSG(TRACE_MAC2, "<< zb_beacon_request_command ret %i", (FMT__D, ret));
+  TRACE_MSG(TRACE_MAC1, "<< zb_beacon_request_command ret %i", (FMT__D, ret));
   return ret;
 }
 

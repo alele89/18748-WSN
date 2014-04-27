@@ -103,12 +103,13 @@ uint8_t rx_buf_empty;
 uint8_t rx_buf[RF_IO_BUF_SIZE];
 uint8_t tx_buf[RF_IO_BUF_SIZE];
 
-int8_t zb_nrk_init()
+int8_t zb_nrk_rf_init()
 {
     tx_data_ready = 0;
     // Set the one main rx buffer
     zb_rfRxInfo.pPayload = rx_buf;
     zb_rfRxInfo.max_length = RF_IO_BUF_SIZE;
+    printf("zb_nrk_rf_init: max_length:%d RF_IO_BUF_SIZE: %d \r\n", zb_rfRxInfo.max_length, RF_IO_BUF_SIZE);
 
     // Setup the cc2420 chip
     rf_power_up ();
@@ -121,9 +122,12 @@ int8_t zb_nrk_init()
     is_enabled = 1;
  
     _zb_check_period.secs = 0;
-    _zb_check_period.nano_secs = ZB_DEFAULT_CHECK_RATE_MS * NANOS_PER_MS;
+    //_zb_check_period.nano_secs = ZB_DEFAULT_CHECK_RATE_MS * NANOS_PER_MS;
+    _zb_check_period.nano_secs = 1000;
 
     rf_auto_ack_disable();
+
+    nrk_int_enable();
 
     return NRK_OK;
 }
@@ -137,7 +141,8 @@ void zb_task_config ()
   zb_task.Type = BASIC_TASK;
   zb_task.SchType = PREEMPTIVE;
   zb_task.period.secs = 0;
-  zb_task.period.nano_secs = ZB_MIN_CHECK_RATE_MS * NANOS_PER_MS;
+  //zb_task.period.nano_secs = ZB_MIN_CHECK_RATE_MS * NANOS_PER_MS;
+  zb_task.period.nano_secs = 1000;
   zb_task.cpu_reserve.secs = 0;       // zb reserve , 0 to disable
   zb_task.cpu_reserve.nano_secs = 0;
   zb_task.offset.secs = 0;
@@ -309,10 +314,10 @@ zb_ret_t zb_transceiver_send_fifo_packet(zb_uint8_t header_length,
   zb_uint8_t frame_len = ZB_BUF_LEN(buf);
   zb_uint8_t retval = 10;
 
-  TRACE_MSG(TRACE_MAC1, ">> zb_transceiver_send_fifo_packet ", (FMT__0));
-
-  TRACE_MSG(TRACE_MAC1, ">> zb_transceiver_send_fifo_packet, %d, buf %p, state %hd", (FMT__D_P,
-                        (zb_uint16_t)header_length, buf));
+  /*TRACE_MSG(TRACE_MAC1, ">> zb_transceiver_send_fifo_packet, %d, buf %p, state %hd", (FMT__D_P,
+                        (zb_uint16_t)header_length, buf));*/
+  TRACE_MSG(TRACE_MAC1, ">> zb_transceiver_send_fifo_packet, header len %d, frame_len %d", (FMT__D_D,
+                        (zb_uint16_t)header_length, frame_len));
 
   /* TODO: if acknowledgement is required for normal fifo, set ackreq
    * bit (SREG0x1B[2]) */

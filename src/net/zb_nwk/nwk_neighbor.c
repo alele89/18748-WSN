@@ -62,7 +62,6 @@ static zb_ret_t alloc_new_extneiboard(zb_address_pan_id_ref_t panid_ref, zb_uint
 
 void zb_nwk_neighbor_init() 
 {
-  TRACE_MSG(TRACE_NWK1, "nb_init", (FMT__0));
   ZB_MEMSET(&ZG->nwk.neighbor.addr_to_neighbor[0], -1, sizeof(ZG->nwk.neighbor.addr_to_neighbor));
   ZG->nwk.neighbor.base_neighbor_size = ZB_NEIGHBOR_TABLE_SIZE;
 #ifdef ZB_ED_ROLE

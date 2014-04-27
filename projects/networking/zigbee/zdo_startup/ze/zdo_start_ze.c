@@ -108,7 +108,7 @@ int main ()
     nrk_time_set (0, 0);
 
     zb_task_config ();
-    zb_nrk_init();
+    zb_nrk_rf_init();
 
     nrk_create_taskset ();
     nrk_start ();

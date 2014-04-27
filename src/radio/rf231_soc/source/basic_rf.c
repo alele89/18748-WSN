@@ -34,6 +34,7 @@
 #include <nrk_cpu.h>
 
 #define OSC_STARTUP_DELAY	1000
+#define RF_IO_BUF_SIZE  148
 //#define RADIO_CC2591
 //#define GLOSSY_TESTING
 
@@ -555,8 +556,11 @@ uint8_t zb_rf_tx_packet(uint8_t *buf, uint8_t frame_len)
 	/* Set the size of the packet */
     /* add 2 for FCS */
 	*frame_start = frame_len + 2;
-	
-	printf("packet length: %d bytes\r\n", *frame_start);
+	ieee_mac_frame_header_t *machead = frame_start+1;  
+    //machead->seq_num
+    //machead->src_addr
+
+	printf("TX: length: %d seqnum: %d\r\n", *frame_start, machead->seq_num);
 
 	/* Wait for radio to be in a ready state */
 	do{
@@ -688,6 +692,8 @@ int8_t rf_rx_packet_nonblock()
 	rfSettings.pRxInfo->srcAddr = machead->src_addr;
 	rfSettings.pRxInfo->length = TST_RX_LENGTH - sizeof(ieee_mac_frame_header_t) - 2;
 
+    printf("RX: length: %d sequence: %d \r\n", rfSettings.pRxInfo->length+sizeof(ieee_mac_frame_header_t)+2, machead->seq_num);
+
 	if((rfSettings.pRxInfo->length > rfSettings.pRxInfo->max_length)
 			|| (rfSettings.pRxInfo->length < 0)){
 		rx_ready = 0;
@@ -721,12 +727,20 @@ int8_t zb_rf_rx_packet_nonblock()
 	uint8_t *frame_start = &TRXFBST;
 
 	if(!rf_ready)
+    {
+        //printf("!rf_ready  RF\r\n");
 		return NRK_ERROR;
+    }
 
 	if(!rx_ready)
+    {
+        //printf("!rx ready RX\r\n");
 		return 0;
-	else if((TST_RX_LENGTH - 2) > rfSettings.pRxInfo->max_length)
+    }
+	else if((TST_RX_LENGTH - 2) > RF_IO_BUF_SIZE)
+    {
 		return NRK_ERROR;
+    }
 
 	ieee_mac_frame_header_t *machead = frame_start;
 
@@ -734,7 +748,9 @@ int8_t zb_rf_rx_packet_nonblock()
 	rfSettings.pRxInfo->srcAddr = machead->src_addr;
 	rfSettings.pRxInfo->length = TST_RX_LENGTH - 2; //- sizeof(ieee_mac_frame_header_t) ;
 
-	if((rfSettings.pRxInfo->length > rfSettings.pRxInfo->max_length)
+    printf("Packet received with sequence number %d and packet length %d \r\n", machead->seq_num, rfSettings.pRxInfo->length);
+
+	if((rfSettings.pRxInfo->length > RF_IO_BUF_SIZE)
 			|| (rfSettings.pRxInfo->length < 0)){
 		rx_ready = 0;
 		TRX_CTRL_2 &= ~(1 << RX_SAFE_MODE);

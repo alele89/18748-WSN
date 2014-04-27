@@ -73,10 +73,8 @@ void zb_zdo_init() ;
 
 void zb_init() 
 {
-  TRACE_MSG( TRACE_MAC1, ">>zb_init memset", (FMT__0 ));
   ZB_MEMSET((void*)&g_zb, 0, sizeof(zb_globals_t));
   ZB_MEMSET((void*)&g_izb, 0, sizeof(zb_intr_globals_t));
-  TRACE_MSG( TRACE_MAC1, "<<zb_init memset", (FMT__0 ));
   
   /* special trick for ns build run on 8051 simulator: get node number from the
    * rx pipe name  */

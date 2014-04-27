@@ -119,7 +119,7 @@ int main ()
     nrk_time_set (0, 0);
 
     zb_task_config ();
-    zb_nrk_init();
+    zb_nrk_rf_init();
 
     nrk_create_taskset ();
     nrk_start ();
@@ -172,7 +172,7 @@ void zc_task()
 void zb_zdo_startup_complete(zb_uint8_t param) 
 {
     zb_buf_t *buf = ZB_BUF_FROM_REF(param);
-    TRACE_MSG(TRACE_APS3, ">>zb_zdo_startup_complete status %d", (FMT__D, (int)buf->u.hdr.status));
+    TRACE_MSG(TRACE_APS1, ">>zb_zdo_startup_complete status %d", (FMT__D, (int)buf->u.hdr.status));
     if (buf->u.hdr.status == 0)
     {
         TRACE_MSG(TRACE_APS1, "Device STARTED OK", (FMT__0));
@@ -180,7 +180,7 @@ void zb_zdo_startup_complete(zb_uint8_t param)
     }
     else
     {
-        TRACE_MSG(TRACE_ERROR, "Device start FAILED status %d", (FMT__D, (int)buf->u.hdr.status));
+        TRACE_MSG(TRACE_APS1, "Device start FAILED status %d", (FMT__D, (int)buf->u.hdr.status));
     }
     zb_free_buf(buf);
 }

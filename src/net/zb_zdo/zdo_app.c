@@ -190,7 +190,6 @@ zb_ret_t zdo_dev_start()
      * find the channel. */
   }
   //temp trace
-  TRACE_MSG(TRACE_APS1, "return now", (FMT__0));
   return ret;
 }
 

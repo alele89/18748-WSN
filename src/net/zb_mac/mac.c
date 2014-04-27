@@ -66,7 +66,6 @@ static zb_bool_t mac_is_frame_visible(zb_mac_mhr_t *mhr);
 
 void zb_mac_init() /* __reentrant for sdcc, to save DSEG space */
 {
-  TRACE_MSG( TRACE_MAC1, ">>mac_init", (FMT__0 ));
 
   /* Q: Do we really need all that parameters to be
      configurable at runtime? Maybe, use constants instead?
@@ -147,7 +146,6 @@ void zb_mac_init() /* __reentrant for sdcc, to save DSEG space */
   }
 #endif
 
-  TRACE_MSG( TRACE_MAC1, "<<mac_init", (FMT__0 ));
 }
 
 
@@ -511,7 +509,6 @@ void zb_mac_fill_mhr(zb_uint8_t *ptr, zb_mac_mhr_t *mhr)
 {
   zb_uint8_t val;
 
-  TRACE_MSG( TRACE_MAC1, ">>mac_fill_mhr", (FMT__0));
   ZB_ASSERT(ptr && mhr);
 
   /* mac spec 7.2.1 General MAC frame format */
@@ -562,7 +559,6 @@ void zb_mac_fill_mhr(zb_uint8_t *ptr, zb_mac_mhr_t *mhr)
     }
   }
   /* TODO: add Aux Security Header (for MAC security only - not for ZB 2007) */
-  TRACE_MSG( TRACE_MAC1, "<<mac_fill_mhr", (FMT__0));
 }
 
 /*
