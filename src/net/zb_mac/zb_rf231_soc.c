@@ -255,7 +255,7 @@ void zb_nw_task ()
 //no need rf_power_down as it is causing errors in transmit and really,
 //we are not looking to save power now
         rf_rx_off ();
-        rf_power_down ();
+        //rf_power_down ();
         //TODO wsn gr 12 changing this to nrk_wait_until_next_period
         //nrk_wait (_zb_check_period);
         nrk_wait_until_next_period();
