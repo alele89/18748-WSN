@@ -96,8 +96,6 @@ int main ()
 
     nrk_init ();
 
-    printf("Hello world, from ZBOSS!!....\r\n");
-
     nrk_register_drivers();
 
     nrk_led_clr (0);
@@ -106,6 +104,8 @@ int main ()
     nrk_led_clr (3);
 
     nrk_time_set (0, 0);
+
+    printf("Hello World from ZBOSS ZE..\r\n");
 
     zb_task_config ();
     zb_nrk_rf_init();

@@ -509,6 +509,7 @@ void zb_mac_fill_mhr(zb_uint8_t *ptr, zb_mac_mhr_t *mhr)
 {
   zb_uint8_t val;
 
+  TRACE_MSG( TRACE_MAC1, ">>mac_fill_mhr", (FMT__0));
   ZB_ASSERT(ptr && mhr);
 
   /* mac spec 7.2.1 General MAC frame format */
@@ -559,6 +560,7 @@ void zb_mac_fill_mhr(zb_uint8_t *ptr, zb_mac_mhr_t *mhr)
     }
   }
   /* TODO: add Aux Security Header (for MAC security only - not for ZB 2007) */
+  TRACE_MSG( TRACE_MAC1, "<<mac_fill_mhr", (FMT__0));
 }
 
 /*
@@ -935,6 +937,9 @@ void zb_mac_indirect_data_timeout(zb_uint8_t param)
 
 zb_ret_t zb_check_cmd_tx_status()
 {
+  return RET_OK;
+// TODO: wsn gr12 Need to write logic for this
+#if 0
 #if defined ZB_NS_BUILD
   return RET_OK;
 #else
@@ -953,6 +958,7 @@ zb_ret_t zb_check_cmd_tx_status()
   }
   TRACE_MSG(TRACE_MAC2, "cmd tx status %i", (FMT__D, ret));
   return ret;
+#endif
 #endif
 }
 

@@ -78,10 +78,9 @@ PURPOSE: to port ZBOSS v1 onto Firefly3.
 #define ZB_STACKSIZE 128
 #endif
 //TODO wsn gr12 need to check the period 
-#define ZB_DEFAULT_CHECK_RATE_MS  100
+#define ZB_DEFAULT_CHECK_RATE_MS  16
 #define ZB_TASK_PRIORITY 20
-#define ZB_MIN_CHECK_RATE_MS 20
-#define ZB_DEFAULT_CHECK_RATE_MS 1000
+#define ZB_MIN_CHECK_RATE_MS 16
 #define RF_IO_BUF_SIZE 148
 
 static nrk_task_type zb_task;
@@ -109,7 +108,6 @@ int8_t zb_nrk_rf_init()
     // Set the one main rx buffer
     zb_rfRxInfo.pPayload = rx_buf;
     zb_rfRxInfo.max_length = RF_IO_BUF_SIZE;
-    printf("zb_nrk_rf_init: max_length:%d RF_IO_BUF_SIZE: %d \r\n", zb_rfRxInfo.max_length, RF_IO_BUF_SIZE);
 
     // Setup the cc2420 chip
     rf_power_up ();
@@ -122,8 +120,8 @@ int8_t zb_nrk_rf_init()
     is_enabled = 1;
  
     _zb_check_period.secs = 0;
-    //_zb_check_period.nano_secs = ZB_DEFAULT_CHECK_RATE_MS * NANOS_PER_MS;
-    _zb_check_period.nano_secs = 1000;
+    _zb_check_period.nano_secs = ZB_DEFAULT_CHECK_RATE_MS * NANOS_PER_MS;
+    //_zb_check_period.nano_secs = 100000;
 
     rf_auto_ack_disable();
 
@@ -141,8 +139,8 @@ void zb_task_config ()
   zb_task.Type = BASIC_TASK;
   zb_task.SchType = PREEMPTIVE;
   zb_task.period.secs = 0;
-  //zb_task.period.nano_secs = ZB_MIN_CHECK_RATE_MS * NANOS_PER_MS;
-  zb_task.period.nano_secs = 1000;
+  zb_task.period.nano_secs = ZB_MIN_CHECK_RATE_MS * NANOS_PER_MS;
+  //zb_task.period.nano_secs = 100000;
   zb_task.cpu_reserve.secs = 0;       // zb reserve , 0 to disable
   zb_task.cpu_reserve.nano_secs = 0;
   zb_task.offset.secs = 0;
@@ -252,10 +250,15 @@ void zb_nw_task ()
         //if (tx_data_ready == 1) {
           //  _zb_tx ();
         //}
+//TODO wsn gr12
+//no need rf_rx_off -> rx_ready = 0 done in zb_rf_rx_nonblock NOT TRUE!
+//no need rf_power_down as it is causing errors in transmit and really,
+//we are not looking to save power now
         rf_rx_off ();
         rf_power_down ();
-
-        nrk_wait (_zb_check_period);
+        //TODO wsn gr 12 changing this to nrk_wait_until_next_period
+        //nrk_wait (_zb_check_period);
+        nrk_wait_until_next_period();
     }
 }
 
@@ -265,6 +268,7 @@ void zb_transceiver_set_channel(zb_uint8_t channel_number)
   MAC_CTX().current_channel = channel_number;
   rf_power_up ();
   g_chan = channel_number;
+  //rf_init (&zb_rfRxInfo, channel_number, 0xFFFF, 0x00000);
   rf_set_rx(&zb_rfRxInfo, channel_number);
 }
 
@@ -333,7 +337,7 @@ zb_ret_t zb_transceiver_send_fifo_packet(zb_uint8_t header_length,
                          && ZB_FCF_GET_ACK_REQUEST_BIT(fc));
 
 
-  if( (retval = zb_rf_tx_packet(buf, frame_len)) != NRK_OK)
+  if( (retval = zb_rf_tx_packet(fc, frame_len)) != NRK_OK)
       TRACE_MSG(TRACE_MAC1, "--- RF_TX ERROR ---", (FMT__0));
 
   //printf("send_fifo_packet:: retval %d\r\n", retval);

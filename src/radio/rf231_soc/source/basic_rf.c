@@ -33,6 +33,9 @@
 #include <nrk_timer.h>
 #include <nrk_cpu.h>
 
+/* ZBOSS include */
+#include "zb_rf_internal.h"
+
 #define OSC_STARTUP_DELAY	1000
 #define RF_IO_BUF_SIZE  148
 //#define RADIO_CC2591
@@ -66,7 +69,7 @@ typedef struct ieee_mac_frame_header{
 
 	uint16_t dest_pan_id;
 	uint16_t dest_addr;
-	//uint16_t src_pan_id;
+	uint16_t src_pan_id;
 	uint16_t src_addr;
 	/*uint16_t sec_header; */
 } ieee_mac_frame_header_t;
@@ -473,8 +476,6 @@ uint8_t rf_tx_packet_repeat(RF_TX_INFO *pRTI, uint16_t ms)
 	/* Set the size of the packet */
 	*frame_start = sizeof(ieee_mac_frame_header_t) + pRTI->length + 2;
 	
-	vprintf("packet length: %d bytes\r\n", *frame_start);
-
 	/* Wait for radio to be in a ready state */
 	do{
 		trx_status = (TRX_STATUS & 0x1F);
@@ -546,21 +547,48 @@ uint8_t zb_rf_tx_packet(uint8_t *buf, uint8_t frame_len)
     uint16_t ms = 0;
     /* Disable auto ack for ZBOSS zigbee transmit using rf_auto_ack_disable */
     uint8_t need_ack = 0;
+    
+/*
+    zb_rf_mac_mhr_t *mhr;
+    mhr = buf;
+    ieee_mac_frame_header_t *machead = frame_start+1;
+    ieee_mac_fcf_t fcf;
 
+    fcf.frame_type = ZB_RF_FCF_GET_FRAME_TYPE(mhr->frame_control);
+	fcf.sec_en = ZB_RF_FCF_GET_SECURITY_BIT(mhr->frame_control);
+	fcf.frame_pending = ZB_RF_FCF_GET_FRAME_PENDING_BIT(mhr->frame_control);
+	fcf.ack_request = ZB_RF_FCF_GET_ACK_REQUEST_BIT(mhr->frame_control);
+	fcf.intra_pan = ZB_RF_FCF_GET_PANID_COMPRESSION_BIT(mhr->frame_control);
+	fcf.res = 0;
+	fcf.dest_addr_mode = ZB_RF_FCF_GET_DST_ADDRESSING_MODE(mhr->frame_control);
+	fcf.frame_version = ZB_RF_FCF_GET_FRAME_VERSION(mhr->frame_control);
+	fcf.src_addr_mode = ZB_RF_FCF_GET_SRC_ADDRESSING_MODE(mhr->frame_control);
+
+    fcf.frame_type = 3;
+	fcf.sec_en = 0;
+	fcf.frame_pending = 0;
+	fcf.ack_request = 0;
+	fcf.intra_pan = 0;
+	fcf.res = 0;
+	fcf.dest_addr_mode = 2;
+	fcf.frame_version = 0;
+	fcf.src_addr_mode = 0;
+
+    machead->fcf = fcf;
+*/
 
 	if(!rf_ready) 
 		return NRK_ERROR;
 	
-	/* Copy data payload into packet */
+	/* Copy macheader and data payload into packet */
 	memcpy(frame_start+1, buf, frame_len);
+
 	/* Set the size of the packet */
     /* add 2 for FCS */
 	*frame_start = frame_len + 2;
-	ieee_mac_frame_header_t *machead = frame_start+1;  
-    //machead->seq_num
-    //machead->src_addr
-
-	printf("TX: length: %d seqnum: %d\r\n", *frame_start, machead->seq_num);
+    //printf("f0 %x f1 %x \r\n", *(uint8_t *)&machead->fcf, *(uint8_t *)&machead->fcf+1);
+    //printf("frtype %d sec %d dadm %d\r\n", machead->fcf.frame_type, machead->fcf.sec_en
+      //      , machead->fcf.dest_addr_mode);
 
 	/* Wait for radio to be in a ready state */
 	do{
@@ -692,8 +720,6 @@ int8_t rf_rx_packet_nonblock()
 	rfSettings.pRxInfo->srcAddr = machead->src_addr;
 	rfSettings.pRxInfo->length = TST_RX_LENGTH - sizeof(ieee_mac_frame_header_t) - 2;
 
-    printf("RX: length: %d sequence: %d \r\n", rfSettings.pRxInfo->length+sizeof(ieee_mac_frame_header_t)+2, machead->seq_num);
-
 	if((rfSettings.pRxInfo->length > rfSettings.pRxInfo->max_length)
 			|| (rfSettings.pRxInfo->length < 0)){
 		rx_ready = 0;
@@ -728,7 +754,7 @@ int8_t zb_rf_rx_packet_nonblock()
 
 	if(!rf_ready)
     {
-        //printf("!rf_ready  RF\r\n");
+        printf("!rf_ready  RF\r\n");
 		return NRK_ERROR;
     }
 
@@ -739,6 +765,7 @@ int8_t zb_rf_rx_packet_nonblock()
     }
 	else if((TST_RX_LENGTH - 2) > RF_IO_BUF_SIZE)
     {
+        printf("Lenerr %d \r\n", (TST_RX_LENGTH - 2));
 		return NRK_ERROR;
     }
 
@@ -747,8 +774,10 @@ int8_t zb_rf_rx_packet_nonblock()
 	rfSettings.pRxInfo->seqNumber = machead->seq_num;
 	rfSettings.pRxInfo->srcAddr = machead->src_addr;
 	rfSettings.pRxInfo->length = TST_RX_LENGTH - 2; //- sizeof(ieee_mac_frame_header_t) ;
+    
+    printf("frtype %d sec %d sadm %d\r\n", machead->fcf.frame_type, machead->fcf.sec_en, machead->fcf.src_addr_mode);
 
-    printf("Packet received with sequence number %d and packet length %d \r\n", machead->seq_num, rfSettings.pRxInfo->length);
+    //printf("Packet received with sequence number %d and packet length %d \r\n", machead->seq_num, rfSettings.pRxInfo->length);
 
 	if((rfSettings.pRxInfo->length > RF_IO_BUF_SIZE)
 			|| (rfSettings.pRxInfo->length < 0)){
@@ -784,6 +813,7 @@ SIGNAL(TRX24_RX_END_vect)
 
 	/* Verbose mode print block */
 	vprintf("RX_END IRQ!\r\n");	
+	printf("RX_END IRQ!\r\n");	
 	for(i=0; i<TST_RX_LENGTH; i++){
 		vprintf("0x%02x ", byte_ptr[i]);
 		if(((i+1) % 16) == 0)

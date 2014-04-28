@@ -220,7 +220,7 @@ zb_ret_t zb_beacon_request_command()
   3. Set command frame id = 0x07 (Beacon request)
 */
 
-  TRACE_MSG(TRACE_MAC2, "+zb_beacon_request_command", (FMT__0));
+  TRACE_MSG(TRACE_MAC1, ">> zb_beacon_request_command", (FMT__0));
 
 /* Fill Frame Controll then call zb_mac_fill_mhr() */
 /*
@@ -264,6 +264,8 @@ zb_ret_t zb_beacon_request_command()
   *(ptr + mhr_len) = MAC_CMD_BEACON_REQUEST;
 
   MAC_ADD_FCS(MAC_CTX().operation_buf);
+
+  printf("fcf: %x %x seqn %d sadr %d \r\n", mhr.frame_control[0], mhr.frame_control[1], mhr.seq_number, mhr.src_addr);
 
   ret = ZB_TRANS_SEND_COMMAND(mhr_len, MAC_CTX().operation_buf);
 
