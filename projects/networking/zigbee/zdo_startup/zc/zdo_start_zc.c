@@ -79,7 +79,7 @@ void zc_task(void);
 void nrk_create_taskset();
 void nrk_register_drivers();
 
-#define ZB_TEST_DUMMY_DATA_SIZE 10
+#define ZB_TEST_DUMMY_DATA_SIZE 1
 
 zb_ieee_addr_t g_zc_addr = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa};
 

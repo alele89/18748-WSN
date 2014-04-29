@@ -677,8 +677,7 @@ uint8_t zb_rf_tx_packet(RF_TX_INFO *pRTI, uint16_t ms)
 
 	if(!rf_ready) 
 		return NRK_ERROR;
-
-#if 0
+    pRTI->ackRequest = 0;
 	ieee_mac_frame_header_t *machead = frame_start + 1;
 	ieee_mac_fcf_t fcf;
 
@@ -711,12 +710,16 @@ uint8_t zb_rf_tx_packet(RF_TX_INFO *pRTI, uint16_t ms)
 	
 	/* Copy data payload into packet */
 	data_start = frame_start + sizeof(ieee_mac_frame_header_t) + 1;
-#endif
+	memcpy(data_start, pRTI->pPayload, pRTI->length);
+	/* Set the size of the packet */
+	*frame_start = sizeof(ieee_mac_frame_header_t) + pRTI->length + 2;
+#if 0
 	rfSettings.txSeqNumber++;
 
 	memcpy(frame_start+1, pRTI->pPayload, pRTI->length);
 	/* Set the size of the packet */
 	*frame_start = pRTI->length + 2;
+#endif
 	
 	/* Wait for radio to be in a ready state */
 	do{

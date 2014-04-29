@@ -84,7 +84,9 @@ void ze_task(void);
 void nrk_create_taskset();
 void nrk_register_drivers();
 
-#define ZB_TEST_DUMMY_DATA_SIZE 10
+#define ZB_TEST_DUMMY_DATA_SIZE 1
+
+zb_ieee_addr_t g_zc_addr = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xab};
 
 static void send_data(zb_uint8_t param) ;
 void data_indication(zb_uint8_t param) ;
@@ -149,6 +151,9 @@ void ze_task()
      * Initializes TRACE, sched, buffers, mac, nwk, aps, zdo
      * */
   zb_init();
+
+  ZB_IEEE_ADDR_COPY(ZB_NIB_EXT_PAN_ID(), &g_zc_addr);
+  MAC_PIB().mac_pan_id = 0x1aaa;
   
   ZB_PIB_RX_ON_WHEN_IDLE() = ZB_TRUE;
 
@@ -176,7 +181,9 @@ void zb_zdo_startup_complete(zb_uint8_t param)
   }
   else
   {
-    TRACE_MSG(TRACE_ERROR, "Device started FAILED status %d", (FMT__D, (int)buf->u.hdr.status));
+    //TRACE_MSG(TRACE_ERROR, "Device started FAILED status %d", (FMT__D, (int)buf->u.hdr.status));
+    zb_af_set_data_indication(data_indication);
+    ZB_SCHEDULE_ALARM(send_data, param, 195);
     zb_free_buf(buf);
   }
 }
