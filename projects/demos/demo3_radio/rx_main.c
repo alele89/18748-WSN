@@ -90,6 +90,7 @@ void rx_task ()
   bmac_rx_pkt_set_buffer (rx_buf, RF_MAX_PAYLOAD_SIZE);
 
   while (1) {
+    printf("Hello from rx task\r\n");
     // Wait until an RX packet is received
     val = bmac_wait_until_rx_pkt ();
     // Get the RX packet 
@@ -141,6 +142,7 @@ void tx_task ()
 
   cnt = 0;
   while (1) {
+printf("Hello from TX task\r\n");
     // Build a TX packet
     sprintf (tx_buf, "This is a test %d", cnt);
     cnt++;
@@ -180,7 +182,7 @@ void nrk_create_taskset ()
   RX_TASK.offset.secs = 0;
   RX_TASK.offset.nano_secs = 0;
   nrk_activate_task (&RX_TASK);
-
+/*
   TX_TASK.task = tx_task;
   nrk_task_set_stk( &TX_TASK, tx_task_stack, NRK_APP_STACKSIZE);
   TX_TASK.prio = 1;
@@ -194,5 +196,5 @@ void nrk_create_taskset ()
   TX_TASK.offset.secs = 0;
   TX_TASK.offset.nano_secs = 0;
   nrk_activate_task (&TX_TASK);
-
+*/
 }

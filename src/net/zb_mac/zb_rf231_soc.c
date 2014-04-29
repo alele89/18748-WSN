@@ -75,10 +75,10 @@ PURPOSE: to port ZBOSS v1 onto Firefly3.
 
 /* definitions for zb_nw_task */
 #ifndef ZB_STACKSIZE
-#define ZB_STACKSIZE 128
+#define ZB_STACKSIZE 256
 #endif
 //TODO wsn gr12 need to check the period 
-#define ZB_DEFAULT_CHECK_RATE_MS  16
+#define ZB_DEFAULT_CHECK_RATE_MS  100
 #define ZB_TASK_PRIORITY 20
 #define ZB_MIN_CHECK_RATE_MS 16
 #define RF_IO_BUF_SIZE 148
@@ -87,7 +87,7 @@ static nrk_task_type zb_task;
 static NRK_STK zb_task_stack[ZB_STACKSIZE];
 static uint32_t rx_failure_cnt;
 
-static uint8_t tx_data_ready;
+volatile static uint8_t tx_data_ready;
 static uint8_t zb_running;
 static uint8_t pkt_got_ack; // wsn gr12 needed??
 static uint8_t g_chan;
@@ -98,6 +98,7 @@ static nrk_time_t _zb_check_period;
 RF_RX_INFO zb_rfRxInfo;
 RF_TX_INFO zb_rfTxInfo;
 
+static uint8_t cca_active;
 uint8_t rx_buf_empty;
 uint8_t rx_buf[RF_IO_BUF_SIZE];
 uint8_t tx_buf[RF_IO_BUF_SIZE];
@@ -105,25 +106,40 @@ uint8_t tx_buf[RF_IO_BUF_SIZE];
 int8_t zb_nrk_rf_init()
 {
     tx_data_ready = 0;
+    rx_buf_empty = 1;
+    cca_active = true;
+    rx_failure_cnt = 0;
+
     // Set the one main rx buffer
     zb_rfRxInfo.pPayload = rx_buf;
     zb_rfRxInfo.max_length = RF_IO_BUF_SIZE;
+
+    _zb_check_period.secs = 0;
+    _zb_check_period.nano_secs = ZB_DEFAULT_CHECK_RATE_MS * NANOS_PER_MS;
+    //_zb_check_period.nano_secs = 100000;
+    zb_rx_pkt_signal = nrk_signal_create ();
+    if (zb_rx_pkt_signal == NRK_ERROR) {
+        nrk_kprintf (PSTR ("ZB ERROR: creating rx signal failed\r\n"));
+        nrk_kernel_error_add (NRK_SIGNAL_CREATE_ERROR, nrk_cur_task_TCB->task_ID);
+        return NRK_ERROR;
+    }
+    zb_tx_pkt_done_signal = nrk_signal_create ();
+    if (zb_tx_pkt_done_signal == NRK_ERROR) {
+        nrk_kprintf (PSTR ("ZB ERROR: creating tx signal failed\r\n"));
+        nrk_kernel_error_add (NRK_SIGNAL_CREATE_ERROR, nrk_cur_task_TCB->task_ID);
+        return NRK_ERROR;
+    }
 
     // Setup the cc2420 chip
     rf_power_up ();
     rf_init (&zb_rfRxInfo, ZB_MAC_START_CHANNEL_NUMBER, 0xFFFF, 0x00000);
     g_chan = ZB_MAC_START_CHANNEL_NUMBER;
-    rx_buf_empty = 1;
 
     rf_set_cca_thresh (0x0);
     zb_running = 1;
     is_enabled = 1;
- 
-    _zb_check_period.secs = 0;
-    _zb_check_period.nano_secs = ZB_DEFAULT_CHECK_RATE_MS * NANOS_PER_MS;
-    //_zb_check_period.nano_secs = 100000;
-
-    rf_auto_ack_disable();
+    
+    //rf_auto_ack_disable();
 
     nrk_int_enable();
 
@@ -152,6 +168,235 @@ void zb_task_config ()
   nrk_activate_task (&zb_task);
 }
 
+int8_t _zb_channel_check ()
+{
+  int8_t val = 0;
+
+  rf_rx_on ();
+  val += rf_cca_check ();
+  val += rf_cca_check ();
+  val += rf_cca_check ();
+  if (val > 1)
+    val = 1;
+  rf_rx_off ();
+  return val;
+}
+
+// Assuming that CCA returned 1 and a packet is on its way
+// Receive the packet or timeout and error
+int8_t _zb_rx ()
+{
+  int8_t n;
+  uint8_t cnt;
+
+  rf_rx_on ();
+  cnt = 0;
+//printf( "calling rx\r\n" );
+  dummy_t.secs = 0;
+  dummy_t.nano_secs = 5 * NANOS_PER_MS;
+  nrk_wait (dummy_t);
+
+  n = zb_rf_rx_packet_nonblock ();
+
+  if (n != NRK_OK) {
+    if (rx_failure_cnt < 65535)
+      rx_failure_cnt++;
+    rf_rx_off ();
+    return 0;
+  }
+
+/*while ( rf_rx_packet_nonblock() != NRK_OK )
+	{
+	cnt++;
+	nrk_wait(_bmac_check_period);
+	if(cnt>2) { 
+			#ifdef DEBUG
+			printf( "rx timeout 1 %d\r\n",cnt );
+			#endif
+			if(rx_failure_cnt<65535) rx_failure_cnt++;
+			rf_rx_off();
+			return 0;
+			} 
+	}
+*/
+
+
+  rx_buf_empty = 0;
+#ifdef DEBUG
+  printf ("ZB: SNR= %d [", zb_rfRxInfo.rssi);
+  for (uint8_t i = 0; i < zb_rfRxInfo.length; i++)
+    printf ("%c", zb_rfRxInfo.pPayload[i]);
+  printf ("]\r\n");
+#endif
+  rf_rx_off ();
+  return 1;
+}
+
+uint8_t _b_pow (uint8_t in)
+{
+  uint8_t i;
+  uint8_t result;
+  if (in <= 1)
+    return 1;
+  if (in > 7)
+    in = 6;                     // cap it at 128 
+  result = 1;
+  for (i = 0; i < in; i++)
+    result = result * 2;
+  return result;
+}
+
+
+int8_t _zb_tx ()
+{
+  uint8_t v, backoff, backoff_count;
+  uint16_t b;
+
+#ifdef DEBUG
+  nrk_kprintf (PSTR ("_zb_tx()\r\n"));
+#endif
+  if (cca_active) {
+
+// Add random time here to stop nodes from synchronizing with eachother
+    b = _nrk_time_to_ticks (&_zb_check_period);
+    b = b / ((rand () % 10) + 1);
+//printf( "waiting %d\r\n",b );
+    nrk_wait_until_ticks (b);
+//nrk_wait_ticks(b);
+
+    backoff_count = 1;
+    do {
+#ifdef BMAC_MOD_CCA
+	v=_zb_rx();
+	v=!v;
+        if (v == 1) { 
+		break; 
+	}
+        //nrk_event_signal (zb_rx_pkt_signal);
+#else
+      v = _zb_channel_check ();
+      if (v == 1)
+        break;
+#endif
+      // Channel is busy
+      backoff = rand () % (_b_pow (backoff_count));
+#ifdef DEBUG
+      printf ("backoff %d\r\n", backoff);
+#endif
+//      printf( "backoff %d\r\n",backoff );
+      nrk_wait_until_next_n_periods (backoff);
+      backoff_count++;
+      if (backoff_count > 6)
+        backoff_count = 6;      // cap it at 64    
+      b = _nrk_time_to_ticks (&_zb_check_period);
+      b = b / ((rand () % 10) + 1);
+//      printf( "waiting %d\r\n",b );
+      nrk_wait_until_ticks (b);
+//      nrk_wait_ticks(b);
+
+    }
+    while (v == 0);
+  }
+
+  // send extended preamble
+  zb_rfTxInfo.cca = 0;
+  zb_rfTxInfo.ackRequest = 0;
+
+  uint16_t ms = _zb_check_period.secs * 1000;
+  ms += _zb_check_period.nano_secs / 1000000;
+  //printf( "CR ms: %u\n",ms );
+  //target_t.nano_secs+=20*NANOS_PER_MS;
+  rf_rx_on ();
+  pkt_got_ack = zb_rf_tx_packet (&zb_rfTxInfo, zb_rfTxInfo.length);
+
+  if (!pkt_got_ack)
+      TRACE_MSG(TRACE_MAC1, "--- RF_TX ERROR ---", (FMT__0));
+  // send packet
+  // pkt_got_ack=rf_tx_packet (&bmac_rfTxInfo);
+  rf_rx_off ();                 // Just in case auto-ack left radio on
+  tx_data_ready = 0;
+  //nrk_event_signal (zb_tx_pkt_done_signal);
+  return NRK_OK;
+}
+
+void zb_nw_task ()
+{
+  int8_t v, i;
+  int8_t e;
+  uint8_t backoff;
+  nrk_sig_mask_t event;
+
+  backoff = 0;
+  while (1) {
+#ifdef NRK_SW_WDT
+#ifdef BMAC_SW_WDT_ID
+    nrk_sw_wdt_update (BMAC_SW_WDT_ID);
+#endif
+#endif
+    rf_power_up ();
+    if (is_enabled) {
+      v = 1;
+
+#ifdef BMAC_MOD_CCA
+      if (rx_buf_empty == 1)
+      {
+          if (_zb_rx () == 1) e = nrk_event_signal (zb_rx_pkt_signal);
+      }
+      else
+          e = nrk_event_signal (zb_rx_pkt_signal);
+#else
+      if (rx_buf_empty == 1)
+        v = _zb_channel_check ();
+      // If the buffer is full, signal the receiving task again.
+      else
+      {
+        ZB_PUT_RX_QUEUE();
+        e = nrk_event_signal (zb_rx_pkt_signal);
+      }
+      // zb_channel check turns on radio, don't turn off if
+      // data is coming.
+
+      if (v == 0) {
+        if (_zb_rx () == 1) {
+          ZB_PUT_RX_QUEUE();
+          e = nrk_event_signal (zb_rx_pkt_signal);
+          //if(e==NRK_ERROR) {
+          //      nrk_kprintf( PSTR("bmac rx pkt signal failed\r\n"));
+          //      printf( "errno: %u \r\n",nrk_errno_get() );
+          //}
+        }
+        //else nrk_kprintf( PSTR("Pkt failed, buf could be corrupt\r\n" ));
+
+      }
+
+#endif
+      if (tx_data_ready == 1) {
+        _zb_tx ();
+      }
+      rf_rx_off ();
+      rf_power_down ();
+
+      //do {
+      nrk_wait (_zb_check_period);
+      //      if(rx_buf_empty_bmac!=1)  nrk_event_signal (bmac_rx_pkt_signal);
+      //} while(rx_buf_empty_bmac!=1);
+    }
+    else {
+#if 0
+      event = 0;
+      do {
+        v = nrk_signal_register (bmac_enable_signal);
+        event = nrk_event_wait (SIG (bmac_enable_signal));
+      }
+      while ((event & SIG (bmac_enable_signal)) == 0);
+#endif
+    }
+    //nrk_wait_until_next_period();
+  }
+}
+
+
+#if 0
 // Assuming that CCA returned 1 and a packet is on its way
 // Receive the packet or timeout and error
 int8_t _zb_rx ()
@@ -261,6 +506,7 @@ void zb_nw_task ()
         nrk_wait_until_next_period();
     }
 }
+#endif
 
 void zb_transceiver_set_channel(zb_uint8_t channel_number)
 {
@@ -317,6 +563,7 @@ zb_ret_t zb_transceiver_send_fifo_packet(zb_uint8_t header_length,
   zb_uint8_t *fc = ZB_BUF_BEGIN(buf);
   zb_uint8_t frame_len = ZB_BUF_LEN(buf);
   zb_uint8_t retval = 10;
+  uint32_t mask;
 
   /*TRACE_MSG(TRACE_MAC1, ">> zb_transceiver_send_fifo_packet, %d, buf %p, state %hd", (FMT__D_P,
                         (zb_uint16_t)header_length, buf));*/
@@ -336,12 +583,37 @@ zb_ret_t zb_transceiver_send_fifo_packet(zb_uint8_t header_length,
                                 && fc[5] == 0xff && fc[6] == 0xff)))
                          && ZB_FCF_GET_ACK_REQUEST_BIT(fc));
 
-
-  if( (retval = zb_rf_tx_packet(fc, frame_len)) != NRK_OK)
+  uint8_t v = nrk_signal_register (zb_tx_pkt_done_signal);
+  if (v == NRK_ERROR)
+    nrk_kprintf(PSTR("Failed to register tx signal"));
+  tx_data_ready = 1;
+  zb_rfTxInfo.pPayload = fc;
+  zb_rfTxInfo.length = frame_len;
+  zb_rfTxInfo.ackRequest = need_ack;
+#ifdef DEBUG
+  nrk_kprintf (PSTR ("Waiting for tx done signal\r\n"));
+#endif
+/*
+  mask = nrk_event_wait (SIG (zb_tx_pkt_done_signal));
+  if (mask == 0)
+    nrk_kprintf (PSTR ("ZB TX: Error calling event wait\r\n"));
+  if ((mask & SIG (zb_tx_pkt_done_signal)) == 0)
+    nrk_kprintf (PSTR ("ZB TX: Woke up on wrong signal\r\n"));
+  if (pkt_got_ack)
+  {
+    return RET_OK;
+  }
+  else
+  {
       TRACE_MSG(TRACE_MAC1, "--- RF_TX ERROR ---", (FMT__0));
-
-  //printf("send_fifo_packet:: retval %d\r\n", retval);
-
+  }
+*/
+    while (tx_data_ready);
+    printf("Sync tx data done\r\n");
+    if (need_ack)
+      ZB_MAC_SET_ACK_OK();
+    return RET_OK;
+#if 0
     /* The same bit is used to start normal and beacon fifio.
        If not joined yet (pac_pan_id is not set), do not request acks.
     */
@@ -356,6 +628,8 @@ zb_ret_t zb_transceiver_send_fifo_packet(zb_uint8_t header_length,
     {
       ZB_MAC_SET_ACK_OK();
     }
+#endif
+
   TRACE_MSG(TRACE_MAC1, "<< zb_transceiver_send_fifo_packet", (FMT__0));
   return RET_OK;
 }

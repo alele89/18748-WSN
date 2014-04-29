@@ -31,7 +31,7 @@
 
 // NRK_STACK_CHECK adds a little check to see if the bottom of the stack
 // has been over written on all suspend calls
-#define NRK_STACK_CHECK
+//#define NRK_STACK_CHECK
 
 // Leave NRK_NO_POWER_DOWN define in if the target can not wake up from sleep 
 // because it has no asynchronously clocked

@@ -50,16 +50,19 @@ PURPOSE: rf231_soc specific code
 
 #include <basic_rf.h>
 
+nrk_sig_t zb_rx_pkt_signal;
+nrk_sig_t zb_tx_pkt_done_signal;
+
 #define ZB_TASK_PRIORITY 20
 
 /**
    Min channel # of RF231 SOC 
  */
-#define ZB_TRANSCEIVER_START_CHANNEL_NUMBER 11
+#define ZB_TRANSCEIVER_START_CHANNEL_NUMBER 15
 /**
    Max channel # of RF231 SOC
  */
-#define ZB_TRANSCEIVER_MAX_CHANNEL_NUMBER   26
+#define ZB_TRANSCEIVER_MAX_CHANNEL_NUMBER   15
 
 /**
    Send command/data/beacon to the transiver FIFO

@@ -90,6 +90,7 @@ void rx_task ()
   bmac_rx_pkt_set_buffer (rx_buf, RF_MAX_PAYLOAD_SIZE);
 
   while (1) {
+    printf("Hello from rx task\r\n");
     // Wait until an RX packet is received
     val = bmac_wait_until_rx_pkt ();
     // Get the RX packet 
@@ -127,6 +128,7 @@ void tx_task ()
   ticks_min=-1;
   ticks_max=0;
   tx_data_ok=0;
+printf("Hello from TX task\r\n");
 
   // Wait until the tx_task starts up bmac
   // This should be called by all tasks using bmac that
