@@ -659,7 +659,7 @@ printf("zb_rf_tx\r\n");
 }
 #endif 
 
-uint8_t zb_rf_tx_packet(RF_TX_INFO *pRTI, uint16_t frame_len)
+uint8_t zb_rf_tx_packet(RF_TX_INFO *pRTI, uint16_t ms)
 {
 	/*
 	#ifdef RADIO_PRIORITY_CEILING
@@ -674,7 +674,6 @@ uint8_t zb_rf_tx_packet(RF_TX_INFO *pRTI, uint16_t frame_len)
 
 	uint8_t trx_status, trx_error, *data_start, *frame_start = &TRXFBST;
 	uint16_t i;
-	uint8_t ms = 0;
 
 	if(!rf_ready) 
 		return NRK_ERROR;
@@ -715,9 +714,9 @@ uint8_t zb_rf_tx_packet(RF_TX_INFO *pRTI, uint16_t frame_len)
 #endif
 	rfSettings.txSeqNumber++;
 
-	memcpy(frame_start+1, pRTI->pPayload, frame_len);
+	memcpy(frame_start+1, pRTI->pPayload, pRTI->length);
 	/* Set the size of the packet */
-	*frame_start = frame_len + 2;
+	*frame_start = pRTI->length + 2;
 	
 	/* Wait for radio to be in a ready state */
 	do{
@@ -979,7 +978,6 @@ SIGNAL(TRX24_AWAKE_vect)
 SIGNAL(TRX24_TX_END_vect)
 {
 	vprintf("TX_END IRQ!\r\n");
-	printf("TX_END IRQ!\r\n");
 	tx_done = 1;
 	IRQ_STATUS = (1 << TX_END);
 
@@ -1009,6 +1007,7 @@ SIGNAL(TRX24_CCA_ED_DONE_vect)
 SIGNAL(TRX24_RX_START_vect)
 {
 	vprintf("RX_START IRQ!\r\n");
+	printf("RX_START IRQ!\r\n");
 	IRQ_STATUS = (1 << RX_START);
 
 	if(rx_start_func)

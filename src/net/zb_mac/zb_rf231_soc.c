@@ -307,7 +307,7 @@ int8_t _zb_tx ()
   //printf( "CR ms: %u\n",ms );
   //target_t.nano_secs+=20*NANOS_PER_MS;
   rf_rx_on ();
-  pkt_got_ack = zb_rf_tx_packet (&zb_rfTxInfo, zb_rfTxInfo.length);
+  pkt_got_ack = zb_rf_tx_packet (&zb_rfTxInfo, ms);
 
   if (!pkt_got_ack)
       TRACE_MSG(TRACE_MAC1, "--- RF_TX ERROR ---", (FMT__0));
