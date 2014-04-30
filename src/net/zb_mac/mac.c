@@ -590,7 +590,7 @@ void zb_mlme_command_accept(zb_uint8_t param)
     TRACE_MSG(TRACE_MAC3, "hanaling beacon req", (FMT__0));
     ZB_MAC_SET_BEACON_REQ();
 #endif
-    ZB_SCHEDULE_TX_CB(zb_handle_beacon_req, 0);
+    ZB_SCHEDULE_CALLBACK(zb_handle_beacon_req, 0);
     TRACE_MSG(TRACE_MAC3, "free buf %p", (FMT__P, request));
     zb_free_buf(request);
   }
@@ -659,7 +659,7 @@ void zb_mlme_command_accept(zb_uint8_t param)
        */
 #ifdef ZB_COORDINATOR_ROLE
       TRACE_MSG(TRACE_MAC3, "CMD_DATA_REQ", (FMT__0));
-      ZB_SCHEDULE_TX_CB(zb_accept_data_request_cmd, param);
+      ZB_SCHEDULE_CALLBACK(zb_accept_data_request_cmd, param);
 #else
       TRACE_MSG(TRACE_MAC1, "data req cmd came. not ZC - skip", (FMT__0));
 #endif
@@ -999,7 +999,7 @@ void zb_poll_request(zb_uint8_t param)
     req->coord_addr.addr_short = parent_addr;
     req->coord_pan_id = ZB_PIB_SHORT_PAN_ID();
     MAC_CTX().mac_status = MAC_SUCCESS;
-    ZB_SCHEDULE_TX_CB(zb_handle_poll_request, param);
+    ZB_SCHEDULE_CALLBACK(zb_handle_poll_request, param);
   }
 }
 

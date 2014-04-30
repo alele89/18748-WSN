@@ -297,7 +297,7 @@ void zb_nlme_sync_request(zb_uint8_t param)
     req->coord_addr_mode = ZB_ADDR_16BIT_DEV_OR_BROADCAST;
     req->coord_addr.addr_short = parent_addr;
     req->coord_pan_id = ZB_PIB_SHORT_PAN_ID();
-    ZB_SCHEDULE_TX_CB(zb_handle_poll_request, param);
+    ZB_SCHEDULE_CALLBACK(zb_handle_poll_request, param);
   }
 
   TRACE_MSG(TRACE_NWK1, "<<sync_req", (FMT__0));

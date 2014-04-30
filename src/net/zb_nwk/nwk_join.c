@@ -672,7 +672,7 @@ void zb_nlme_rejoin_response_timeout(zb_uint8_t param)
     req->coord_addr_mode = ZB_ADDR_16BIT_DEV_OR_BROADCAST;
     req->coord_addr.addr_short = ZG->nwk.handle.tmp.rejoin.parent->short_addr;
     req->coord_pan_id = ZB_PIB_SHORT_PAN_ID();
-    ZB_SCHEDULE_TX_CB(zb_handle_poll_request, param);
+    ZB_SCHEDULE_CALLBACK(zb_handle_poll_request, param);
   }
   else if ( ZG->nwk.handle.tmp.rejoin.parent )
   {
@@ -858,7 +858,7 @@ void zb_mlme_orphan_indication(zb_uint8_t param)
     resp->associated = ZB_TRUE;
 
     /* send orph resp */
-    ZB_SCHEDULE_TX_CB(zb_mlme_handle_orphan_response, param);
+    ZB_SCHEDULE_CALLBACK(zb_mlme_handle_orphan_response, param);
   }
   else
   {
