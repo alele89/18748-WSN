@@ -180,12 +180,11 @@ zb_ret_t zdo_dev_start()
   }
   else
   {
-//#ifdef ZB_USE_NVRAM
+#ifdef ZB_USE_NVRAM
     zb_buf_t *buf = zb_get_out_buf();
 	buf->u.hdr.status = ZB_NWK_STATUS_ALREADY_PRESENT;
     ZB_SCHEDULE_CALLBACK(zb_zdo_startup_complete, ZB_REF_FROM_BUF(buf));
-//#endif
-    ZG->nwk.handle.joined = 1;
+#endif
     TRACE_MSG(TRACE_APS1, "already in nw", (FMT__0));
     /* TODO: verify that we have right channel ID and, maybe, do active scan to
      * find the channel. */

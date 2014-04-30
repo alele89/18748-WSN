@@ -499,7 +499,7 @@ void zb_mcps_data_request(zb_uint8_t param)
 {
   TRACE_MSG( TRACE_MAC1, ">>zb_mcps_data_request", (FMT__0));
   {
-    ZB_SCHEDULE_CALLBACK(zb_handle_mcps_data_req, param);
+    ZB_SCHEDULE_TX_CB(zb_handle_mcps_data_req, param);
   }
   TRACE_MSG(TRACE_MAC1, "<<zb_mcps_data_request ", (FMT__0));
 }
