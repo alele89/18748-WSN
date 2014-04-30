@@ -366,10 +366,11 @@ void zb_mac_parse_recv_data(zb_uint8_t param)
     switch (ZB_FCF_GET_FRAME_TYPE(fcf))
     {
       case MAC_FRAME_DATA:
+        TRACE_MSG(TRACE_MAC1, "DATA frame", (FMT__0));
         ZB_SCHEDULE_CALLBACK(zb_handle_data_frame, ZB_REF_FROM_BUF(buf));
         break;
       case MAC_FRAME_BEACON:
-        TRACE_MSG(TRACE_MAC3, "BEACON frame", (FMT__0));
+        TRACE_MSG(TRACE_MAC1, "BEACON frame", (FMT__0));
 
 #ifdef ZB_MAC_TESTING_MODE
         {
@@ -417,7 +418,7 @@ void zb_mac_parse_recv_data(zb_uint8_t param)
 #endif
         break;
       case MAC_FRAME_COMMAND:
-        TRACE_MSG(TRACE_MAC3, "sched cmd accept", (FMT__0));
+        TRACE_MSG(TRACE_MAC1, "sched cmd accept", (FMT__0));
         ZB_SCHEDULE_CALLBACK(zb_mlme_command_accept, param);
         break;
       default:
@@ -572,7 +573,7 @@ void zb_mlme_command_accept(zb_uint8_t param)
   zb_uint8_t *cmd_ptr;
   zb_mac_mhr_t mhr;
 
-  TRACE_MSG(TRACE_MAC2, ">>mlme_cmd_acc %hd", (FMT__H, param));
+  TRACE_MSG(TRACE_MAC1, ">>mlme_cmd_acc %hd", (FMT__H, param));
 
 /*
   5.5.3.4 MAC command frame
@@ -587,11 +588,11 @@ void zb_mlme_command_accept(zb_uint8_t param)
   {
 #ifdef ZB_MULTIPLE_BEACONS
     MAC_CTX().beacons_sent = 0;
-    TRACE_MSG(TRACE_MAC3, "hanaling beacon req", (FMT__0));
+    TRACE_MSG(TRACE_MAC1, "hanaling beacon req", (FMT__0));
     ZB_MAC_SET_BEACON_REQ();
 #endif
-    ZB_SCHEDULE_TX_CB(zb_handle_beacon_req, 0);
-    TRACE_MSG(TRACE_MAC3, "free buf %p", (FMT__P, request));
+    ZB_SCHEDULE_CALLBACK(zb_handle_beacon_req, 0);
+    TRACE_MSG(TRACE_MAC1, "free buf %p", (FMT__P, request));
     zb_free_buf(request);
   }
   else if ((*cmd_ptr) == MAC_CMD_ASSOCIATION_REQUEST)

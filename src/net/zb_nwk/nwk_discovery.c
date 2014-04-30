@@ -177,7 +177,7 @@ void zb_mlme_beacon_notify_indication(zb_uint8_t param)
     /* Analyze beacon payload - see 3.6.7 */
 
 
-    TRACE_MSG(TRACE_NWK2, "beacon payload %p: protocol id %d, version %d, stack profile %d", (FMT__P_D_D_D,
+    TRACE_MSG(TRACE_NWK1, "beacon payload %p: protocol id %d, version %d, stack profile %d", (FMT__P_D_D_D,
                            beacon_payload, (int)beacon_payload->protocol_id,
                            (int)beacon_payload->protocol_version, (int)beacon_payload->stack_profile));
 
@@ -222,8 +222,11 @@ void zb_mlme_beacon_notify_indication(zb_uint8_t param)
           /* Not sure: can beacon use 64-bit address? Let's handle it anyway */
           if (ZB_FCF_GET_SRC_ADDRESSING_MODE(&mhr.frame_control) == ZB_ADDR_16BIT_DEV_OR_BROADCAST)
           {
+            TRACE_MSG(TRACE_NWK1, "zb_mlme_beacon_notify_indication", (FMT__0));
             /* 16 bit address. */
-            //ret = zb_nwk_exneighbor_by_short(panid_ref, mhr.src_addr.addr_short, &enbt);
+#ifdef ZB_ED_ROLE
+            ret = zb_nwk_exneighbor_by_short(panid_ref, mhr.src_addr.addr_short, &enbt);
+#endif
           }
 #ifndef ZB_LIMITED_FEATURES
           else
@@ -436,7 +439,8 @@ void zb_mlme_scan_confirm(zb_uint8_t param)
             {
               /* This ext pan id not found - add this PAN */
               zb_address_get_pan_id(ZG->nwk.neighbor.ext_neighbor[i].panid_ref, network_descriptor[j].extended_pan_id);
-              /*
+#if 0
+#ifdef ZB_ED_ROLE
               network_descriptor[j].logical_channel = ZG->nwk.neighbor.ext_neighbor[i].logical_channel;
               network_descriptor[j].stack_profile = ZG->nwk.neighbor.ext_neighbor[i].stack_profile;
               network_descriptor[j].zigbee_version = ZB_PROTOCOL_VERSION;
@@ -445,7 +449,8 @@ void zb_mlme_scan_confirm(zb_uint8_t param)
               network_descriptor[j].permit_joining = ZG->nwk.neighbor.ext_neighbor[i].permit_joining;
               network_descriptor[j].router_capacity = ZG->nwk.neighbor.ext_neighbor[i].router_capacity;
               network_descriptor[j].end_device_capacity = ZG->nwk.neighbor.ext_neighbor[i].end_device_capacity;
-              */
+#endif
+#endif
               n_nwk_dsc++;
             }
           }

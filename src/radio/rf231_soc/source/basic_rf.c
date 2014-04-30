@@ -900,8 +900,6 @@ int8_t zb_rf_rx_packet_nonblock()
 	rfSettings.pRxInfo->srcAddr = machead->src_addr;
 	rfSettings.pRxInfo->length = TST_RX_LENGTH - 2; //- sizeof(ieee_mac_frame_header_t) ;
     
-    printf("frtype %d sec %d sadm %d\r\n", machead->fcf.frame_type, machead->fcf.sec_en, machead->fcf.src_addr_mode);
-
     //printf("Packet received with sequence number %d and packet length %d \r\n", machead->seq_num, rfSettings.pRxInfo->length);
 
 	if((rfSettings.pRxInfo->length > RF_IO_BUF_SIZE)

@@ -945,8 +945,10 @@ void zb_nlme_network_discovery_request(zb_uint8_t param) ;
 typedef struct zb_nlme_network_descriptor_s
 {
   zb_ext_pan_id_t extended_pan_id; /*!< Extended PAN ID
-                                  * of the network */
+ 
+                                 * of the network */
 #if 0
+#ifdef ZB_ED_ROLE
   zb_uint8_t    logical_channel; /*!< The current logical channel ocuppied by
                                   * the network */
   /* use bitfields to fit descriptors array to the single buffer */
@@ -963,6 +965,7 @@ typedef struct zb_nlme_network_descriptor_s
   zb_bitfield_t end_device_capacity:1; /*!< True if device is capable of accepting
                                     * join requests from end devices */
   zb_bitfield_t reserved:5;
+#endif
 #endif
 } 
 zb_nlme_network_descriptor_t;
