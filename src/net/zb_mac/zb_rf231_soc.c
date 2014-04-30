@@ -141,7 +141,7 @@ int8_t zb_nrk_rf_init()
     
     //rf_auto_ack_disable();
 
-    nrk_int_enable();
+    //nrk_int_enable();
 
     return NRK_OK;
 }
