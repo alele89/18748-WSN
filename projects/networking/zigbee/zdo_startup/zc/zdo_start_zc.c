@@ -97,6 +97,7 @@ zb_ieee_addr_t g_zc_addr = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa};
    */
 
 static void zc_send_data(zb_buf_t *buf, zb_uint16_t addr);
+static void zc_send_light_data(zb_uint8_t);
 
 void data_indication(zb_uint8_t param) ;
 
@@ -118,7 +119,6 @@ int main ()
 
     printf("Hello World from ZBOSS ZC..\r\n");
 
-    zb_task_config ();
     zb_nrk_rf_init();
 
     nrk_create_taskset ();
@@ -177,6 +177,8 @@ void zb_zdo_startup_complete(zb_uint8_t param)
     {
         TRACE_MSG(TRACE_APS1, "Device STARTED OK", (FMT__0));
         zb_af_set_data_indication(data_indication);
+        zb_buf_t *buf1 = zb_get_out_buf();
+        ZB_SCHEDULE_ALARM(zc_send_light_data, param, 100);
     }
     else
     {
@@ -227,6 +229,34 @@ static void zc_send_data(zb_buf_t *buf, zb_uint16_t addr)
     }
     TRACE_MSG(TRACE_APS3, "Sending apsde_data.request", (FMT__0));
     ZB_SCHEDULE_CALLBACK(zb_apsde_data_request, ZB_REF_FROM_BUF(buf));
+}
+
+static void zc_send_light_data(zb_uint8_t param) 
+{
+    TRACE_MSG(TRACE_APS1, ">>zc_send_light_data\r\n", (FMT__0));
+    zb_buf_t *buf = ZB_BUF_FROM_REF(param);
+    zb_apsde_data_req_t *req = ZB_GET_BUF_TAIL(buf, sizeof(zb_apsde_data_req_t));
+    zb_uint8_t *ptr = NULL;
+    zb_short_t i;
+
+    ZB_BUF_INITIAL_ALLOC(buf, ZB_TEST_DUMMY_DATA_SIZE , ptr);
+    req = ZB_GET_BUF_TAIL(buf, sizeof(zb_apsde_data_req_t));
+    req->dst_addr.addr_short = 0xFFFF; /* send to ZR */
+    req->addr_mode = ZB_APS_ADDR_MODE_16_ENDP_PRESENT;
+    req->tx_options = ZB_APSDE_TX_OPT_ACK_TX;
+    req->radius = 1;
+    req->profileid = 2;
+    req->src_endpoint = 10;
+    req->dst_endpoint = 10;
+    buf->u.hdr.handle = 0x11;
+    for (i = 0 ; i < ZB_TEST_DUMMY_DATA_SIZE ; i++)
+    {
+        ptr[i] = i + '0';
+    }
+    TRACE_MSG(TRACE_APS3, "Sending apsde_data.request", (FMT__0));
+    ZB_SCHEDULE_CALLBACK(zb_apsde_data_request, ZB_REF_FROM_BUF(buf));
+
+    ZB_SCHEDULE_ALARM(zc_send_light_data, param, 100);  
 }
 
 void nrk_register_drivers()
