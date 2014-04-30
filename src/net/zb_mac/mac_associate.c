@@ -107,7 +107,7 @@ command_send:
 #endif
   TRACE_MSG(TRACE_MAC2, "<<mlme_ass_req, continue scheduled", (FMT__0));
 #ifndef ZB_NS_BUILD
-  ZB_SCHEDULE_TX_CB(zb_mlme_send_association_req_cmd, param) ;
+  ZB_SCHEDULE_CALLBACK(zb_mlme_send_association_req_cmd, param) ;
 #else
   zb_mlme_send_association_req_cmd(param);
 #endif
