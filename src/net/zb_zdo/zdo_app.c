@@ -455,7 +455,11 @@ void zb_nlme_join_confirm(zb_uint8_t param)
     else
 #endif
     {
-      ZB_SCHEDULE_CALLBACK(zdo_join_done, param);
+      //TODO wsn gr 12
+      //ZB_SCHEDULE_CALLBACK(zdo_join_done, param);
+      ZB_BUF_FROM_REF(param)->u.hdr.status = ZB_NWK_STATUS_SUCCESS;
+      ZB_SCHEDULE_CALLBACK(zb_zdo_startup_complete, param);
+
     }
   }
   else if (ZG->zdo.handle.rejoin && ZB_AIB().aps_insecure_join)
