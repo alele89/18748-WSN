@@ -281,7 +281,7 @@ zb_ret_t zb_mac_send_comm_status(zb_buf_t *pending_buf, zb_uint8_t mac_status, z
   zb_mlme_comm_status_indication_t *ind_params;
   zb_uint8_t *cmd_ptr;
 
-  TRACE_MSG(TRACE_MAC2, ">> zb_mac_send_comm_status pend %p, status %hi, buf %p", (FMT__P_H_P,
+  TRACE_MSG(TRACE_MAC1, ">> zb_mac_send_comm_status pend %p, status %hi, buf %p", (FMT__P_H_P,
                                                                                    pending_buf, mac_status, buffer));
 
   cmd_ptr = ZB_BUF_BEGIN(pending_buf);
@@ -297,7 +297,7 @@ zb_ret_t zb_mac_send_comm_status(zb_buf_t *pending_buf, zb_uint8_t mac_status, z
   ind_params->dst_addr_mode = ZB_FCF_GET_DST_ADDRESSING_MODE(&mhr_pend.frame_control);
 
   ZB_SCHEDULE_CALLBACK(zb_mlme_comm_status_indication, ZB_REF_FROM_BUF(buffer));
-  TRACE_MSG(TRACE_MAC2, "<< zb_mac_send_comm_status pend RET_OK", (FMT__0));
+  TRACE_MSG(TRACE_MAC1, "<< zb_mac_send_comm_status pend RET_OK", (FMT__0));
   return RET_OK;
 }
 

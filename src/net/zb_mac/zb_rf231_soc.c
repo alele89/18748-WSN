@@ -590,6 +590,7 @@ zb_ret_t zb_transceiver_send_fifo_packet(zb_uint8_t header_length,
   zb_rfTxInfo.pPayload = fc;
   zb_rfTxInfo.length = frame_len;
   zb_rfTxInfo.ackRequest = need_ack;
+  zb_rfTxInfo.header_length = header_length;
 #ifdef DEBUG
   nrk_kprintf (PSTR ("Waiting for tx done signal\r\n"));
 #endif

@@ -34,7 +34,7 @@
 #include <nrk_cpu.h>
 
 /* ZBOSS include */
-//#include "zb_rf_internal.h"
+#include "zb_rf_internal.h"
 
 #define OSC_STARTUP_DELAY	1000
 #define RF_IO_BUF_SIZE  148
@@ -661,59 +661,14 @@ printf("zb_rf_tx\r\n");
 
 uint8_t zb_rf_tx_packet(RF_TX_INFO *pRTI, uint16_t ms)
 {
-	/*
-	#ifdef RADIO_PRIORITY_CEILING
-	nrk_sem_pend(radio_sem);
-	#endif
-
-	#ifdef RADIO_PRIORITY_CEILING
-	nrk_sem_post(radio_sem);
-	#endif
-	//return success;
-	*/
-
+	
 	uint8_t trx_status, trx_error, *data_start, *frame_start = &TRXFBST;
 	uint16_t i;
 
 	if(!rf_ready) 
 		return NRK_ERROR;
 
-#if 0
-	ieee_mac_frame_header_t *machead = frame_start + 1;
-	ieee_mac_fcf_t fcf;
-
-	/* TODO: Setting FCF bits is probably slow. Optimize later. */
-	fcf.frame_type = 1;
-	fcf.sec_en = 0;
-	fcf.frame_pending = 0;
-	fcf.ack_request = pRTI->ackRequest;
-	fcf.intra_pan = 1;
-	fcf.res = 0;
-	fcf.dest_addr_mode = 2;
-	fcf.frame_version = 0;
-	fcf.src_addr_mode = 2;
-	
-	/* Build the rest of the MAC header */
 	rfSettings.txSeqNumber++;
-	machead->fcf = fcf;
-	if (use_glossy) {
-		machead->seq_num = 0xFF;
-		machead->src_addr = 0xAAAA;
-		machead->dest_addr = 0xFFFF;
-		machead->dest_pan_id = (PAN_ID_1 << 8) | PAN_ID_0;
-	} else {sadjlak
-		machead->seq_num = rfSettings.txSeqNumber;
-		machead->src_addr = (SHORT_ADDR_1 << 8) | SHORT_ADDR_0;
-		machead->dest_addr = pRTI->destAddr;
-		machead->dest_pan_id = (PAN_ID_1 << 8) | PAN_ID_0;
-	}
-	//machead->src_pan_id = (PAN_ID_1 << 8) | PAN_ID_0;
-	
-	/* Copy data payload into packet */
-	data_start = frame_start + sizeof(ieee_mac_frame_header_t) + 1;
-#endif
-	rfSettings.txSeqNumber++;
-
     ieee_mac_frame_header_t *machead = pRTI->pPayload;
     ieee_mac_fcf_t f = machead->fcf;
     //machead->fcf.dest_addr_mode = 2;
@@ -728,7 +683,18 @@ uint8_t zb_rf_tx_packet(RF_TX_INFO *pRTI, uint16_t ms)
     {
         ieee_mac_frame_header_t *machead = frame_start + 1;
         ieee_mac_fcf_t fcf;
+    
+    fcf.frame_type = ZB_RF_FCF_GET_FRAME_TYPE(pRTI->pPayload);
+	fcf.sec_en = ZB_RF_FCF_GET_SECURITY_BIT(pRTI->pPayload);
+	fcf.frame_pending = ZB_RF_FCF_GET_FRAME_PENDING_BIT(pRTI->pPayload);
+	fcf.ack_request = ZB_RF_FCF_GET_ACK_REQUEST_BIT(pRTI->pPayload);
+	fcf.intra_pan = ZB_RF_FCF_GET_PANID_COMPRESSION_BIT(pRTI->pPayload);
+	fcf.res = 0;
+	fcf.dest_addr_mode = 2; //ZB_RF_FCF_GET_DST_ADDRESSING_MODE(pRTI->pPayload);
+	fcf.frame_version = ZB_RF_FCF_GET_FRAME_VERSION(pRTI->pPayload);
+	fcf.src_addr_mode = 2; //ZB_RF_FCF_GET_SRC_ADDRESSING_MODE(pRTI->pPayload);
 
+#if 0
         /* TODO: Setting FCF bits is probably slow. Optimize later. */
         fcf.frame_type = 3;
         fcf.sec_en = 0;
@@ -739,6 +705,7 @@ uint8_t zb_rf_tx_packet(RF_TX_INFO *pRTI, uint16_t ms)
         fcf.dest_addr_mode = 2;
         fcf.frame_version = 0;
         fcf.src_addr_mode = 2;
+#endif
 
         /* Build the rest of the MAC header */
         rfSettings.txSeqNumber++;
@@ -754,8 +721,8 @@ uint8_t zb_rf_tx_packet(RF_TX_INFO *pRTI, uint16_t ms)
             machead->dest_addr = pRTI->destAddr;
             machead->dest_pan_id = (PAN_ID_1 << 8) | PAN_ID_0;
         }
-        memcpy(frame_start+1+sizeof(ieee_mac_frame_header_t), pRTI->pPayload+17, 2); 
-        *frame_start = 15;
+        memcpy(frame_start+1+sizeof(ieee_mac_frame_header_t), pRTI->pPayload+pRTI->header_length, pRTI->length-pRTI->header_length); 
+        *frame_start = pRTI->length - pRTI->header_length + sizeof(ieee_mac_frame_header_t);
         goto transmit;
 #if 0
         /* We dont handle a 64 bit long address. */
