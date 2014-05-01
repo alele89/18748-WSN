@@ -723,7 +723,7 @@ uint8_t zb_rf_tx_packet(RF_TX_INFO *pRTI, uint16_t ms)
     //machead->fcf.src_addr_mode = 2;
     //machead->src_addr = 0xaaab;
     f.ack_request = 0;
-    if (machead->fcf.src_addr_mode == 3)
+    if (machead->fcf.src_addr_mode == 3 || machead->fcf.dest_addr_mode == 3)
     {
         ieee_mac_frame_header_t *machead = frame_start + 1;
         ieee_mac_fcf_t fcf;
