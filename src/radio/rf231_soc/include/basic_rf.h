@@ -152,7 +152,6 @@ typedef struct {
     	uint8_t *pPayload;
 	bool cca;
 	bool ackRequest;
-    int8_t header_length;
 } RF_TX_INFO;
 //-------------------------------------------------------------------------------------------------------
 

@@ -215,7 +215,7 @@ static zb_bool_t can_accept_frame(zb_mac_mhr_t mhr)
 
 void zb_mac_main_loop()
 {
-  if (1)
+  if (ZB_MAC_GET_ACK_OK())
   {
     /* check for cb waiting for tx finished, it's also indicats that tx in progress */
     if (MAC_CTX().tx_wait_cb)
@@ -224,14 +224,14 @@ void zb_mac_main_loop()
       /* Q: is tx_cnt really counter or just flag?
 
       A: Flag, but could be used as counter for debug */
-      //if (MAC_CTX().tx_cnt)
-      //{
+      if (MAC_CTX().tx_cnt)
+      {
         /* TX complete. Call function waiting for it. */
         MAC_CTX().tx_cnt = 0;
         TRACE_MSG(TRACE_COMMON2, "tx waiting callback called, func: %p", (FMT__P, MAC_CTX().tx_wait_cb));
         (MAC_CTX().tx_wait_cb)(MAC_CTX().tx_wait_cb_arg);
         MAC_CTX().tx_wait_cb = NULL;
-      //}
+      }
     }
     else
     {
