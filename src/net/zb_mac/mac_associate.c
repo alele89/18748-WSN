@@ -279,6 +279,7 @@ void zb_mlme_send_association_req_cmd(zb_uint8_t param)
   MAC_ADD_FCS(MAC_CTX().operation_buf);
   ret = ZB_TRANS_SEND_COMMAND(mhr_len, MAC_CTX().operation_buf);
   MAC_CTX().tx_wait_cb = zb_mlme_send_association_req_continue;
+  MAC_CTX().tx_cnt++;
 
   TRACE_MSG(TRACE_MAC2, "<<mlme_send_ass_req_cmd, ret %i", (FMT__D, ret));
 }

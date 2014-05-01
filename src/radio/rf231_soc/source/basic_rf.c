@@ -34,7 +34,7 @@
 #include <nrk_cpu.h>
 
 /* ZBOSS include */
-//#include "zb_rf_internal.h"
+#include "zb_rf_internal.h"
 
 #define OSC_STARTUP_DELAY	1000
 #define RF_IO_BUF_SIZE  148
@@ -714,10 +714,50 @@ uint8_t zb_rf_tx_packet(RF_TX_INFO *pRTI, uint16_t ms)
 #endif
 	rfSettings.txSeqNumber++;
 
+    ieee_mac_frame_header_t *machead = pRTI->pPayload;
+    ieee_mac_fcf_t f = machead->fcf;
+    machead->fcf.ack_request = 0;
+    f.ack_request = 0;
+
+    if (machead->fcf.dest_addr_mode == 3 && machead->fcf.src_addr_mode == 3)
+    {
+        ieee_mac_frame_header_t *machead = frame_start+1;
+        ieee_mac_fcf_t fcf;
+
+        fcf.frame_type = ZB_RF_FCF_GET_FRAME_TYPE(pRTI->pPayload);
+        fcf.sec_en = ZB_RF_FCF_GET_SECURITY_BIT(pRTI->pPayload);
+        fcf.frame_pending = ZB_RF_FCF_GET_FRAME_PENDING_BIT(pRTI->pPayload);
+        fcf.ack_request = ZB_RF_FCF_GET_ACK_REQUEST_BIT(pRTI->pPayload);
+        fcf.intra_pan = ZB_RF_FCF_GET_PANID_COMPRESSION_BIT(pRTI->pPayload);
+        fcf.res = 0;
+        fcf.dest_addr_mode = 2; //ZB_RF_FCF_GET_DST_ADDRESSING_MODE(pRTI->pPayload);
+        fcf.frame_version = ZB_RF_FCF_GET_FRAME_VERSION(pRTI->pPayload);
+        fcf.src_addr_mode = 2; //ZB_RF_FCF_GET_SRC_ADDRESSING_MODE(pRTI->pPayload);
+
+        rfSettings.txSeqNumber++;
+        machead->fcf = fcf;
+        if (use_glossy) {
+            machead->seq_num = 0xFF;
+            machead->src_addr = 0xAAAA;
+            machead->dest_addr = 0xFFFF;
+            machead->dest_pan_id = (PAN_ID_1 << 8) | PAN_ID_0;
+        } else {
+            machead->seq_num = rfSettings.txSeqNumber;
+            machead->src_addr = (SHORT_ADDR_1 << 8) | SHORT_ADDR_0;
+            machead->dest_addr = pRTI->destAddr;
+            machead->dest_pan_id = (PAN_ID_1 << 8) | PAN_ID_0;
+        }
+
+        memcpy(frame_start+1+sizeof(ieee_mac_frame_header_t), pRTI->pPayload+pRTI->header_length, pRTI->length-pRTI->header_length);
+        *frame_start = pRTI->length - pRTI->header_length + sizeof(ieee_mac_frame_header_t);
+        goto transmit;
+    }
+
 	memcpy(frame_start+1, pRTI->pPayload, pRTI->length);
 	/* Set the size of the packet */
 	*frame_start = pRTI->length + 2;
 	
+transmit:
 	/* Wait for radio to be in a ready state */
 	do{
 		trx_status = (TRX_STATUS & 0x1F);

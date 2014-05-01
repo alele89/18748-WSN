@@ -183,7 +183,8 @@ zb_ret_t zb_handle_associate_response()
   ZB_IEEE_ADDR_COPY(pend_data.dst_addr.addr_long, params->device_address);
   ZB_DUMP_IEEE_ADDR(pend_data.dst_addr.addr_long);
 
-  ret = zb_mac_put_data_to_pending_queue(&pend_data);
+  //ret = zb_mac_put_data_to_pending_queue(&pend_data);
+  ret = ZB_TRANS_SEND_COMMAND(mhr_len, MAC_CTX().pending_buf);
 
   if (ret == RET_ERROR)
   {

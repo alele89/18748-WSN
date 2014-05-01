@@ -215,8 +215,8 @@ static zb_bool_t can_accept_frame(zb_mac_mhr_t mhr)
 
 void zb_mac_main_loop()
 {
-  if (ZB_MAC_GET_ACK_OK())
-  {
+  //if (ZB_MAC_GET_ACK_OK())
+  //{
     /* check for cb waiting for tx finished, it's also indicats that tx in progress */
     if (MAC_CTX().tx_wait_cb)
     {
@@ -248,9 +248,10 @@ void zb_mac_main_loop()
         ZB_RING_BUFFER_FLUSH_GET(&ZG->sched.mac_tx_q);
       }
     }
-  }
-  else
-  {
+  //}
+
+//  else
+  //{
     if (ZB_MAC_GET_ACK_TIMEOUT())
     {
       // TODO need add retransmit
@@ -276,7 +277,7 @@ void zb_mac_main_loop()
 #endif
       }
     }
-  }
+  //}
 
   if (((!ZB_RING_BUFFER_IS_EMPTY(&MAC_CTX().mac_rx_queue))||MAC_CTX().recv_buf_full))
     {
