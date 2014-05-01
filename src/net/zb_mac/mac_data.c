@@ -340,34 +340,8 @@ zb_ret_t zb_mcps_data_request_fill_hdr(zb_buf_t *data_req)
 
   data_req_params = ZB_GET_BUF_PARAM(data_req, zb_mcps_data_req_params_t);
 
-#ifndef ZB_MAC_EXT_DATA_REQ
   /* always short addr is used */
-  data_req_params->mhr_len = zb_mac_calculate_mhr_length(ZB_ADDR_16BIT_DEV_OR_BROADCAST, ZB_ADDR_16BIT_DEV_OR_BROADCAST, 1);
-#else
-  data_req_params->mhr_len = zb_mac_calculate_mhr_length(
-    data_req_params->src_addr_mode,
-    data_req_params->dst_addr_mode,
-    (data_req_params->dst_pan_id == MAC_PIB().mac_pan_id));
-#endif
-
-  /* In the current implementation only DATA can be encrypted, so it is ok to
-   * analyze security only here. */
-#ifdef ZB_MAC_SECURITY
-  if (data_req_params->security_level)
-  {
-    /* currently hard-code security level 5 and key_id_mode 1 */
-    data_req_params->mhr_len += MAC_SECUR_LEV5_KEYID1_AUX_HDR_SIZE; /* control(1), frame counter(4), key id (1) */
-    data_req->u.hdr.encrypt_type = ZB_SECUR_MAC_ENCR;
-
-    if (MAC_PIB().mac_frame_counter == (zb_uint32_t)~0)
-    {
-      ret = RET_ERROR;
-      ZB_SET_MAC_STATUS(MAC_COUNTER_ERROR);
-      TRACE_MSG(TRACE_MAC2, "<< zb_mcps_data_request_fill_hdr ret %d", (FMT__D, ret));
-      return ret;
-    }
-  }
-#endif
+  data_req_params->mhr_len = zb_mac_calculate_mhr_length(ZB_ADDR_16BIT_DEV_OR_BROADCAST, ZB_ADDR_NO_ADDR, 0);
 
   ZB_ASSERT((data_req->u.hdr.len + (zb_ushort_t)data_req_params->mhr_len) <= 255);
 
@@ -379,32 +353,12 @@ zb_ret_t zb_mcps_data_request_fill_hdr(zb_buf_t *data_req)
   ZB_FCF_SET_FRAME_TYPE(mhr.frame_control, MAC_FRAME_DATA);
   /* security enable is 0 */
   /* frame pending is 0 */
-  ZB_FCF_SET_ACK_REQUEST_BIT(
-    mhr.frame_control, !!(data_req_params->tx_options & MAC_TX_OPTION_ACKNOWLEDGED_BIT));
-#ifndef ZB_MAC_EXT_DATA_REQ
-  /* Set panid compress, overwise Ember don't understand rejoin response */
-  ZB_FCF_SET_PANID_COMPRESSION_BIT(mhr.frame_control, 1);
+  /* TODO: wsn gr 12 ack request is 0 */
+  /* TODO: wsn gr 12 PAN id compression is 0 */
   ZB_FCF_SET_DST_ADDRESSING_MODE(mhr.frame_control, ZB_ADDR_16BIT_DEV_OR_BROADCAST);
-  /* 7.2.3 Frame compatibility: All unsecured frames specified in this
-     standard are compatible with unsecured frames compliant with IEEE Std 802.15.4-2003 */
-  ZB_FCF_SET_SRC_ADDRESSING_MODE(mhr.frame_control, ZB_ADDR_16BIT_DEV_OR_BROADCAST);
-#else
-  ZB_FCF_SET_PANID_COMPRESSION_BIT(mhr.frame_control,
-                                   (data_req_params->dst_pan_id == MAC_PIB().mac_pan_id));
-  ZB_FCF_SET_DST_ADDRESSING_MODE(mhr.frame_control, data_req_params->dst_addr_mode);
-  ZB_FCF_SET_SRC_ADDRESSING_MODE(mhr.frame_control, data_req_params->src_addr_mode);
-#endif
-  /* 7.2.3 Frame compatibility: All unsecured frames specified in this
-     standard are compatible with unsecured frames compliant with IEEE Std 802.15.4-2003 */
-  ZB_FCF_SET_FRAME_VERSION(mhr.frame_control, MAC_FRAME_IEEE_802_15_4_2003);
-#ifdef ZB_MAC_SECURITY
-  if (data_req_params->security_level)
-  {
-    ZB_FCF_SET_SECURITY_BIT(mhr.frame_control, 1);
-    /* frame security compatible with 2006 */
-    ZB_FCF_SET_FRAME_VERSION(mhr.frame_control, MAC_FRAME_IEEE_802_15_4);
-  }
-#endif
+  ZB_FCF_SET_SRC_ADDRESSING_MODE(mhr.frame_control, ZB_ADDR_NO_ADDR);
+
+  ZB_FCF_SET_FRAME_VERSION(mhr.frame_control, MAC_FRAME_VERSION);
 
   /* mac spec 7.5.6.1 Transmission */
   mhr.seq_number = ZB_MAC_DSN();
@@ -414,18 +368,8 @@ zb_ret_t zb_mcps_data_request_fill_hdr(zb_buf_t *data_req)
     MAC_CTX().ack_dsn = mhr.seq_number; /* save DSN to check acks */
   }
 
-#ifndef ZB_MAC_EXT_DATA_REQ
-  /* put our pan id as src and dst pan id */
-  mhr.dst_pan_id = MAC_PIB().mac_pan_id;
-  mhr.dst_addr.addr_short = data_req_params->dst_addr;
-  mhr.src_pan_id = MAC_PIB().mac_pan_id;
-  mhr.src_addr.addr_short = data_req_params->src_addr;
-#else
-  mhr.dst_pan_id = data_req_params->dst_pan_id;
-  ZB_MEMCPY(&mhr.dst_addr, &data_req_params->dst_addr, sizeof(union zb_addr_u));
-  mhr.src_pan_id = MAC_PIB().mac_pan_id;
-  ZB_MEMCPY(&mhr.src_addr, &data_req_params->src_addr, sizeof(union zb_addr_u));
-#endif
+  mhr.dst_pan_id = ZB_BROADCAST_PAN_ID;
+  mhr.dst_addr.addr_short = ZB_MAC_SHORT_ADDR_NO_VALUE;
 
 #ifdef ZB_ROUTER_ROLE
   if (data_req_params->tx_options & MAC_TX_OPTION_INDIRECT_TRANSMISSION_BIT)
@@ -454,35 +398,18 @@ zb_ret_t zb_mcps_data_request_fill_hdr(zb_buf_t *data_req)
     ZB_ASSERT(ptr);
     zb_mac_fill_mhr(ptr, &mhr);
 
-#ifdef ZB_MAC_SECURITY
-    if (data_req_params->security_level)
-    {
-      /* fill Aux security header */
-      ptr += (data_req_params->mhr_len - MAC_SECUR_LEV5_KEYID1_AUX_HDR_SIZE);
-      /* security control: always level 5, key id mode 1 */
-      *ptr = ZB_MAC_SECURITY_LEVEL | (ZB_MAC_KEY_ID_MODE << 3);
-      ptr++;
-      /* frame counter */
-      ZB_HTOLE32(ptr, &MAC_PIB().mac_frame_counter);
-      MAC_PIB().mac_frame_counter++;
-      ptr += 4;
-      /* key identifier */
-      *ptr = data_req_params->key_index;
-    }
-#endif
-
   }
 #ifdef ZB_ROUTER_ROLE
   else if (ret == RET_ERROR && ZB_GET_MAC_STATUS() == MAC_TRANSACTION_OVERFLOW)
   {
     TRACE_MSG(TRACE_MAC2, "put request back to mac out queue", (FMT__0));
     ZB_SET_MAC_STATUS(MAC_SUCCESS);
-    zb_mac_put_request_to_queue(data_req, ZB_MAC_DATA_REQUEST);
+    zb_mac_put_request_to_que1ue(data_req, ZB_MAC_DATA_REQUEST);
     ret = RET_PENDING;
   }
 #endif
 
-  TRACE_MSG(TRACE_MAC2, "<< zb_mcps_data_request_fill_hdr ret %d", (FMT__D, ret));
+  TRACE_MSG(TRACE_MAC1, "<< zb_mcps_data_request_fill_hdr ret %d", (FMT__D, ret));
   return ret;
 }
 
