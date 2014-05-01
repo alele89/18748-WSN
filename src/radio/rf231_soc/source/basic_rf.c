@@ -701,7 +701,7 @@ uint8_t zb_rf_tx_packet(RF_TX_INFO *pRTI, uint16_t ms)
 		machead->src_addr = 0xAAAA;
 		machead->dest_addr = 0xFFFF;
 		machead->dest_pan_id = (PAN_ID_1 << 8) | PAN_ID_0;
-	} else {
+	} else {sadjlak
 		machead->seq_num = rfSettings.txSeqNumber;
 		machead->src_addr = (SHORT_ADDR_1 << 8) | SHORT_ADDR_0;
 		machead->dest_addr = pRTI->destAddr;
@@ -714,10 +714,63 @@ uint8_t zb_rf_tx_packet(RF_TX_INFO *pRTI, uint16_t ms)
 #endif
 	rfSettings.txSeqNumber++;
 
+    ieee_mac_frame_header_t *machead = pRTI->pPayload;
+    ieee_mac_fcf_t f = machead->fcf;
+    //machead->fcf.dest_addr_mode = 2;
+    //machead->fcf.src_addr_mode = 2;
+    //machead->src_addr = (SHORT_ADDR_1 << 8) | SHORT_ADDR_0;
+    //machead->dest_addr = 0xFFFF;
+    machead->fcf.ack_request = 0;
+    //machead->fcf.src_addr_mode = 2;
+    //machead->src_addr = 0xaaab;
+    f.ack_request = 0;
+    if (machead->fcf.src_addr_mode == 3)
+    {
+        ieee_mac_frame_header_t *machead = frame_start + 1;
+        ieee_mac_fcf_t fcf;
+
+        /* TODO: Setting FCF bits is probably slow. Optimize later. */
+        fcf.frame_type = 3;
+        fcf.sec_en = 0;
+        fcf.frame_pending = 0;
+        fcf.ack_request = 0;
+        fcf.intra_pan = 0;
+        fcf.res = 0;
+        fcf.dest_addr_mode = 2;
+        fcf.frame_version = 0;
+        fcf.src_addr_mode = 2;
+
+        /* Build the rest of the MAC header */
+        rfSettings.txSeqNumber++;
+        machead->fcf = fcf;
+        if (use_glossy) {
+            machead->seq_num = 0xFF;
+            machead->src_addr = 0xAAAA;
+            machead->dest_addr = 0xFFFF;
+            machead->dest_pan_id = (PAN_ID_1 << 8) | PAN_ID_0;
+        } else {
+            machead->seq_num = rfSettings.txSeqNumber;
+            machead->src_addr = (SHORT_ADDR_1 << 8) | SHORT_ADDR_0;
+            machead->dest_addr = pRTI->destAddr;
+            machead->dest_pan_id = (PAN_ID_1 << 8) | PAN_ID_0;
+        }
+        memcpy(frame_start+1+sizeof(ieee_mac_frame_header_t), pRTI->pPayload+17, 2); 
+        *frame_start = 15;
+        goto transmit;
+#if 0
+        /* We dont handle a 64 bit long address. */
+        machead->fcf.src_addr_mode = 0;
+        memcpy(machead->src_addr, machead->src_addr+8, pRTI->length-sizeof(ieee_mac_frame_header_t)-8);
+        pRTI->length = pRTI->length-6;
+#endif
+    }
+    printf("ft %d sec %d fp %d ack %d intpan %d res %d dam %d fv %d sam %d sadr %d\r\n", f.frame_type, f.sec_en, f.frame_pending, f.ack_request, f.intra_pan, f.res, f.dest_addr_mode, f.frame_version, machead->fcf.src_addr_mode, machead->src_addr);
+
 	memcpy(frame_start+1, pRTI->pPayload, pRTI->length);
 	/* Set the size of the packet */
 	*frame_start = pRTI->length + 2;
-	
+
+transmit:	
 	/* Wait for radio to be in a ready state */
 	do{
 		trx_status = (TRX_STATUS & 0x1F);
