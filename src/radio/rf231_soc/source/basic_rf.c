@@ -754,7 +754,7 @@ uint8_t zb_rf_tx_packet(RF_TX_INFO *pRTI, uint16_t ms)
             machead->dest_pan_id = (PAN_ID_1 << 8) | PAN_ID_0;
         }
         memcpy(frame_start+1+sizeof(ieee_mac_frame_header_t), pRTI->pPayload+pRTI->header_length, pRTI->length-pRTI->header_length); 
-        *frame_start = 15;
+        *frame_start = pRTI->length - pRTI->header_length + sizeof(ieee_mac_frame_header_t);
         goto transmit;
 #if 0
         /* We dont handle a 64 bit long address. */
