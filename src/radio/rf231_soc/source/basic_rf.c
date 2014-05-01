@@ -34,7 +34,7 @@
 #include <nrk_cpu.h>
 
 /* ZBOSS include */
-//#include "zb_rf_internal.h"
+#include "zb_rf_internal.h"
 
 #define OSC_STARTUP_DELAY	1000
 #define RF_IO_BUF_SIZE  148
@@ -728,16 +728,16 @@ uint8_t zb_rf_tx_packet(RF_TX_INFO *pRTI, uint16_t ms)
         ieee_mac_frame_header_t *machead = frame_start + 1;
         ieee_mac_fcf_t fcf;
 
-        /* TODO: Setting FCF bits is probably slow. Optimize later. */
-        fcf.frame_type = 3;
-        fcf.sec_en = 0;
-        fcf.frame_pending = 0;
-        fcf.ack_request = 0;
-        fcf.intra_pan = 0;
+        fcf.frame_type = ZB_RF_FCF_GET_FRAME_TYPE(pRTI->pPayload);
+        fcf.sec_en = ZB_RF_FCF_GET_SECURITY_BIT(pRTI->pPayload);
+        fcf.frame_pending = ZB_RF_FCF_GET_FRAME_PENDING_BIT(pRTI->pPayload);
+        fcf.ack_request = ZB_RF_FCF_GET_ACK_REQUEST_BIT(pRTI->pPayload);
+        fcf.intra_pan = ZB_RF_FCF_GET_PANID_COMPRESSION_BIT(pRTI->pPayload);
         fcf.res = 0;
-        fcf.dest_addr_mode = 2;
-        fcf.frame_version = 0;
-        fcf.src_addr_mode = 2;
+        fcf.dest_addr_mode = 2; //ZB_RF_FCF_GET_DST_ADDRESSING_MODE(pRTI->pPayload);
+        fcf.frame_version = ZB_RF_FCF_GET_FRAME_VERSION(pRTI->pPayload);
+        fcf.src_addr_mode = 2; //ZB_RF_FCF_GET_SRC_ADDRESSING_MODE(pRTI->pPayload);
+        
 
         /* Build the rest of the MAC header */
         rfSettings.txSeqNumber++;
