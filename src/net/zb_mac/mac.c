@@ -632,23 +632,23 @@ void zb_mlme_command_accept(zb_uint8_t param)
          * make this check need to make separate func for ass response */
       }
 #endif
-      if (ZB_MAC_GET_ASS_REQUEST())
-      {
+      //if (ZB_MAC_GET_ASS_REQUEST())
+      //{
         cmd_ptr++;
         zb_get_next_letoh16(&ass_confirm_param->assoc_short_address, &cmd_ptr);
         MAC_PIB().mac_short_address = ass_confirm_param->assoc_short_address;
-        TRACE_MSG(TRACE_MAC3, "saddr set: %d", (FMT__D, MAC_PIB().mac_short_address));
+        TRACE_MSG(TRACE_MAC1, "saddr set: %d", (FMT__D, MAC_PIB().mac_short_address));
         ZB_UPDATE_SHORT_ADDR();
         ass_confirm_param->status = *cmd_ptr;
         ZB_BUF_FROM_REF(param)->u.hdr.status = ass_confirm_param->status;
         TRACE_MSG(TRACE_MAC1, "zb_mlme_asociate_confirm scheduled", (FMT__0));
         ZB_SCHEDULE_CALLBACK(zb_mlme_associate_confirm, param);
         ZB_MAC_CLEAR_ASS_REQUEST();
-      }
-      else
-      {
-        zb_free_buf(ZB_BUF_FROM_REF(param));
-      }
+      //}
+      //else
+      //{
+        //zb_free_buf(ZB_BUF_FROM_REF(param));
+      //}
 
     }
 
