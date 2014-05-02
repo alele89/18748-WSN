@@ -658,8 +658,8 @@ void nwk_broadcast_transmition(zb_uint8_t param)
 void zb_nwk_forward(zb_uint8_t param) 
 {
   zb_ret_t ret = RET_OK;
-  zb_short_t indirect;
-  zb_uint16_t mac_dst;
+  zb_short_t indirect = 0;
+  zb_uint16_t mac_dst = 0xffff;
   zb_buf_t *packet = (zb_buf_t *)ZB_BUF_FROM_REF(param);
   zb_nwk_hdr_t *nwhdr = (zb_nwk_hdr_t *)ZB_BUF_BEGIN(packet);
   zb_uint8_t handle = *ZB_GET_BUF_PARAM(packet, zb_uint8_t);
@@ -667,7 +667,7 @@ void zb_nwk_forward(zb_uint8_t param)
 
   TRACE_MSG(TRACE_NWK1, ">>forward parm %hd", (FMT__H, param));
 
-  ret = nwk_calc_destination(packet, handle, &mac_dst, &indirect, &cmd_status);
+  //ret = nwk_calc_destination(packet, handle, &mac_dst, &indirect, &cmd_status);
   if ( ret == RET_OK )
   {
     /* check address is broadcast. */
@@ -699,7 +699,7 @@ void zb_nwk_forward(zb_uint8_t param)
       }
     }
 
-    TRACE_MSG(TRACE_NWK1, "mcps data req src %hu dst %hu indirect %hd h %hd", (FMT__H_H_H_H, ZB_PIB_SHORT_ADDRESS(), mac_dst, indirect, handle));
+    //TRACE_MSG(TRACE_NWK1, "mcps data req src %hu dst %hu indirect %hd h %hd", (FMT__H_H_H_H, ZB_PIB_SHORT_ADDRESS(), mac_dst, indirect, handle));
     ZB_MCPS_BUILD_DATA_REQUEST(packet, ZB_PIB_SHORT_ADDRESS(), mac_dst,
                                ((indirect ? MAC_TX_OPTION_INDIRECT_TRANSMISSION_BIT : 0) |
                                 /* if not broadcast, wants ack */

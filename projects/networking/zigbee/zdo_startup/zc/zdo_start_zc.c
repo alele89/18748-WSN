@@ -213,7 +213,7 @@ static void zc_send_data(zb_buf_t *buf, zb_uint16_t addr)
 
     ZB_BUF_INITIAL_ALLOC(buf, ZB_TEST_DUMMY_DATA_SIZE , ptr);
     req = ZB_GET_BUF_TAIL(buf, sizeof(zb_apsde_data_req_t));
-    req->dst_addr.addr_short = ZB_NWK_BROADCAST_ALL_DEVICES; /* send to ZR */
+    req->dst_addr.addr_short = addr; /* send to ZR */
     req->addr_mode = ZB_APS_ADDR_MODE_16_ENDP_PRESENT;
     req->tx_options = ZB_APSDE_TX_OPT_ACK_TX;
     req->radius = 1;
