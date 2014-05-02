@@ -200,6 +200,161 @@ void zb_mlme_start_request(zb_uint8_t param)
   sends beacon request command, mac spec 7.3.7 Beacon request command
   return RET_OK, RET_ERROR
 */
+zb_ret_t zb_beacon_lon_command()
+{
+  zb_ret_t ret;
+  zb_uint8_t mhr_len;
+  zb_uint8_t packet_length;
+  zb_uint8_t *ptr = NULL;
+  zb_mac_mhr_t mhr;
+
+/*
+  7.3.7 Beacon request command
+  1. Fill MHR fields
+  - set dst pan id = 0xffff
+  - set dst addr = 0xffff
+  2. Fill FCF
+  - set frame pending = 0, ack req = 0, security enabled = 0
+  - set dst addr mode to ZB_ADDR_16BIT_DEV_OR_BROADCAST
+  - set src addr mode to ZB_ADDR_NO_ADDR
+  3. Set command frame id = 0x07 (Beacon request)
+*/
+
+  TRACE_MSG(TRACE_MAC1, ">> zb_beacon_lon_command", (FMT__0));
+
+/* Fill Frame Controll then call zb_mac_fill_mhr() */
+/*
+  mac spec  7.2.1.1 Frame Control field
+  | Frame Type | Security En | Frame Pending | Ack.Request | PAN ID Compres | Reserv | Dest.Addr.Mode | Frame Ver | Src.Addr.gMode |
+*/
+
+  mhr_len = zb_mac_calculate_mhr_length(ZB_ADDR_16BIT_DEV_OR_BROADCAST, ZB_ADDR_NO_ADDR, 0);
+  packet_length = mhr_len;
+  packet_length += 1;           /* command id */
+
+  ZB_BUF_INITIAL_ALLOC(MAC_CTX().operation_buf, packet_length, ptr);
+  ZB_ASSERT(ptr);
+
+  ZB_BZERO(ptr, packet_length);
+
+  ZB_BZERO2(mhr.frame_control);
+  /* TODO: optimize FCF fill */
+  ZB_FCF_SET_FRAME_TYPE(mhr.frame_control, MAC_FRAME_COMMAND);
+  /* security_enabled is 0 */
+  /* frame pending is 0 */
+  /* ack request is 0 */
+  /* PAN id compression is 0 */
+  ZB_FCF_SET_DST_ADDRESSING_MODE(mhr.frame_control, ZB_ADDR_16BIT_DEV_OR_BROADCAST);
+
+  /* TODO: set frame version correctly, case Channel Page is omitted */
+
+  ZB_FCF_SET_FRAME_VERSION(mhr.frame_control, MAC_FRAME_VERSION);
+  ZB_FCF_SET_SRC_ADDRESSING_MODE(mhr.frame_control, ZB_ADDR_NO_ADDR);
+
+  /* 7.2.1 General MAC frame format */
+  mhr.seq_number = ZB_MAC_DSN();
+  ZB_INC_MAC_DSN();
+
+  mhr.dst_pan_id = ZB_BROADCAST_PAN_ID;
+  mhr.dst_addr.addr_short = ZB_MAC_SHORT_ADDR_NO_VALUE;
+  /* src pan id and src addr are ignored */
+
+  zb_mac_fill_mhr(ptr, &mhr);
+
+  *(ptr + mhr_len) = MAC_CMD_BEACON_LON;
+
+  MAC_ADD_FCS(MAC_CTX().operation_buf);
+
+  printf("fcf: %x %x seqn %d sadr %d \r\n", mhr.frame_control[0], mhr.frame_control[1], mhr.seq_number, mhr.src_addr);
+
+  ret = ZB_TRANS_SEND_COMMAND(mhr_len, MAC_CTX().operation_buf);
+
+  TRACE_MSG(TRACE_MAC1, "<< zb_beacon_lon_command ret %i", (FMT__D, ret));
+  return ret;
+}
+
+/*
+  sends beacon request command, mac spec 7.3.7 Beacon request command
+  return RET_OK, RET_ERROR
+*/
+zb_ret_t zb_beacon_loff_command()
+{
+  zb_ret_t ret;
+  zb_uint8_t mhr_len;
+  zb_uint8_t packet_length;
+  zb_uint8_t *ptr = NULL;
+  zb_mac_mhr_t mhr;
+
+/*
+  7.3.7 Beacon request command
+  1. Fill MHR fields
+  - set dst pan id = 0xffff
+  - set dst addr = 0xffff
+  2. Fill FCF
+  - set frame pending = 0, ack req = 0, security enabled = 0
+  - set dst addr mode to ZB_ADDR_16BIT_DEV_OR_BROADCAST
+  - set src addr mode to ZB_ADDR_NO_ADDR
+  3. Set command frame id = 0x07 (Beacon request)
+*/
+
+  TRACE_MSG(TRACE_MAC1, ">> zb_beacon_loff_command", (FMT__0));
+
+/* Fill Frame Controll then call zb_mac_fill_mhr() */
+/*
+  mac spec  7.2.1.1 Frame Control field
+  | Frame Type | Security En | Frame Pending | Ack.Request | PAN ID Compres | Reserv | Dest.Addr.Mode | Frame Ver | Src.Addr.gMode |
+*/
+
+  mhr_len = zb_mac_calculate_mhr_length(ZB_ADDR_16BIT_DEV_OR_BROADCAST, ZB_ADDR_NO_ADDR, 0);
+  packet_length = mhr_len;
+  packet_length += 1;           /* command id */
+
+  ZB_BUF_INITIAL_ALLOC(MAC_CTX().operation_buf, packet_length, ptr);
+  ZB_ASSERT(ptr);
+
+  ZB_BZERO(ptr, packet_length);
+
+  ZB_BZERO2(mhr.frame_control);
+  /* TODO: optimize FCF fill */
+  ZB_FCF_SET_FRAME_TYPE(mhr.frame_control, MAC_FRAME_COMMAND);
+  /* security_enabled is 0 */
+  /* frame pending is 0 */
+  /* ack request is 0 */
+  /* PAN id compression is 0 */
+  ZB_FCF_SET_DST_ADDRESSING_MODE(mhr.frame_control, ZB_ADDR_16BIT_DEV_OR_BROADCAST);
+
+  /* TODO: set frame version correctly, case Channel Page is omitted */
+
+  ZB_FCF_SET_FRAME_VERSION(mhr.frame_control, MAC_FRAME_VERSION);
+  ZB_FCF_SET_SRC_ADDRESSING_MODE(mhr.frame_control, ZB_ADDR_NO_ADDR);
+
+  /* 7.2.1 General MAC frame format */
+  mhr.seq_number = ZB_MAC_DSN();
+  ZB_INC_MAC_DSN();
+
+  mhr.dst_pan_id = ZB_BROADCAST_PAN_ID;
+  mhr.dst_addr.addr_short = ZB_MAC_SHORT_ADDR_NO_VALUE;
+  /* src pan id and src addr are ignored */
+
+  zb_mac_fill_mhr(ptr, &mhr);
+
+  *(ptr + mhr_len) = MAC_CMD_BEACON_LOFF;
+
+  MAC_ADD_FCS(MAC_CTX().operation_buf);
+
+  printf("fcf: %x %x seqn %d sadr %d \r\n", mhr.frame_control[0], mhr.frame_control[1], mhr.seq_number, mhr.src_addr);
+
+  ret = ZB_TRANS_SEND_COMMAND(mhr_len, MAC_CTX().operation_buf);
+
+  TRACE_MSG(TRACE_MAC1, "<< zb_beacon_loff_command ret %i", (FMT__D, ret));
+  return ret;
+}
+
+
+/*
+  sends beacon request command, mac spec 7.3.7 Beacon request command
+  return RET_OK, RET_ERROR
+*/
 zb_ret_t zb_beacon_request_command()
 {
   zb_ret_t ret;

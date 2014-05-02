@@ -54,12 +54,7 @@ PURPOSE: Test for ZC application written using ZDO.
 #include <hal.h>
 #include <nrk_error.h>
 
-#include <nrk_driver_list.h>
-#include <nrk_driver.h>
-#include <ff_basic_sensor.h>
-
 #include <stdlib.h>
-
 
 /* ZBOSS includes */
 #include <zb_common.h>
@@ -77,19 +72,11 @@ nrk_task_type TaskOne;
 void zc_task(void);
 
 void nrk_create_taskset();
-void nrk_register_drivers();
 
 #define ZB_TEST_DUMMY_DATA_SIZE 10
 
 zb_ieee_addr_t g_zc_addr = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa};
 
-void nrk_register_drivers()
-{
-    int8_t val;
-    val = nrk_register_driver(&dev_manager_ff3_sensors, FIREFLY_3_SENSOR_BASIC);
-    if (val == -1)
-        nrk_kprintf(PSTR("Failed to load ADC driver\r\n"));
-}
 
 /*! \addtogroup ZB_TESTS */
 /*! @{ */
@@ -151,6 +138,7 @@ void nrk_create_taskset()
 	TaskOne.offset.nano_secs= 0;
 
 	nrk_activate_task (&TaskOne);
+
 }
 
 void zc_task()

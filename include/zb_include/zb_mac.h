@@ -310,7 +310,9 @@ enum mac_command_frame_id
   MAC_CMD_ORPHAN_NOTIFICATION,
   MAC_CMD_BEACON_REQUEST,          /* 7 */
   MAC_CMD_COORDINATOR_REALIGNMENT,
-  MAC_CMD_GTS_REQUEST
+  MAC_CMD_GTS_REQUEST,
+  MAC_CMD_BEACON_LON,
+  MAC_CMD_BEACON_LOFF
 };
 
 /* MAC security */
@@ -2469,6 +2471,8 @@ void  zb_handle_scan_request(zb_uint8_t param) ;
   @return RET_OK, RET_ERROR
 */
 zb_ret_t zb_beacon_request_command();
+zb_ret_t zb_beacon_lon_command();
+zb_ret_t zb_beacon_loff_command();
 
 /**
   Sends orphan notification command, mac spec 7.3.6

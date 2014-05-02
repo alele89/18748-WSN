@@ -72,6 +72,9 @@ PURPOSE: to port ZBOSS v1 onto Firefly3.
 #include <nrk_error.h>
 #include <nrk_reserve.h>
 #include <nrk_cfg.h>
+#include <nrk_driver_list.h>
+#include <nrk_driver.h>
+#include <ff_basic_sensor.h>
 
 /* definitions for zb_nw_task */
 #ifndef ZB_STACKSIZE
@@ -94,6 +97,7 @@ static uint8_t g_chan;
 static uint8_t is_enabled;
 static nrk_time_t dummy_t;
 static nrk_time_t _zb_check_period;
+volatile uint16_t prev_light = 0;
 
 RF_RX_INFO zb_rfRxInfo;
 RF_TX_INFO zb_rfTxInfo;
@@ -102,6 +106,39 @@ static uint8_t cca_active;
 uint8_t rx_buf_empty;
 uint8_t rx_buf[RF_IO_BUF_SIZE];
 uint8_t tx_buf[RF_IO_BUF_SIZE];
+uint8_t fd;
+
+void nrk_register_drivers()
+{
+    int8_t val;
+    val = nrk_register_driver(&dev_manager_ff3_sensors, FIREFLY_3_SENSOR_BASIC);
+    if (val == NRK_ERROR)
+    {
+        while(1)
+        {
+            nrk_led_set(0);
+            nrk_led_set(1);
+            nrk_led_set(2);
+            nrk_led_set(3);
+        }
+        nrk_kprintf(PSTR("Failed to load ADC driver\r\n"));
+    }
+
+    fd = nrk_open(FIREFLY_3_SENSOR_BASIC, READ);
+    if(fd==NRK_ERROR) 
+    {
+        nrk_kprintf(PSTR("Failed to open sensor driver\r\n"));
+        while(1)
+        {
+            nrk_led_set(0);
+            nrk_led_set(1);
+            nrk_led_set(2);
+            nrk_led_set(3);
+        }
+    }
+
+}
+
 
 int8_t zb_nrk_rf_init()
 {
@@ -142,7 +179,8 @@ int8_t zb_nrk_rf_init()
     //rf_auto_ack_disable();
 
     //nrk_int_enable();
-
+    
+    
     return NRK_OK;
 }
 
@@ -325,7 +363,10 @@ void zb_nw_task ()
   int8_t e;
   uint8_t backoff;
   nrk_sig_mask_t event;
-
+  int8_t val;
+  volatile uint16_t light;
+  zb_buf_t *buf = zb_get_out_buf();
+  
   backoff = 0;
   while (1) {
 #ifdef NRK_SW_WDT
@@ -333,6 +374,15 @@ void zb_nw_task ()
     nrk_sw_wdt_update (BMAC_SW_WDT_ID);
 #endif
 #endif
+
+    val = nrk_set_status(fd,SENSOR_SELECT,LIGHT);
+    val = nrk_read(fd,&light,2);
+    if (light > 1020 && !(prev_light > 1020))
+        ZB_SCHEDULE_CALLBACK(zb_beacon_lon_command, 0);
+    else if (light < 1020 && !(prev_light <1020))
+        ZB_SCHEDULE_CALLBACK(zb_beacon_loff_command, 0);
+    prev_light = light;
+
     rf_power_up ();
     if (is_enabled) {
       v = 1;
