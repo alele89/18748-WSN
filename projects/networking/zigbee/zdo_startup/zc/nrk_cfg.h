@@ -1,7 +1,3 @@
-/***************************************************************
-*                            NanoRK CONFIG                     *
-***************************************************************/
-
 #ifndef __nrk_cfg_h	
 #define __nrk_cfg_h
 
@@ -55,5 +51,5 @@
 #define NRK_APP_STACKSIZE              128
 #define NRK_KERNEL_STACKSIZE           256 
 #define NRK_MAX_RESOURCE_CNT           3
-
+#define NRK_MAX_DRIVER_CNT             1
 #endif

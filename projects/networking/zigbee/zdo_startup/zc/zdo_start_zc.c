@@ -62,14 +62,14 @@ PURPOSE: Test for ZC application written using ZDO.
 
 
 /* ZBOSS includes */
-#include "zb_common.h"
-#include "zb_scheduler.h"
-#include "zb_bufpool.h"
-#include "zb_nwk.h"
-#include "zb_aps.h"
-#include "zb_zdo.h"
-#include "zb_types.h"
-#include "zb_rf231_soc.h"
+#include <zb_common.h>
+#include <zb_scheduler.h>
+#include <zb_bufpool.h>
+#include <zb_nwk.h>
+#include <zb_aps.h>
+#include <zb_zdo.h>
+#include <zb_types.h>
+#include <zb_rf231_soc.h>
 
 NRK_STK Stack1[NRK_APP_STACKSIZE];
 nrk_task_type TaskOne;
@@ -82,6 +82,14 @@ void nrk_register_drivers();
 #define ZB_TEST_DUMMY_DATA_SIZE 10
 
 zb_ieee_addr_t g_zc_addr = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa};
+
+void nrk_register_drivers()
+{
+    int8_t val;
+    val = nrk_register_driver(&dev_manager_ff3_sensors, FIREFLY_3_SENSOR_BASIC);
+    if (val == -1)
+        nrk_kprintf(PSTR("Failed to load ADC driver\r\n"));
+}
 
 /*! \addtogroup ZB_TESTS */
 /*! @{ */
@@ -107,8 +115,6 @@ int main ()
 
     nrk_init ();
 
-    nrk_register_drivers();
-
     nrk_led_clr (0);
     nrk_led_clr (1);
     nrk_led_clr (2);
@@ -121,6 +127,7 @@ int main ()
     zb_task_config ();
     zb_nrk_rf_init();
 
+    nrk_register_drivers();
     nrk_create_taskset ();
     nrk_start ();
 
@@ -229,15 +236,5 @@ static void zc_send_data(zb_buf_t *buf, zb_uint16_t addr)
     ZB_SCHEDULE_CALLBACK(zb_apsde_data_request, ZB_REF_FROM_BUF(buf));
 }
 
-void nrk_register_drivers()
-{
-/*
- * TODO: wsn gr12 Need to fix this
-    int8_t val;
-    val = nrk_register_driver(&dev_manager_ff3_sensors, FIREFLY_3_SENSOR_BASIC);
-    if (val == NRK_ERROR)
-        nrk_kprintf(PSTR("Failed to load ADC driver\r\n"));
-*/
-}
 
 /*! @} */
