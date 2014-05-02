@@ -475,13 +475,12 @@ zb_ret_t zb_mcps_data_request_fill_hdr(zb_buf_t *data_req)
 #ifdef ZB_ROUTER_ROLE
   else if (ret == RET_ERROR && ZB_GET_MAC_STATUS() == MAC_TRANSACTION_OVERFLOW)
   {
-    TRACE_MSG(TRACE_MAC2, "put request back to mac out queue", (FMT__0));
+    TRACE_MSG(TRACE_MAC1, "put request back to mac out queue", (FMT__0));
     ZB_SET_MAC_STATUS(MAC_SUCCESS);
     zb_mac_put_request_to_queue(data_req, ZB_MAC_DATA_REQUEST);
     ret = RET_PENDING;
   }
 #endif
-
   TRACE_MSG(TRACE_MAC2, "<< zb_mcps_data_request_fill_hdr ret %d", (FMT__D, ret));
   return ret;
 }
