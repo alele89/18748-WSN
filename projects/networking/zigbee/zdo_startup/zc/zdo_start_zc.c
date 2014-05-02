@@ -200,9 +200,10 @@ void data_indication(zb_uint8_t param)
 
     TRACE_MSG(TRACE_APS3, "apsde_data_indication: packet %p len %d handle 0x%x", (FMT__P_D_D,
                 asdu, (int)ZB_BUF_LEN(asdu), asdu->u.hdr.status));
+    TRACE_MSG(TRACE_APS1, "Successfully recevied packet from End Device", (FMT__0));
 
     /* send packet back to ZR */
-    zc_send_data(asdu, ind->src_addr);
+    //zc_send_data(asdu, ind->src_addr);
 }
 
 static void zc_send_data(zb_buf_t *buf, zb_uint16_t addr)
